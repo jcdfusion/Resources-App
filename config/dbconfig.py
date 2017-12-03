@@ -1,7 +1,8 @@
 #Databse configuration information
 
 pg_config = {
-    'user' : 'appusr',
-    'passwd' : 'appusr1',
-    'dbname' : 'appdb'
+    'host' : 'localhost',
+    'user' : 'resourceadmin',
+    'passwd' : 'icom5016',
+    'dbname' : 'resourceApp'
 }

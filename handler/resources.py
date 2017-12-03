@@ -18,7 +18,7 @@ class ResourceHandler:
             result_list.append(result)
         return jsonify(Resources=result_list)
 
-    def getResourceById(self):
+    def getResourceById(self, rid):
         dao = ResourcesDAO()
         resources_list = dao.getAllResorces()
         result_list = []
@@ -27,7 +27,7 @@ class ResourceHandler:
             result_list.append(result)
         return jsonify(Resources=result_list)
 
-    def getResourceByName(self):
+    def getResourceByName(self, rname):
         dao = ResourcesDAO()
         resources_list = dao.getAllResorces()
         result_list = []
@@ -37,7 +37,7 @@ class ResourceHandler:
         return jsonify(Resources=result_list)
 
 
-    def getResourceByStore(self):
+    def getResourceByStore(self, rstore):
         dao = ResourcesDAO()
         resources_list = dao.getAllResorces()
         result_list = []
