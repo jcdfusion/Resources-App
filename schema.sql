@@ -1,0 +1,20 @@
+-- Resources table
+create table resources(rid serial primary key, rname varchar(20));
+insert into resources('Water');
+insert into resources('Small bottles');
+insert into resources('One Gallon bottles');
+insert into resources('Medications');
+insert into resources('Baby Food');
+insert into resources('Canned Food');
+insert into resources('Dry Food');
+insert into resources('Ice');
+insert into resources('Fuel');
+insert into resources('Diesel');
+insert into resources('Propane');
+insert into resources('Gasoline');
+insert into resources('Medical Devices');
+insert into resources('Heavy Equipment');
+insert into resources('Tools');
+insert into resources('Clothing');
+insert into resources('Power Generators');
+insert into resources('Batteries');
