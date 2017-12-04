@@ -1,8 +1,9 @@
 #Databse configuration information
 
 pg_config = {
-    'host' : 'localhost',
+    'host' : 'lewy.covier.com',
     'user' : 'resourceadmin',
     'passwd' : 'icom5016',
-    'dbname' : 'resourceApp'
+    'dbname' : 'resourcesapp',
+    'port' : '5432'
 }
