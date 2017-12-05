@@ -8,7 +8,7 @@ class ResourcesDAO:
 
     def getAllResorces(self):
         cursor = self.conn.cursor()
-        query = "select * from resources;"
+        query = "select * from resourceType;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -17,7 +17,7 @@ class ResourcesDAO:
 
     def getResourceById(self, rid):
         cursor = self.conn.cursor()
-        query = "select * from resources;"
+        query = "select * from resourceType;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -26,7 +26,7 @@ class ResourcesDAO:
 
     def getResourceByName(self, rname):
         cursor = self.conn.cursor()
-        query = "select * from resources;"
+        query = "select * from resourceType;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -35,7 +35,7 @@ class ResourcesDAO:
 
     def getResourceByCenter(self, rcenter):
         cursor = self.conn.cursor()
-        query = "select * from resources;"
+        query = "select * from resourceType;"
         cursor.execute(query)
         result = []
         for row in cursor:
