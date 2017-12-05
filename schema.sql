@@ -20,7 +20,19 @@ create table collectionCenter(collectionCenterID serial primary key, zipCode int
 create table resourceType(resourceTypeID serial primary key, resource_type varchar(20));
 --
 --Resources table
-create table resources(resourceID serial primary key, collectionCenterID integer references collectionCenter(collectionCenterID), resourceTypeID integer references resourceType(resourceTypeID), qty integer);
+create table resources(resourceID serial primary key, collectionCenterID integer references collectionCenter(collectionCenterID), resourceTypeID integer references resourceType(resourceTypeID), purchased_free varchar(9), resource_price integer,qty integer);
+--
+--User type table
+create table userType(userTypeID serial primary key, user_type varchar(20));
+--
+--Users table
+create table users(userID serial primary key, userTypeID integer references userType(userTypeID), zipCode integer references location(zipCode), user_first_name varchar(20), user_last_name varchar(20), user_email varchar(20));
+--
+--Users password table
+create table userPassword(userPassID serial primary key, userID integer references users(userID), user_value varchar(20));
+--
+--User Request table
+create table userRequest(requestID serial primary key, userID integer references users(userID),resourceID integer references resources(resourceID), req_first_name varchar(20),req_last_name varchar(20), req_email varchar(20), req_phone varchar(20), street varchar(20), zipCode integer, town_name varchar(20), state_region_name varchar(20), country varchar(20));
 --
 --Water type table
 create table waterType(waterTypeID serial primary key, water_type varchar(20));
@@ -53,13 +65,13 @@ create table gas(gasID serial primary key, resourceID integer references resourc
 create table medicalDeviceType(medicalDeviceTypeID serial primary key, medicalDevice_type varchar(20));
 --
 --Medical devices table
-create table medicalDevices(medicalDevicesID serial primary key, resourceID integer references resources(resourceID), medicalDeviceTypeID references medicalDeviceType(medicalDeviceTypeID), qty integer);
+create table medicalDevices(medicalDevicesID serial primary key, resourceID integer references resources(resourceID), medicalDeviceTypeID integer references medicalDeviceType(medicalDeviceTypeID), medDevName varchar(20), medDevManufacturer varchar(20),qty integer);
 --
 --Heavy equipment type table
 create table heavyEquipmentType(heavyEquipmentTypeID serial primary key, heavyEquipment_type varchar(20));
 --
 --Heavy equipment table
-create table heavyEquipment(heavyEquipmentID serial primary key, resourceID integer references resources(resourceID), heavyEquipmentTypeID references heavyEquipmentType(heavyEquipmentTypeID), qty integer);
+create table heavyEquipment(heavyEquipmentID serial primary key, resourceID integer references resources(resourceID), heavyEquipmentTypeID integer references heavyEquipmentType(heavyEquipmentTypeID), qty integer);
 --
 --Tool type table
 create table toolType(toolTypeID serial primary key, tool_type varchar(20));
@@ -71,13 +83,13 @@ create table tools(toolsID serial primary key, resourceID integer references res
 create table powerGeneratorType(powerGeneratorTypeID serial primary key, powerGenerator_type varchar(20));
 --
 --Power generators table
-create table powerGenerator(powerGeneratorID serial primary key, resourceID integer references resources(resourceID), powerGeneratorTypeID references powerGeneratorType(powerGeneratorTypeID), watts integer, qty integer);
+create table powerGenerator(powerGeneratorID serial primary key, resourceID integer references resources(resourceID), powerGeneratorTypeID integer references powerGeneratorType(powerGeneratorTypeID), watts integer, qty integer);
 --
 --Battery type table
 create table batteryType(batteryTypeID serial primary key, batteries_type varchar(20));
 --
 --Batteries resource table
-create table batteries(batteriesID serial primary key, resourceID integer references resources(resourceID), batteryTypeID references batteryType(batteryTypeID), qty integer);
+create table batteries(batteriesID serial primary key, resourceID integer references resources(resourceID), batteryTypeID integer references batteryType(batteryTypeID), qty integer);
 --
 --Medicine category table
 create table medicineCategory(medicine_categoryID serial primary key, medicine_type varchar(20));
