@@ -1,5 +1,5 @@
 #Databse configuration information
-
+# Remote database connection
 pg_config = {
     'host' : 'lewy.covier.com',
     'user' : 'resourceadmin',
