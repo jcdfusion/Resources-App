@@ -33,7 +33,7 @@ class ResourcesDAO:
             result.append(row)
         return result
 
-    def getResourceByStore(self, rstore):
+    def getResourceByCenter(self, rcenter):
         cursor = self.conn.cursor()
         query = "select * from resources;"
         cursor.execute(query)

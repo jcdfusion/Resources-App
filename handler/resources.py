@@ -37,7 +37,7 @@ class ResourceHandler:
         return jsonify(Resources=result_list)
 
 
-    def getResourceByStore(self, rstore):
+    def getResourceByCenter(self, rcenter):
         dao = ResourcesDAO()
         resources_list = dao.getAllResorces()
         result_list = []

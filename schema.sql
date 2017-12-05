@@ -13,7 +13,7 @@ insert into resources(rname) values ('Diesel');
 insert into resources(rname) values ('Propane');
 insert into resources(rname) values ('Gasoline');
 insert into resources(rname) values ('Medical Devices');
-insert into resources(rname) values ('Heavy Equipmen');
+insert into resources(rname) values ('Heavy Equipment');
 insert into resources(rname) values ('Clothing');
 insert into resources(rname) values ('Power Generators');
 insert into resources(rname) values ('Batteries');

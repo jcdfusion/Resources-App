@@ -13,18 +13,18 @@ def getAllResources():
 
 
 @app.route('/ResourcesApp/resources/<int:rid>')
-def getPartById(rid):
+def getResourceById(rid):
     return ResourceHandler().getResourceById(rid)
 
 
-@app.route('/ResourcesApp/resources/<int:rname>')
-def getPartByName(rname):
+@app.route('/ResourcesApp/resources/<string:rname>')
+def getResourceByName(rname):
     return ResourceHandler().getResourceByName(rname)
 
 
-@app.route('/ResourcesApp/resources/<int:rstore>')
-def getPartByStore(rstore):
-    return ResourceHandler().getResourceByStore(rstore)
+@app.route('/ResourcesApp/resources/<string:rcenter>')
+def getResourceByCenter(rcenter):
+    return ResourceHandler().getResourceByCenter(rcenter)
 
 if __name__ == '__main__':
     app.run()
