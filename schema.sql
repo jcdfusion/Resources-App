@@ -38,7 +38,7 @@ create table userRequest(requestID serial primary key, userID integer references
 create table waterType(waterTypeID serial primary key, water_type varchar(20));
 --
 --Water resource table
-create table water(waterID serial primary key, resourceID integer references resources(resourceID), waterTypeID references waterType(waterTypeID), qty integer);
+create table water(waterID serial primary key, resourceID integer references resources(resourceID), waterTypeID integer references waterType(waterTypeID), qty integer);
 --
 --Food type table
 create table foodType(foodTypeID serial primary key, food_type varchar(20));
