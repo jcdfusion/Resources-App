@@ -77,7 +77,7 @@ create table heavyEquipment(heavyEquipmentID serial primary key, resourceID inte
 create table toolType(toolTypeID serial primary key, tool_type varchar(20));
 --
 --Tools resource table
-create table tools(toolsID serial primary key, resourceID integer references resources(resourceID), toolTypeID references toolType(toolTypeID), qty integer);
+create table tools(toolsID serial primary key, resourceID integer references resources(resourceID), toolTypeID integer references toolType(toolTypeID), qty integer);
 --
 --Power generator type table
 create table powerGeneratorType(powerGeneratorTypeID serial primary key, powerGenerator_type varchar(20));
