@@ -65,8 +65,8 @@ class ResourceHandler:
             result_list.append(result)
         return jsonify(Resources=result_list)
 
-    def getResourceByLocation(self,zone):
+    def getResourceByLocation(self,location):
         dao=ResourcesDAO()
-        row = dao.getResourceByLocation(zone)
+        row = dao.getResourceByLocation(location)
 
 
