@@ -38,13 +38,13 @@ create table userRequest(requestID serial primary key, userID integer references
 create table waterType(waterTypeID serial primary key, water_type varchar(20));
 --
 --Water resource table
-create table water(waterID serial primary key, resourceID integer references resources(resourceID), waterTypeID references waterType(waterTypeID), qty integer);
+create table water(waterID serial primary key, resourceID integer references resources(resourceID), waterTypeID integer references waterType(waterTypeID), qty integer);
 --
 --Food type table
 create table foodType(foodTypeID serial primary key, food_type varchar(20));
 --
 --Food resource table
-create table food(foodID serial primary key, resourceID integer references resources(resourceID), foodTypeID references foodType(foodTypeID), qty integer);
+create table food(foodID serial primary key, resourceID integer references resources(resourceID), foodTypeID integer references foodType(foodTypeID), qty integer);
 --
 --Ice resource table
 create table ice(iceID serial primary key, resourceID integer references resources(resourceID), qty integer);
@@ -53,13 +53,13 @@ create table ice(iceID serial primary key, resourceID integer references resourc
 create table clothingType(clothingTypeID serial primary key, clothing_type varchar(20));
 --
 --Clothing resource table
-create table clothing(clothingID serial primary key, resourceID integer references resources(resourceID),clothingTypeID references clothingType(clothingTypeID),clothing_size varchar(20),qty integer);
+create table clothing(clothingID serial primary key, resourceID integer references resources(resourceID),clothingTypeID integer references clothingType(clothingTypeID),clothing_size varchar(20),qty integer);
 --
 --Gas type table
 create table gasType(gasTypeID serial primary key, gas_type varchar(20));
 --
 --Gas resource table
-create table gas(gasID serial primary key, resourceID integer references resources(resourceID), gasTypeID references gasType(gasTypeID), qty integer );
+create table gas(gasID serial primary key, resourceID integer references resources(resourceID), gasTypeID integer references gasType(gasTypeID), qty integer );
 --
 --Medical devices type table
 create table medicalDeviceType(medicalDeviceTypeID serial primary key, medicalDevice_type varchar(20));
@@ -77,7 +77,7 @@ create table heavyEquipment(heavyEquipmentID serial primary key, resourceID inte
 create table toolType(toolTypeID serial primary key, tool_type varchar(20));
 --
 --Tools resource table
-create table tools(toolsID serial primary key, resourceID integer references resources(resourceID), toolTypeID references toolType(toolTypeID), qty integer);
+create table tools(toolsID serial primary key, resourceID integer references resources(resourceID), toolTypeID integer references toolType(toolTypeID), qty integer);
 --
 --Power generator type table
 create table powerGeneratorType(powerGeneratorTypeID serial primary key, powerGenerator_type varchar(20));
