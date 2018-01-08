@@ -68,5 +68,10 @@ class ResourceHandler:
     def getResourceByLocation(self,location):
         dao=ResourcesDAO()
         row = dao.getResourceByLocation(location)
+        if not row:
+            return jsonify(Error="Not Found"), 404
+        else:
+            resource = self.build_resourcetype_dict(row)
+        return jsonify(Resource=resource)
 
 
