@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from handler.resources import ResourceHandler
+import psycopg2
 
 app = Flask(__name__)
 
@@ -7,24 +8,57 @@ app = Flask(__name__)
 def greeting():
     return '<h1>Disaster Resources Site</h1>'
 
-@app.route('/ResourcesApp/resources')
+@app.route('/ResourcesApp/resources',methods=['GET','POST'])
 def getAllResources():
-    return ResourceHandler().getAllResources()
+    if(request.method == 'POST'):
+          return ResourceHandler.insertResource(request.form)
+    else:
+        if not request.args:
+            return ResourceHandler().getAllResources()
+        else:
+            return ResourceHandler.searchResources(request.args)
+
+@app.route('/ResourcesApp/resources/<int:resourceID>', methods=['GET', 'PUT', 'DELETE'])
+def getResourceById(resourceID):
+    if request.method == 'GET':
+        return ResourceHandler().getResourceById(resourceID)
+    elif request.method == 'PUT':
+        return ResourceHandler().updateResource(resourceID, request.form)
+    elif request.method == 'DELETE':
+        return ResourceHandler().deleteResource(resourceID)
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/ResourcesApp/resources/<int:rid>')
-def getResourceById(rid):
-    return ResourceHandler().getResourceById(rid)
+@app.route('/ResourcesApp/resources/<string:rtype>',methods=['GET', 'PUT', 'DELETE'])
+def getResourceByName(rtype):
+    if request.method == 'GET':
+        return ResourceHandler().getResourceByName(rtype)
+    elif request.method == 'PUT':
+        return ResourceHandler().updateResourceName(rtype, request.form)
+    elif request.method == 'DELETE':
+        return ResourceHandler().deleteResourceName(rtype)
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
 
-@app.route('/ResourcesApp/resources/<string:rname>')
-def getResourceByName(rname):
-    return ResourceHandler().getResourceByName(rname)
-
-
-@app.route('/ResourcesApp/resources/<string:rcenter>')
+@app.route('/ResourcesApp/resources/<string:rcenter>',methods=['GET','PUT','DELETE'])
 def getResourceByCenter(rcenter):
-    return ResourceHandler().getResourceByCenter(rcenter)
+
+        if request.method == 'GET':
+            return ResourceHandler.getResourceByCenter(rcenter)
+        elif request.method == 'PUT':
+            return ResourceHandler().updateResourceCenter(rcenter, request.form)
+        elif request.method == 'DELETE':
+            return ResourceHandler().deleteResourceCenter(rcenter)
+        else:
+            return jsonify(Error="Method not allowed."), 405
+
+@app.route('/ResourceApp/resources/<int:rid>/center')
+def getCenterbyResourceID(rid):
+    return ResourceHandler.getCenterByResourceID(rid)
+
+
 
 if __name__ == '__main__':
     app.run()

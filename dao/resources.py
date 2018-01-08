@@ -33,11 +33,5 @@ class ResourcesDAO:
             result.append(row)
         return result
 
-    def getResourceByCenter(self, rcenter):
-        cursor = self.conn.cursor()
-        query = "select * from resourceType;"
-        cursor.execute(query)
-        result = []
-        for row in cursor:
-            result.append(row)
-        return result
+
+
