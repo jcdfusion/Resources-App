@@ -9,4 +9,4 @@ class CollectionCenterHandler:
         result['zipCode'] = row[1]  # zipCode
         result['street'] = row[2]  # street where collection center is located
         result['ccname'] = row[3]  # collection center name
-        return result
+        return result # return result
