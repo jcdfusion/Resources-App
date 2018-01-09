@@ -140,3 +140,79 @@ class UsersHandler:
             result = self.build_userRequest_dict(row)
             result_list.append(result)
         return jsonify(Requests=result_list)
+
+    def searchUsers(self, args):
+        if len(args) > 1:
+            return jsonify(Error="Malformed search string."), 400
+        else:
+            username = args.get("username")
+            usertype = args.get("usertype")
+            firstname = args.get("firstname")
+            lastname = args.get("lastname")
+            email = args.get("email")
+
+            if username:
+                self.getUserRequestsByUserID(username)
+                # dao = UsersDAO()
+                # row = dao.getUsersByID(username)
+                # if not row:
+                #     return jsonify(Error="User Not Found"), 404
+                # else:
+                #     user = self.build_user_dict(row)
+                #     return jsonify(User=user)
+            elif usertype:
+                #self.getUsersByType(usertype)
+                dao = UsersDAO()
+                if not dao.getUserTypeByID(usertype):
+                    return jsonify(Error="User Type Not Found"), 404
+                request_list = dao.getUsersByTypeID(usertype)
+                result_list = []
+                for row in request_list:
+                    user = self.build_userRequest_dict(row)
+                    result_list.append(user)
+                return jsonify(User=result_list)
+            elif firstname:
+                #self.getUserByFirstName(firstname)
+                dao = UsersDAO()
+                row = dao.getUserByFirstName(firstname)
+                if not row:
+                    return jsonify(Error="User Not Found"), 404
+                else:
+                    user = self.build_user_dict(row)
+                    return jsonify(User=user)
+            elif lastname:
+                #self.getUserByLastName(lastname)
+                dao = UsersDAO()
+                row = dao.getUserByLastName(lastname)
+                if not row:
+                    return jsonify(Error="User Not Found"), 404
+                else:
+                    user = self.build_user_dict(row)
+                    return jsonify(User=user)
+            elif email:
+                #self.getUserByEmail(email)
+                dao = UsersDAO()
+                row = dao.getUserByEmail(email)
+                if not row:
+                    return jsonify(Error="User Not Found"), 404
+                else:
+                    user = self.build_user_dict(row)
+                    return jsonify(User=user)
+            else:
+                return jsonify(Error="Malformed search string."), 400
+
+    def searchUsersRequests(self, args):
+        if len(args) > 2:
+            return jsonify(Error="Malformed search string."), 400
+        else:
+            username = args.get("username")
+            requestid = args.get("requestid")
+            resourceid = args.get("requestid")
+        if username and resourceid:
+            self.getUserRequestsByUserIDandResourceID(username, resourceid)
+        elif username:
+            self.getUserRequestsByRequestID(username)
+        elif requestid:
+            self.getUserRequestsByUserID(requestid)
+        else:
+            return jsonify(Error="Malformed search string."), 400

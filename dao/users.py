@@ -43,7 +43,7 @@ class UsersDAO:
 
     def getUsersByID(self, uid):
         cursor = self.conn.cursor()
-        query = "select * from users where userID = %s;"
+        query = "select * from users where userid = %s;"
         cursor.execute(query, (uid,))
         result = cursor.fetchone()
         return result
