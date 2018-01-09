@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from handler.resources import ResourceHandler
+from handler.users import UsersHandler
 import psycopg2
 
 app = Flask(__name__)
@@ -57,6 +58,18 @@ def getResourceByCenter(rcenter):
 @app.route('/ResourceApp/resources/<int:rid>/center')
 def getCenterbyResourceID(rid):
     return ResourceHandler.getCenterByResourceID(rid)
+
+
+#======= User Routing ========#
+
+@app.route('/ResourceApp/users/', methods=['GET', 'POST'])
+def getUsers():
+    return UsersHandler().searchUsers(request.args)
+
+@app.route('/ResourceApp/users/requests', methods=['GET', 'POST'])
+def getUserRequest():
+    return UsersHandler().searchUsersRequests(request.args)
+
 
 if __name__ == '__main__':
     app.run()
