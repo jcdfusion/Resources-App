@@ -39,12 +39,12 @@ class ResourceHandler:
 
     def getResourceById(self, rid):
         dao = ResourcesDAO()
-        resources_list = dao.getAllResorces()
-        result_list = []
-        for row in resources_list:
-            result = self.build_resourcetype_dict(row)
-            result_list.append(result)
-        return jsonify(Resources=result_list)
+        row = dao.getResourceById(rid)
+        if not row:
+            return jsonify(Error = "Resource Not Found"), 404
+        else:
+            resource = self.build_resources_dict(row)
+            return jsonify(Resources = resource)
 
     def getResourceByName(self, rname):
         dao = ResourcesDAO()
@@ -73,5 +73,3 @@ class ResourceHandler:
         else:
             resource = self.build_resourcetype_dict(row)
         return jsonify(Resource=resource)
-
-
