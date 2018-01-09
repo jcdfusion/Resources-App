@@ -48,7 +48,7 @@ class ResourceHandler:
 
     def getResourceByName(self, rname):
         dao = ResourcesDAO()
-        resources_list = dao.getAllResorces()
+        resources_list = dao.getAllResources()
         result_list = []
         for row in resources_list:
             result = self.build_resourcetype_dict(row)
