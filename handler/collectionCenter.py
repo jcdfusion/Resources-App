@@ -23,9 +23,9 @@ class CollectionCenterHandler:
             result_list.append(result)
         return jsonify(Location=result_list)
 
-    def getCenterByZip(self, zip):
+    def getCenterByZip(self, zipCode):
         dao = CollectionCenterDAO()
-        row = dao.getCenterByZip(zip)
+        row = dao.getCenterByZip(zipCode)
         if not row:
             return jsonify(Error="Collection Center Not Found"), 404
         else:
@@ -68,9 +68,9 @@ class CollectionCenterHandler:
             location = self.build_collectionCenter_dict(row)
             return jsonify(Location = location)
 
-    def getCenterByName(self, name):
+    def getCenterByName(self, ccname):
         dao = CollectionCenterDAO()
-        row = dao.getCenterByName(name)
+        row = dao.getCenterByName(ccname)
         if not row:
             return jsonify(Error="Collection Center Not Found"), 404
         else:
