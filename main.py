@@ -58,7 +58,5 @@ def getResourceByCenter(rcenter):
 def getCenterbyResourceID(rid):
     return ResourceHandler.getCenterByResourceID(rid)
 
-
-
 if __name__ == '__main__':
     app.run()
