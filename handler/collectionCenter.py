@@ -1,236 +1,456 @@
-from flask import jsonify
-from dao.collectionCenter import CollectionCenterDAO
+from config.dbconfig import pg_config
+import psycopg2
+class CollectionCenterDAO:
 
-class CollectionCenterHandler:
+    def __init__(self):
 
-    def build_collectioncenter_dict(self, row):
-        result = {}
-        result['ccid'] = row[0]  # collection center id
-        result['street'] = row[1]  # zipCode
-        result['town'] = row[2]  # street where collection center is located
-        result['state'] = row[3]  # town where collection center is located
-        result['country'] = row[4]  # state where collection center is located
-        result['ccname'] = row[5]  # country where collection center is located
-        result['zipcode'] = row[6]  # collection center name
-        return result # return result
-
-    def build_resources_dict(self, row):
-        result = {}
-        result['resourceid'] = row[0]  # resource id
-        result['ccid'] = row[1]  # collection center id
-        result['rname'] = row[2]  # resource name
-        result['buy_free'] = row[3]  # boolean whether the resource is free or not
-        result['rprice'] = row[4]  # resource price
-        result['qty'] = row[5]  # resource qty
-        return result
-
-    def build_resourcetype_dict(self, row):
-        result = {}
-        result['rtid'] = row[0] #resource type id
-        result['rname'] = row[1] #resource type name
-        return result
-
-    def build_ccByresourceType_dict(self,row):
-        result={}
-        result['ccid']=row[0]
-        result['rid']=row[1]
-        result['id']=row[2]
-        result['rtype']=row[3]
-        result['rbrand']=row[4]
-        result['rname']=row[5]
-        result['buy_free']=row[6]
-        result['market_price']=row[7]
-        result['qty']=row[8]
-        result['street']=row[9]
-        result['town']=row[10]
-        result['state_region']=row[11]
-        result['country']=row[12]
-        result['ccname']=row[13]
-        result['zipcode']=row[14]
-        return result
-
-
+        connection_url = "host=%s dbname=%s user=%s password=%s port=%s" % (pg_config['host'], pg_config['dbname'], pg_config['user'], pg_config['passwd'], pg_config['port'])
+        self.conn = psycopg2._connect(connection_url)
 
     def getAllCenters(self):
-        dao = CollectionCenterDAO()
-        location_list = dao.getAllCenters()
-        result_list = []
-        for row in location_list:
-            result = self.build_collectioncenter_dict(row)
-            result_list.append(result)
-        return jsonify(CollectionCenter=result_list)
+        cursor = self.conn.cursor()
+        query = "select * from collectionCenter;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
-    def searchCenter(self,args):
-        ccname = args.get('ccname')
-        street = args.get('street')
-        town = args.get('town')
-        state = args.get('state')
-        country = args.get('country')
-        zipcode = args.get('zipcode')
-        rtid = args.get('rtid')
-        rtype =args.get('rtype')
-        rname = args.get('rname')
-        ravailable= args.get('ravailable')
-
-        dao = CollectionCenterDAO()
-        if (len(args) == 1) and ccname:
-            collectioncenter_list = dao.getCenterByName(ccname)
-
-        elif (len(args) == 1) and street:
-            collectioncenter_list = dao.getCenterByStreet(street)
-
-        elif (len(args) == 1) and town:
-            collectioncenter_list = dao.getCenterByTown(town)
-
-        elif (len(args) == 1) and country:
-            collectioncenter_list = dao.getCenterByCountry(country)
-
-        elif (len(args) == 1) and zipcode:
-            collectioncenter_list = dao.getCenterByZip(zipcode)
-
-        elif (len(args) == 1) and rname : #resource name
-            collectioncenter_list = dao.getCenterByResourceName(rname)
-
-        elif (len(args)==1) and ravailable:
-            collectioncenter_list= dao.getCenterByResourcesAvailable()
-            result_list = []
-            for row in collectioncenter_list:
-                result = self.build_ccByresourceType_dict(row)
-                result_list.append(result)
-            return jsonify(ResourcesAvailable=result_list)
-
-        elif (len(args)==2) and ravailable and ccname:
-            collectioncenter_list= dao.getCenterByResourcesAvailableAndCenterName(ccname)
-            result_list = []
-            for row in collectioncenter_list:
-                result = self.build_ccByresourceType_dict(row)
-                result_list.append(result)
-            return jsonify(ResourcesAvailable=result_list)
-
-        elif (len(args)==2) and ravailable and country:
-            collectioncenter_list= dao.getCenterByResourcesAvailableAndCountry(country)
-            result_list = []
-            for row in collectioncenter_list:
-                result = self.build_ccByresourceType_dict(row)
-                result_list.append(result)
-            return jsonify(ResourcesAvailable=result_list)
-
-        elif (len(args)==2) and ravailable and state:
-            collectioncenter_list= dao.getCenterByResourcesAvailableAndState(state)
-            result_list = []
-            for row in collectioncenter_list:
-                result = self.build_ccByresourceType_dict(row)
-                result_list.append(result)
-            return jsonify(ResourcesAvailable=result_list)
-
-        elif (len(args)==2) and ravailable and town:
-            collectioncenter_list= dao.getCenterByResourcesAvailableAndTown(town)
-            result_list = []
-            for row in collectioncenter_list:
-                result = self.build_ccByresourceType_dict(row)
-                result_list.append(result)
-            return jsonify(ResourcesAvailable=result_list)
-
-
-        elif (len(args)==1) and rtype: #specific resource type of resource
-            collectioncenter_list = dao.getCenterByResourceType(rtype)
-            result_list = []
-            for row in collectioncenter_list:
-                result = self.build_ccByresourceType_dict(row)
-                result_list.append(result)
-            return jsonify(CollectionCenter=result_list)
-
-        elif (len(args)==2) and rtype and country:
-            collectioncenter_list = dao.getCenterByResourceTypeAndCountry(rtype,country)
-            result_list = []
-            for row in collectioncenter_list:
-                result = self.build_ccByresourceType_dict(row)
-                result_list.append(result)
-            return jsonify(CollectionCenter=result_list)
-
-        elif (len(args) == 2) and rtype and state:
-            collectioncenter_list = dao.getCenterByResourceTypeAndState(rtype, state)
-            result_list = []
-            for row in collectioncenter_list:
-                result = self.build_ccByresourceType_dict(row)
-                result_list.append(result)
-            return jsonify(CollectionCenter=result_list)
-
-        elif (len(args) == 2) and rtype and town:
-            collectioncenter_list = dao.getCenterByResourceTypeAndTown(rtype, town)
-            result_list = []
-            for row in collectioncenter_list:
-                result = self.build_ccByresourceType_dict(row)
-                result_list.append(result)
-            return jsonify(CollectionCenter=result_list)
-
-        elif (len(args) == 2) and rtype and ccname:
-            collectioncenter_list = dao.getCenterByResourceTypeAndCenterName(rtype, ccname)
-            result_list = []
-            for row in collectioncenter_list:
-                result = self.build_ccByresourceType_dict(row)
-                result_list.append(result)
-            return jsonify(CollectionCenter=result_list)
-
-        else:
-            return jsonify(Error="Malformed query string"), 400
-        result_list = []
-        for row in collectioncenter_list:
-            result = self.build_collectioncenter_dict(row)
-            result_list.append(result)
-        return jsonify(CollectionCenter=result_list)
-
-
-    def getCenterByZip(self, zipCode):
-        dao = CollectionCenterDAO()
-        row = dao.getCenterByZip(zipCode)
-        if not row:
-            return jsonify(Error="Collection Center Not Found"), 404
-        else:
-            location = self.build_collectionCenter_dict(row)
-            return jsonify(Location = location)
+    def getCenterByZip(self, zip):
+        cursor = self.conn.cursor()
+        query = "select * from collectionCenter where zipCode = %s;"
+        cursor.execute(query, (zip,))
+        result = cursor.fetchone()
+        return result
 
     def getCenterByStreet(self, street):
-        dao = CollectionCenterDAO()
-        row = dao.getCenterByStreet(street)
-        if not row:
-            return jsonify(Error="Collection Center Not Found"), 404
-        else:
-            location = self.build_collectionCenter_dict(row)
-            return jsonify(Location=location)
+        cursor = self.conn.cursor()
+        query = "select * from collectionCenter where LOWER(street) = LOWER(%s);"
+        cursor.execute(query, (street,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getCenterByTown(self, town):
-        dao = CollectionCenterDAO()
-        row = dao.getCenterByTown(town)
-        if not row:
-            return jsonify(Error="Collection Center Not Found"), 404
-        else:
-            location = self.build_collectionCenter_dict(row)
-            return jsonify(Location=location)
+        cursor = self.conn.cursor()
+        query = "select * from collectionCenter where LOWER(town) = LOWER(%s);"
+        cursor.execute(query, (town,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getCenterByState(self, state):
-        dao = CollectionCenterDAO()
-        row = dao.getCenterByState(state)
-        if not row:
-            return jsonify(Error="Collection Center Not Found"), 404
-        else:
-            location = self.build_collectionCenter_dict(row)
-            return jsonify(Location=location)
+        cursor = self.conn.cursor()
+        query = "select * from collectionCenter where LOWER(state_region) = LOWER(%s);"
+        cursor.execute(query, (state,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getCenterByCountry(self, country):
-        dao = CollectionCenterDAO()
-        row = dao.getCenterByCountry(country)
-        if not row:
-            return jsonify(Error="Collection Center Not Found"), 404
-        else:
-            location = self.build_collectionCenter_dict(row)
-            return jsonify(Location = location)
+        cursor = self.conn.cursor()
+        query = "select * from collectionCenter where LOWER(country) = LOWER(%s);"
+        cursor.execute(query, (country,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
-    def getCenterByName(self, ccname):
-        dao = CollectionCenterDAO()
-        row = dao.getCenterByName(ccname)
-        if not row:
-            return jsonify(Error="Collection Center Not Found"), 404
-        else:
-            location = self.build_collectionCenter_dict(row)
-            return jsonify(Location = location)
+    def getCenterByName(self, name):
+        cursor = self.conn.cursor()
+        query = "select * from collectionCenter where LOWER(collection_center_name) = LOWER(%s);"
+        cursor.execute(query, (name,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getCenterByResourceName(self,rname):
+        cursor = self.conn.cursor()
+        query = "select * from collectionCenter as cc, " \
+                "resources as r where cc.collectioncenterid = r.collectioncenterid" \
+                " and LOWER(r.resourcetype) = LOWER(%s);"
+        cursor.execute(query,(rname,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getCenterByResourceType(self,rtype):
+        cursor = self.conn.cursor()
+        query = "select * from(select gasid as id, " \
+                "resourceid, gastypeid as name, gasbrand as brand " \
+                "from fuel " \
+                "UNION select foodid as id, resourceid, foodtype as name,foodName as brand " \
+                "from food " \
+                "UNION select waterid as id, resourceid,watertype as name, waterbrand as brand " \
+                "from water " \
+                "UNION select iceid as id,resourceid, icebrand as name, icebrand as brand " \
+                "from ice " \
+                "UNION select clothingid as id, resourceid, clothingtype as name, clothingbrand as brand " \
+                "from clothing " \
+                "UNION select medicaldevicesid as id, resourceid, medicaldevicetype as name, meddevname as brand " \
+                "from medicaldevices " \
+                "UNION select heavyequipmentid as id, resourceid, heavyequipmenttype as name, heavyequipmentbrand as brand " \
+                "from heavyequipment " \
+                "UNION select toolsid as id, resourceid, tooltype as name, toolbrand as brand " \
+                "from tools " \
+                "UNION select powergeneratorid as id, resourceid, powergeneratortype as name, powergeneratorbrand as brand " \
+                "from powergenerator " \
+                "UNION select batteriesid as id, resourceid, batterytype as name, batterybrand as brand " \
+                "from batteries " \
+                "UNION select medicineid as id, resourceid, medicinetype as name, medicine_name as brand " \
+                "from medicine) as products natural inner join resources as r natural inner join collectioncenter as cc " \
+                "where LOWER(name)=LOWER(%s);"
+
+        cursor.execute(query,(rtype,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getCenterByResourceTypeAndTown(self, rtype, town):
+        cursor = self.conn.cursor()
+        query = "select * from(select gasid as id, " \
+                "resourceid, gastypeid as name, gasbrand as brand " \
+                "from fuel " \
+                "UNION select foodid as id, resourceid, foodtype as name,foodName as brand " \
+                "from food " \
+                "UNION select waterid as id, resourceid,watertype as name, waterbrand as brand " \
+                "from water " \
+                "UNION select iceid as id,resourceid, icebrand as name, icebrand as brand " \
+                "from ice " \
+                "UNION select clothingid as id, resourceid, clothingtype as name, clothingbrand as brand " \
+                "from clothing " \
+                "UNION select medicaldevicesid as id, resourceid, medicaldevicetype as name, meddevname as brand " \
+                "from medicaldevices " \
+                "UNION select heavyequipmentid as id, resourceid, heavyequipmenttype as name, heavyequipmentbrand as brand " \
+                "from heavyequipment " \
+                "UNION select toolsid as id, resourceid, tooltype as name, toolbrand as brand " \
+                "from tools " \
+                "UNION select powergeneratorid as id, resourceid, powergeneratortype as name, powergeneratorbrand as brand " \
+                "from powergenerator " \
+                "UNION select batteriesid as id, resourceid, batterytype as name, batterybrand as brand " \
+                "from batteries " \
+                "UNION select medicineid as id, resourceid, medicinetype as name, medicine_name as brand " \
+                "from medicine) as products natural inner join resources as r natural inner join collectioncenter as cc " \
+                "where LOWER(name)=LOWER(%s)" \
+                "and LOWER(cc.town)=LOWER(%s);"
+
+        cursor.execute(query, (rtype,town))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getCenterByResourceTypeAndState(self, rtype, state):
+        cursor = self.conn.cursor()
+        query = "select * from(select gasid as id, " \
+                "resourceid, gastypeid as name, gasbrand as brand " \
+                "from fuel " \
+                "UNION select foodid as id, resourceid, foodtype as name,foodName as brand " \
+                "from food " \
+                "UNION select waterid as id, resourceid,watertype as name, waterbrand as brand " \
+                "from water " \
+                "UNION select iceid as id,resourceid, icebrand as name, icebrand as brand " \
+                "from ice " \
+                "UNION select clothingid as id, resourceid, clothingtype as name, clothingbrand as brand " \
+                "from clothing " \
+                "UNION select medicaldevicesid as id, resourceid, medicaldevicetype as name, meddevname as brand " \
+                "from medicaldevices " \
+                "UNION select heavyequipmentid as id, resourceid, heavyequipmenttype as name, heavyequipmentbrand as brand " \
+                "from heavyequipment " \
+                "UNION select toolsid as id, resourceid, tooltype as name, toolbrand as brand " \
+                "from tools " \
+                "UNION select powergeneratorid as id, resourceid, powergeneratortype as name, powergeneratorbrand as brand " \
+                "from powergenerator " \
+                "UNION select batteriesid as id, resourceid, batterytype as name, batterybrand as brand " \
+                "from batteries " \
+                "UNION select medicineid as id, resourceid, medicinetype as name, medicine_name as brand " \
+                "from medicine) as products natural inner join resources as r natural inner join collectioncenter as cc " \
+                "where LOWER(name)=LOWER(%s)" \
+                "and LOWER(cc.state_region)=LOWER(%s);"
+
+        cursor.execute(query, (rtype,state))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getCenterByResourceTypeAndCountry(self, rtype, country):
+        cursor = self.conn.cursor()
+        query = "select * from(select gasid as id, " \
+                "resourceid, gastypeid as name, gasbrand as brand " \
+                "from fuel " \
+                "UNION select foodid as id, resourceid, foodtype as name,foodName as brand " \
+                "from food " \
+                "UNION select waterid as id, resourceid,watertype as name, waterbrand as brand " \
+                "from water " \
+                "UNION select iceid as id,resourceid, icebrand as name, icebrand as brand " \
+                "from ice " \
+                "UNION select clothingid as id, resourceid, clothingtype as name, clothingbrand as brand " \
+                "from clothing " \
+                "UNION select medicaldevicesid as id, resourceid, medicaldevicetype as name, meddevname as brand " \
+                "from medicaldevices " \
+                "UNION select heavyequipmentid as id, resourceid, heavyequipmenttype as name, heavyequipmentbrand as brand " \
+                "from heavyequipment " \
+                "UNION select toolsid as id, resourceid, tooltype as name, toolbrand as brand " \
+                "from tools " \
+                "UNION select powergeneratorid as id, resourceid, powergeneratortype as name, powergeneratorbrand as brand " \
+                "from powergenerator " \
+                "UNION select batteriesid as id, resourceid, batterytype as name, batterybrand as brand " \
+                "from batteries " \
+                "UNION select medicineid as id, resourceid, medicinetype as name, medicine_name as brand " \
+                "from medicine) as products natural inner join resources as r natural inner join collectioncenter as cc " \
+                "where LOWER(name)=LOWER(%s)" \
+                "and LOWER(cc.country)=LOWER(%s);"
+
+        cursor.execute(query, (rtype,country))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getCenterByResourceTypeAndCenterName(self,rtype,ccname):
+        cursor = self.conn.cursor()
+        query = "select * from(select gasid as id, " \
+                "resourceid, gastypeid as name, gasbrand as brand " \
+                "from fuel " \
+                "UNION select foodid as id, resourceid, foodtype as name,foodName as brand " \
+                "from food " \
+                "UNION select waterid as id, resourceid,watertype as name, waterbrand as brand " \
+                "from water " \
+                "UNION select iceid as id,resourceid, icebrand as name, icebrand as brand " \
+                "from ice " \
+                "UNION select clothingid as id, resourceid, clothingtype as name, clothingbrand as brand " \
+                "from clothing " \
+                "UNION select medicaldevicesid as id, resourceid, medicaldevicetype as name, meddevname as brand " \
+                "from medicaldevices " \
+                "UNION select heavyequipmentid as id, resourceid, heavyequipmenttype as name, heavyequipmentbrand as brand " \
+                "from heavyequipment " \
+                "UNION select toolsid as id, resourceid, tooltype as name, toolbrand as brand " \
+                "from tools " \
+                "UNION select powergeneratorid as id, resourceid, powergeneratortype as name, powergeneratorbrand as brand " \
+                "from powergenerator " \
+                "UNION select batteriesid as id, resourceid, batterytype as name, batterybrand as brand " \
+                "from batteries " \
+                "UNION select medicineid as id, resourceid, medicinetype as name, medicine_name as brand " \
+                "from medicine) as products natural inner join resources as r natural inner join collectioncenter as cc " \
+                "where LOWER(name)=LOWER(%s)" \
+                "and LOWER(cc.collection_center_name)=LOWER(%s);"
+        cursor.execute(query, (rtype, ccname))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getCenterByResourcesAvailable(self):
+        cursor = self.conn.cursor()
+        query = "select * from(select gasid as id, " \
+                "resourceid, gastypeid as name, gasbrand as brand " \
+                "from fuel " \
+                "UNION select foodid as id, resourceid, foodtype as name,foodName as brand " \
+                "from food " \
+                "UNION select waterid as id, resourceid,watertype as name, waterbrand as brand " \
+                "from water " \
+                "UNION select iceid as id,resourceid, icebrand as name, icebrand as brand " \
+                "from ice " \
+                "UNION select clothingid as id, resourceid, clothingtype as name, clothingbrand as brand " \
+                "from clothing " \
+                "UNION select medicaldevicesid as id, resourceid, medicaldevicetype as name, meddevname as brand " \
+                "from medicaldevices " \
+                "UNION select heavyequipmentid as id, resourceid, heavyequipmenttype as name, heavyequipmentbrand as brand " \
+                "from heavyequipment " \
+                "UNION select toolsid as id, resourceid, tooltype as name, toolbrand as brand " \
+                "from tools " \
+                "UNION select powergeneratorid as id, resourceid, powergeneratortype as name, powergeneratorbrand as brand " \
+                "from powergenerator " \
+                "UNION select batteriesid as id, resourceid, batterytype as name, batterybrand as brand " \
+                "from batteries " \
+                "UNION select medicineid as id, resourceid, medicinetype as name, medicine_name as brand " \
+                "from medicine) as products natural inner join resources as r natural inner join collectioncenter as cc " \
+                "where r.qty>0"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getCenterByResourcesAvailableAndCenterName(self,ccname):
+        cursor = self.conn.cursor()
+        query = "select * from(select gasid as id, " \
+                "resourceid, gastypeid as name, gasbrand as brand " \
+                "from fuel " \
+                "UNION select foodid as id, resourceid, foodtype as name,foodName as brand " \
+                "from food " \
+                "UNION select waterid as id, resourceid,watertype as name, waterbrand as brand " \
+                "from water " \
+                "UNION select iceid as id,resourceid, icebrand as name, icebrand as brand " \
+                "from ice " \
+                "UNION select clothingid as id, resourceid, clothingtype as name, clothingbrand as brand " \
+                "from clothing " \
+                "UNION select medicaldevicesid as id, resourceid, medicaldevicetype as name, meddevname as brand " \
+                "from medicaldevices " \
+                "UNION select heavyequipmentid as id, resourceid, heavyequipmenttype as name, heavyequipmentbrand as brand " \
+                "from heavyequipment " \
+                "UNION select toolsid as id, resourceid, tooltype as name, toolbrand as brand " \
+                "from tools " \
+                "UNION select powergeneratorid as id, resourceid, powergeneratortype as name, powergeneratorbrand as brand " \
+                "from powergenerator " \
+                "UNION select batteriesid as id, resourceid, batterytype as name, batterybrand as brand " \
+                "from batteries " \
+                "UNION select medicineid as id, resourceid, medicinetype as name, medicine_name as brand " \
+                "from medicine) as products natural inner join resources as r natural inner join collectioncenter as cc " \
+                "where r.qty>0 " \
+                "and LOWER(cc.ccname)=LOWER(%s)"
+        cursor.execute(query,(ccname,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getCenterByResourcesAvailableAndCountry(self,country):
+        cursor = self.conn.cursor()
+        query = "select * from(select gasid as id, " \
+                "resourceid, gastypeid as name, gasbrand as brand " \
+                "from fuel " \
+                "UNION select foodid as id, resourceid, foodtype as name,foodName as brand " \
+                "from food " \
+                "UNION select waterid as id, resourceid,watertype as name, waterbrand as brand " \
+                "from water " \
+                "UNION select iceid as id,resourceid, icebrand as name, icebrand as brand " \
+                "from ice " \
+                "UNION select clothingid as id, resourceid, clothingtype as name, clothingbrand as brand " \
+                "from clothing " \
+                "UNION select medicaldevicesid as id, resourceid, medicaldevicetype as name, meddevname as brand " \
+                "from medicaldevices " \
+                "UNION select heavyequipmentid as id, resourceid, heavyequipmenttype as name, heavyequipmentbrand as brand " \
+                "from heavyequipment " \
+                "UNION select toolsid as id, resourceid, tooltype as name, toolbrand as brand " \
+                "from tools " \
+                "UNION select powergeneratorid as id, resourceid, powergeneratortype as name, powergeneratorbrand as brand " \
+                "from powergenerator " \
+                "UNION select batteriesid as id, resourceid, batterytype as name, batterybrand as brand " \
+                "from batteries " \
+                "UNION select medicineid as id, resourceid, medicinetype as name, medicine_name as brand " \
+                "from medicine) as products natural inner join resources as r natural inner join collectioncenter as cc " \
+                "where r.qty>0 " \
+                "and LOWER(cc.country)=LOWER(%s)"
+        cursor.execute(query,(country,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getCenterByResourcesAvailableAndState(self,state):
+        cursor = self.conn.cursor()
+        query = "select * from(select gasid as id, " \
+                "resourceid, gastypeid as name, gasbrand as brand " \
+                "from fuel " \
+                "UNION select foodid as id, resourceid, foodtype as name,foodName as brand " \
+                "from food " \
+                "UNION select waterid as id, resourceid,watertype as name, waterbrand as brand " \
+                "from water " \
+                "UNION select iceid as id,resourceid, icebrand as name, icebrand as brand " \
+                "from ice " \
+                "UNION select clothingid as id, resourceid, clothingtype as name, clothingbrand as brand " \
+                "from clothing " \
+                "UNION select medicaldevicesid as id, resourceid, medicaldevicetype as name, meddevname as brand " \
+                "from medicaldevices " \
+                "UNION select heavyequipmentid as id, resourceid, heavyequipmenttype as name, heavyequipmentbrand as brand " \
+                "from heavyequipment " \
+                "UNION select toolsid as id, resourceid, tooltype as name, toolbrand as brand " \
+                "from tools " \
+                "UNION select powergeneratorid as id, resourceid, powergeneratortype as name, powergeneratorbrand as brand " \
+                "from powergenerator " \
+                "UNION select batteriesid as id, resourceid, batterytype as name, batterybrand as brand " \
+                "from batteries " \
+                "UNION select medicineid as id, resourceid, medicinetype as name, medicine_name as brand " \
+                "from medicine) as products natural inner join resources as r natural inner join collectioncenter as cc " \
+                "where r.qty>0 " \
+                "and LOWER(cc.state_region)=LOWER(%s)"
+        cursor.execute(query,(state,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getCenterByResourcesAvailableAndTown(self,town):
+        cursor = self.conn.cursor()
+        query = "select * from(select gasid as id, " \
+                "resourceid, gastypeid as name, gasbrand as brand " \
+                "from fuel " \
+                "UNION select foodid as id, resourceid, foodtype as name,foodName as brand " \
+                "from food " \
+                "UNION select waterid as id, resourceid,watertype as name, waterbrand as brand " \
+                "from water " \
+                "UNION select iceid as id,resourceid, icebrand as name, icebrand as brand " \
+                "from ice " \
+                "UNION select clothingid as id, resourceid, clothingtype as name, clothingbrand as brand " \
+                "from clothing " \
+                "UNION select medicaldevicesid as id, resourceid, medicaldevicetype as name, meddevname as brand " \
+                "from medicaldevices " \
+                "UNION select heavyequipmentid as id, resourceid, heavyequipmenttype as name, heavyequipmentbrand as brand " \
+                "from heavyequipment " \
+                "UNION select toolsid as id, resourceid, tooltype as name, toolbrand as brand " \
+                "from tools " \
+                "UNION select powergeneratorid as id, resourceid, powergeneratortype as name, powergeneratorbrand as brand " \
+                "from powergenerator " \
+                "UNION select batteriesid as id, resourceid, batterytype as name, batterybrand as brand " \
+                "from batteries " \
+                "UNION select medicineid as id, resourceid, medicinetype as name, medicine_name as brand " \
+                "from medicine) as products natural inner join resources as r natural inner join collectioncenter as cc " \
+                "where r.qty>0 " \
+                "and LOWER(cc.town)=LOWER(%s)"
+
+        cursor.execute(query,(town,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getOrdersbyCCName(self, ccname):
+        cursor = self.conn.cursor()
+        query = "select * from(select gasid as id, " \
+                "resourceid, gastypeid as name, gasbrand as brand " \
+                "from fuel " \
+                "UNION select foodid as id, resourceid, foodtype as name,foodName as brand " \
+                "from food " \
+                "UNION select waterid as id, resourceid,watertype as name, waterbrand as brand " \
+                "from water " \
+                "UNION select iceid as id,resourceid, icebrand as name, icebrand as brand " \
+                "from ice " \
+                "UNION select clothingid as id, resourceid, clothingtype as name, clothingbrand as brand " \
+                "from clothing " \
+                "UNION select medicaldevicesid as id, resourceid, medicaldevicetype as name, meddevname as brand " \
+                "from medicaldevices " \
+                "UNION select heavyequipmentid as id, resourceid, heavyequipmenttype as name, heavyequipmentbrand as brand " \
+                "from heavyequipment " \
+                "UNION select toolsid as id, resourceid, tooltype as name, toolbrand as brand " \
+                "from tools " \
+                "UNION select powergeneratorid as id, resourceid, powergeneratortype as name, powergeneratorbrand as brand " \
+                "from powergenerator " \
+                "UNION select batteriesid as id, resourceid, batterytype as name, batterybrand as brand " \
+                "from batteries " \
+                "UNION select medicineid as id, resourceid, medicinetype as name, medicine_name as brand " \
+                "from medicine) as mega natural inner join resources as r  natural inner join purchases as pp " \
+                "natural inner join collectioncenter as cc " \
+                "where r.resourceid = pp.resourceid " \
+                "and cc.collectioncenterid=pp.collectioncenterid " \
+                "and LOWER(cc.collection_center_name)=LOWER(%s);"
+        cursor.execute(query, (ccname,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+
+
+
+
+
+
+
