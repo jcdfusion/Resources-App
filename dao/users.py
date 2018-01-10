@@ -96,7 +96,9 @@ class UsersDAO:
         cursor = self.conn.cursor()
         query = "select * from userRequest where userid = %s;"
         cursor.execute(query, (uid,))
-        result = cursor.fetchone()
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getUserRequestsByRequestID(self, rid):
@@ -110,5 +112,7 @@ class UsersDAO:
         cursor = self.conn.cursor()
         query = "select * from userRequest where userid = %s and requestid = %s;"
         cursor.execute(query, (uid,rid))
-        result = cursor.fetchone()
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
