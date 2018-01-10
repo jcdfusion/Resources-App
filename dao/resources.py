@@ -17,14 +17,16 @@ class ResourcesDAO:
 
     def getResourceById(self, rid):
         cursor = self.conn.cursor()
-        query = "select * from resources where resourceID = %s;"
+        query = "select * from resources where resourceid = %s;"
         cursor.execute(query, (rid,))
-        result = cursor.fetchone()
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getResourceByCollectionCenterID(self, ccid):
         cursor = self.conn.cursor()
-        query = "select * from resources where collectionCenterID = %s;"
+        query = "select * from resources where collectionCenterid = %s;"
         cursor.execute(query, (ccid,))
         result = cursor.fetchone()
         return result
@@ -58,6 +60,99 @@ class ResourcesDAO:
         cursor = self.conn.cursor()
         query = "select * from resources where qty = %s;"
         cursor.execute(query, (rqty,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getResourceInfoByName(self, rname):
+        cursor = self.conn.cursor()
+        query = "select id, resourceid, r.resourcetype, name, brand, r.market_price, r.qty, r.buy_free  " \
+                "from(select gasid as id, resourceid, gastypeid as name, gasbrand as brand " \
+                "from fuel " \
+                "UNION select foodid as id, resourceid, foodtype as name, foodName as brand " \
+                "from food " \
+                "UNION select waterid as id, resourceid, watertype as name, waterbrand as brand " \
+                "from water " \
+                "UNION select iceid as id, resourceid, icebrand as name, icebrand as brand " \
+                "from ice " \
+                "UNION select clothingid as id, resourceid, clothingtype as name, clothingbrand as brand " \
+                "from clothing " \
+                "UNION select medicaldevicesid as id, resourceid, medicaldevicetype as name, meddevname as brand " \
+                "from medicaldevices " \
+                "UNION select heavyequipmentid as id, resourceid, heavyequipmenttype as name, heavyequipmentbrand as brand " \
+                "from heavyequipment " \
+                "UNION select toolsid as id, resourceid, tooltype as name, toolbrand as brand from tools " \
+                "UNION select powergeneratorid as id, resourceid, powergeneratortype as name, powergeneratorbrand as brand " \
+                "from powergenerator " \
+                "UNION select batteriesid as id, resourceid, batterytype as name, batterybrand as brand " \
+                "from batteries " \
+                "UNION select medicineid as id, resourceid, medicinetype as name, medicine_name as brand " \
+                "from medicine) as products natural inner join resources as r " \
+                "where LOWER(r.resourcetype)=LOWER(%s);"
+        cursor.execute(query, (rname,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getResourceInfoByType(self, rtype):
+        cursor = self.conn.cursor()
+        query = "select id, resourceid, r.resourcetype, name, brand, r.market_price, r.qty, r.buy_free  " \
+                "from(select gasid as id, resourceid, gastypeid as name, gasbrand as brand " \
+                "from fuel " \
+                "UNION select foodid as id, resourceid, foodtype as name, foodName as brand " \
+                "from food " \
+                "UNION select waterid as id, resourceid, watertype as name, waterbrand as brand " \
+                "from water " \
+                "UNION select iceid as id, resourceid, icebrand as name, icebrand as brand " \
+                "from ice " \
+                "UNION select clothingid as id, resourceid, clothingtype as name, clothingbrand as brand " \
+                "from clothing " \
+                "UNION select medicaldevicesid as id, resourceid, medicaldevicetype as name, meddevname as brand " \
+                "from medicaldevices " \
+                "UNION select heavyequipmentid as id, resourceid, heavyequipmenttype as name, heavyequipmentbrand as brand " \
+                "from heavyequipment " \
+                "UNION select toolsid as id, resourceid, tooltype as name, toolbrand as brand from tools " \
+                "UNION select powergeneratorid as id, resourceid, powergeneratortype as name, powergeneratorbrand as brand " \
+                "from powergenerator " \
+                "UNION select batteriesid as id, resourceid, batterytype as name, batterybrand as brand " \
+                "from batteries " \
+                "UNION select medicineid as id, resourceid, medicinetype as name, medicine_name as brand " \
+                "from medicine) as products natural inner join resources as r " \
+                "where LOWER(products.name)=LOWER(%s);"
+        cursor.execute(query, (rtype,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getResourceInfoByBF(self, buy_free):
+        cursor = self.conn.cursor()
+        query = "select id, resourceid, r.resourcetype, name, brand, r.market_price, r.qty, r.buy_free  " \
+                "from(select gasid as id, resourceid, gastypeid as name, gasbrand as brand " \
+                "from fuel " \
+                "UNION select foodid as id, resourceid, foodtype as name, foodName as brand " \
+                "from food " \
+                "UNION select waterid as id, resourceid, watertype as name, waterbrand as brand " \
+                "from water " \
+                "UNION select iceid as id, resourceid, icebrand as name, icebrand as brand " \
+                "from ice " \
+                "UNION select clothingid as id, resourceid, clothingtype as name, clothingbrand as brand " \
+                "from clothing " \
+                "UNION select medicaldevicesid as id, resourceid, medicaldevicetype as name, meddevname as brand " \
+                "from medicaldevices " \
+                "UNION select heavyequipmentid as id, resourceid, heavyequipmenttype as name, heavyequipmentbrand as brand " \
+                "from heavyequipment " \
+                "UNION select toolsid as id, resourceid, tooltype as name, toolbrand as brand from tools " \
+                "UNION select powergeneratorid as id, resourceid, powergeneratortype as name, powergeneratorbrand as brand " \
+                "from powergenerator " \
+                "UNION select batteriesid as id, resourceid, batterytype as name, batterybrand as brand " \
+                "from batteries " \
+                "UNION select medicineid as id, resourceid, medicinetype as name, medicine_name as brand " \
+                "from medicine) as products natural inner join resources as r " \
+                "where r.buy_free= %s;"
+        cursor.execute(query, (buy_free,))
         result = []
         for row in cursor:
             result.append(row)
