@@ -412,6 +412,41 @@ class CollectionCenterDAO:
             result.append(row)
         return result
 
+    def getOrdersbyCCName(self, ccname):
+        cursor = self.conn.cursor()
+        query = "select * from(select gasid as id, " \
+                "resourceid, gastypeid as name, gasbrand as brand " \
+                "from fuel " \
+                "UNION select foodid as id, resourceid, foodtype as name,foodName as brand " \
+                "from food " \
+                "UNION select waterid as id, resourceid,watertype as name, waterbrand as brand " \
+                "from water " \
+                "UNION select iceid as id,resourceid, icebrand as name, icebrand as brand " \
+                "from ice " \
+                "UNION select clothingid as id, resourceid, clothingtype as name, clothingbrand as brand " \
+                "from clothing " \
+                "UNION select medicaldevicesid as id, resourceid, medicaldevicetype as name, meddevname as brand " \
+                "from medicaldevices " \
+                "UNION select heavyequipmentid as id, resourceid, heavyequipmenttype as name, heavyequipmentbrand as brand " \
+                "from heavyequipment " \
+                "UNION select toolsid as id, resourceid, tooltype as name, toolbrand as brand " \
+                "from tools " \
+                "UNION select powergeneratorid as id, resourceid, powergeneratortype as name, powergeneratorbrand as brand " \
+                "from powergenerator " \
+                "UNION select batteriesid as id, resourceid, batterytype as name, batterybrand as brand " \
+                "from batteries " \
+                "UNION select medicineid as id, resourceid, medicinetype as name, medicine_name as brand " \
+                "from medicine) as mega natural inner join resources as r  natural inner join purchases as pp " \
+                "natural inner join collectioncenter as cc " \
+                "where r.resourceid = pp.resourceid " \
+                "and cc.collectioncenterid=pp.collectioncenterid " \
+                "and LOWER(cc.collection_center_name)=LOWER(%s);"
+        cursor.execute(query, (ccname,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
 
 
 
