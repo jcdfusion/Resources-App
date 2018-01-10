@@ -119,7 +119,7 @@ class CollectionCenterHandler:
             for row in collectioncenter_list:
                 result = self.build_resourcepurchasedByCC_dict(row)
                 result_list.append(result)
-            return jsonify(ResourcesAvailable=result_list)
+            return jsonify(OrdersByCollectionCenter=result_list)
 
         elif (len(args) == 1) and rname : #resource name
             collectioncenter_list = dao.getCenterByResourceName(rname)
