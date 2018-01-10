@@ -36,7 +36,7 @@ class UsersDAO:
 
     def getUserTypeByID(self, type):
         cursor = self.conn.cursor()
-        query = "select user_type from userType where userTypeID = %s;"
+        query = "select user_type from userType where usertypeid = %s;"
         cursor.execute(query, (type,))
         result = cursor.fetchone()
         return result
@@ -83,23 +83,32 @@ class UsersDAO:
         result = cursor.fetchone()
         return result
 
+    def getAllRequests(self):
+        cursor = self.conn.cursor()
+        query = "select * from userRequest;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def getUserRequestsByUserID(self, uid):
         cursor = self.conn.cursor()
-        query = "select * from userRequest natural inner join users where userID = %s;"
+        query = "select * from userRequest where userid = %s;"
         cursor.execute(query, (uid,))
         result = cursor.fetchone()
         return result
 
     def getUserRequestsByRequestID(self, rid):
         cursor = self.conn.cursor()
-        query = "select * from userRequest natural inner join users where requestID = %s;"
+        query = "select * from userRequest where requestid = %s;"
         cursor.execute(query, (rid,))
         result = cursor.fetchone()
         return result
 
     def getUserRequestsByUserIDandResourceID(self, uid, rid):
         cursor = self.conn.cursor()
-        query = "select * from userRequest natural inner join users where userID = %s and requestID = %s;"
+        query = "select * from userRequest where userid = %s and requestid = %s;"
         cursor.execute(query, (uid,rid))
         result = cursor.fetchone()
         return result

@@ -28,15 +28,25 @@ class UsersHandler:
         result['remail'] = row[5]   # requester email
         result['rphone'] = row[6]  # requester phone
         result['rstreet'] = row[7]  # requester street
-        result['rzip'] = row[8]  # requester zipcode
-        result['rtown'] = row[9]  # requester town
-        result['rstate'] = row[10]  # requester state
-        result['rcountry'] = row[11] # requester country
-        return result  # return result
+        result['rtown'] = row[8]  # requester town
+        result['rstate'] = row[9]  # requester state
+        result['rcountry'] = row[10] # requester country
+        result['rzip'] = row[11]  # requester zipcode
+        result['ccid'] = row[12]  # collection center id
+        return result
 
     def getAllUserTypes(self):
         dao = UsersDAO()
         location_list = dao.getAllUserTypes()
+        result_list = []
+        for row in location_list:
+            result = self.build_userType_dict(row)
+            result_list.append(result)
+        return jsonify(UserType=result_list)
+
+    def getAllUsers(self):
+        dao = UsersDAO()
+        location_list = dao.getAllUsers()
         result_list = []
         for row in location_list:
             result = self.build_userType_dict(row)
@@ -59,7 +69,7 @@ class UsersHandler:
             return jsonify(Error="User Not Found"), 404
         else:
             user = self.build_user_dict(row)
-            return jsonify(User=user)
+            return user #jsonify(User=user)
 
     def getUsersByTypeID(self, tid):
         dao = UsersDAO()
@@ -110,6 +120,15 @@ class UsersHandler:
             user = self.build_user_dict(row)
             return jsonify(User=user)
 
+    def getAllRequests(self):
+        dao = UsersDAO()
+        location_list = dao.getAllRequests()
+        result_list = []
+        for row in location_list:
+            result = self.build_userRequest_dict(row)
+            result_list.append(result)
+        return jsonify(UserType=result_list)
+
     def getUserRequestsByUserID(self, uid):
         dao = UsersDAO()
         if not dao.getUsersByID(uid):
@@ -152,7 +171,6 @@ class UsersHandler:
             email = args.get("email")
 
             if username:
-                #self.getUserRequestsByUserID(username)
                 dao = UsersDAO()
                 row = dao.getUsersByID(username)
                 if not row:
@@ -161,7 +179,6 @@ class UsersHandler:
                     user = self.build_user_dict(row)
                     return jsonify(User=user)
             elif usertype:
-                #self.getUsersByType(usertype)
                 dao = UsersDAO()
                 if not dao.getUserTypeByID(usertype):
                     return jsonify(Error="User Type Not Found"), 404
@@ -172,7 +189,6 @@ class UsersHandler:
                     result_list.append(user)
                 return jsonify(User=result_list)
             elif firstname:
-                #self.getUserByFirstName(firstname)
                 dao = UsersDAO()
                 row = dao.getUserByFirstName(firstname)
                 if not row:
@@ -181,7 +197,6 @@ class UsersHandler:
                     user = self.build_user_dict(row)
                     return jsonify(User=user)
             elif lastname:
-                #self.getUserByLastName(lastname)
                 dao = UsersDAO()
                 row = dao.getUserByLastName(lastname)
                 if not row:
@@ -190,7 +205,6 @@ class UsersHandler:
                     user = self.build_user_dict(row)
                     return jsonify(User=user)
             elif email:
-                #self.getUserByEmail(email)
                 dao = UsersDAO()
                 row = dao.getUserByEmail(email)
                 if not row:

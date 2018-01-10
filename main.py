@@ -62,12 +62,17 @@ def getCenterbyResourceID(rid):
 
 #======= User Routing ========#
 
-@app.route('/ResourceApp/users/', methods=['GET', 'POST'])
+@app.route('/ResourceApp/users')
 def getUsers():
-    return UsersHandler().searchUsers(request.args)
+    if not request.args:
+        return UsersHandler().getAllUsers()
+    else:
+        return UsersHandler().searchUsers(request.args)
 
-@app.route('/ResourceApp/users/requests', methods=['GET', 'POST'])
+@app.route('/ResourceApp/users/requests')
 def getUserRequest():
+    if not request.args:
+        return UsersHandler().getAllRequests()
     return UsersHandler().searchUsersRequests(request.args)
 
 
