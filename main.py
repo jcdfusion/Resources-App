@@ -59,6 +59,17 @@ def getResourceByCenter(rcenter):
 def getCenterbyResourceID(rid):
     return ResourceHandler.getCenterByResourceID(rid)
 
+#==========Collection Center Routing==============#
+@app.route('/ResourcesApp/collectionCenter/', methods=['GET','POST'])
+def getAllCollectionCenter():
+    if(request.method == 'POST'):
+        return CollectionCenterHandler().insertCollectionCenter(request.form)
+    else:
+        if not request.args:
+            return CollectionCenterHandler().getAllCenters()
+        else:
+            return CollectionCenterHandler().searchCenter(request.args)
+
 
 #======= User Routing ========#
 
