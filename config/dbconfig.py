@@ -1,9 +1,9 @@
 #Databse configuration information
 # Remote database connection
 pg_config = {
-    'host' : 'rds-postgresql-10mintutorial.crxgakfnkwhg.us-east-1.rds.amazonaws.com',
+    'host' : 'mrsourcedb1.crxgakfnkwhg.us-east-1.rds.amazonaws.com',
     'user' : 'masterUsername',
-    'passwd' : 'kdqdIVAg',
+    'passwd' : 'kdqdIVAl',
     'dbname' : 'resourcesapp',
     'port' : '5432'
 }

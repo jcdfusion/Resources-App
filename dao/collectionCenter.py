@@ -68,6 +68,15 @@ class CollectionCenterDAO:
             result.append(row)
         return result
 
+    def getCenterByID(self, ccid):
+        cursor = self.conn.cursor()
+        query = "select * from collectionCenter where LOWER(collectionCenterID) = LOWER(%s);"
+        cursor.execute(query, (ccid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def getCenterByResourceName(self,rname):
         cursor = self.conn.cursor()
         query = "select * from collectionCenter as cc, " \
@@ -447,10 +456,24 @@ class CollectionCenterDAO:
             result.append(row)
         return result
 
+    def insert(self, collection_center_name, street, town, state_region, country, zipCode):
+        cursor = self.conn.cursor()
+        query = "insert into collectionCenter(collection_center_name, street, town, state_region, country, zipCode) values (%s, %s, %s, %s, %s, %s) returning collectionCenterID;"
+        cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode))
+        collectionCenterID = cursor.fetchone()[0]
+        self.conn.commit()
+        return collectionCenterID
 
+    def delete(self, ccid):
+        cursor = self.conn.cursor()
+        query = "delete from collectionCenter where collectionCenterID = %s;"
+        cursor.execute(query, (ccid,))
+        self.conn.commit()
+        return ccid
 
-
-
-
-
-
+    def update(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
+        cursor = self.conn.cursor()
+        query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
+        cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
+        self.conn.commit()
+        return collectionCenterID

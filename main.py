@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from handler.resources import ResourceHandler
 from handler.users import UsersHandler
+from handler.collectionCenter import CollectionCenterHandler
 import psycopg2
 
 app = Flask(__name__)

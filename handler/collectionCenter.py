@@ -14,6 +14,16 @@ class CollectionCenterHandler:
         result['zipcode'] = row[6]  # collection center name
         return result # return result
 
+    def build_collectioncenter_attributes(self, ccid, ccname, street, town, state, country, zipcode):
+        result = {}
+        result['ccname'] = ccname
+        result['street'] = street
+        result['town'] = town
+        result['state'] = state
+        result['country'] = country
+        result['zipcode'] = zipcode
+        return result
+
     def build_resources_dict(self, row):
         result = {}
         result['resourceid'] = row[0]  # resource id
@@ -267,3 +277,57 @@ class CollectionCenterHandler:
         else:
             location = self.build_collectionCenter_dict(row)
             return jsonify(Location = location)
+
+    def insertCollectionCenter(self, form):
+        if form and len(form) == 6:
+            ccname = form['ccname']
+            street = form['street']
+            town = form['town']
+            state = form['state']
+            country = form['country']
+            zipcode = form['zipcode']
+            if ccname and street and town and state and country and zipcode:
+                dao = CollectionCenterDAO()
+                ccid = dao.insert(ccname, street, town, state, country, zipcode)
+                result = {}
+                result['ccid'] = ccid
+                result['street'] = street
+                result['town'] = town
+                result['state'] = state
+                result['country'] = country
+                result['ccname'] = ccname
+                result['zipcode'] = zipcode
+                return jsonify(Supplier=result), 201
+            else:
+                return jsonify(Error="Malformed post request")
+        else:
+            return jsonify(Error="Malformed post request")
+
+    def deleteCollectionCenter(selfself, ccid):
+        dao = CollectionCenterDAO()
+        if not dao.getCenterByID(ccid):
+            return jsonify(Error = "Part not found."), 404
+        else:
+            dao.delete(ccid)
+            return jsonify(DeleteStatus = "OK"), 200
+
+    def updateCollectionCenter(self, ccid, form):
+        dao = CollectionCenterDAO()
+        if not dao.getCenterByID(ccid):
+            return jsonify(Error="Part not found."), 404
+        else:
+            if len(form) != 6:
+                return jsonify(Error="Malformed update request"), 400
+            else:
+                ccname = form['ccname']
+                street = form['street']
+                town = form['town']
+                state = form['state']
+                country = form['country']
+                zipcode = form['zipcode']
+                if ccname and street and town and state and country and zipcode:
+                    dao.update(ccid, ccname, street, town, state, country, zipcode)
+                    result = self.build_collectioncenter_attributes(ccid, ccname, street, town, state, country, zipcode)
+                    return jsonify(Part=result), 200
+                else:
+                    return jsonify(Error="Unexpected attributes in update request"), 400
