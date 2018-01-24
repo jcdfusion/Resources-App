@@ -306,7 +306,7 @@ class CollectionCenterHandler:
     def deleteCollectionCenter(selfself, ccid):
         dao = CollectionCenterDAO()
         if not dao.getCenterByID(ccid):
-            return jsonify(Error = "Part not found."), 404
+            return jsonify(Error = "Center not found."), 404
         else:
             dao.delete(ccid)
             return jsonify(DeleteStatus = "OK"), 200
@@ -314,7 +314,7 @@ class CollectionCenterHandler:
     def updateCollectionCenter(self, ccid, form):
         dao = CollectionCenterDAO()
         if not dao.getCenterByID(ccid):
-            return jsonify(Error="Part not found."), 404
+            return jsonify(Error="Center not found."), 404
         else:
             if len(form) != 6:
                 return jsonify(Error="Malformed update request"), 400
@@ -328,6 +328,6 @@ class CollectionCenterHandler:
                 if ccname and street and town and state and country and zipcode:
                     dao.update(ccid, ccname, street, town, state, country, zipcode)
                     result = self.build_collectioncenter_attributes(ccid, ccname, street, town, state, country, zipcode)
-                    return jsonify(Part=result), 200
+                    return jsonify(Center=result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
