@@ -18,6 +18,15 @@ class UsersHandler:
         result['utype'] = row[1]  # user type
         return result  # return result
 
+    def build_user_attributes(self, userID, userTypeID, user_first_name, user_last_name, user_email):
+        result = {}
+        result['userID'] = userID
+        result['userTypeID'] = userTypeID
+        result['user_first_name'] = user_first_name
+        result['user_last_name'] = user_last_name
+        result['user_email'] = user_email
+        return result
+
     def build_userRequest_dict(self, row):
         result = {}
         result['rid'] = row[0]  # request id
@@ -255,3 +264,52 @@ class UsersHandler:
                 return jsonify(User=user)
         else:
             return jsonify(Error="Malformed search string."), 400
+
+    def insertUser(self, form):
+        if form and len(form) == 5:
+            userID = form['userID']
+            userTypeID = form['userTypeID']
+            user_first_name = form['user_first_name']
+            user_last_name = form['user_last_name']
+            user_email = form['user_email']
+            if userID and userTypeID and user_first_name and user_last_name and user_email:
+                dao = UsersDAO()
+                uid = dao.insert(userID, userTypeID, user_first_name, user_last_name, user_email)
+                result = {}
+                result['userID'] = uid
+                result['userTypeID'] = userTypeID
+                result['user_first_name'] = user_first_name
+                result['user_last_name'] = user_last_name
+                result['user_email'] = user_email
+                return jsonify(User=result), 201
+            else:
+                return jsonify(Error="Malformed post request")
+        else:
+            return jsonify(Error="Malformed post request")
+
+    def deleteUser(selfself, userID):
+        dao = UsersDAO()
+        if not dao.getUsersByID(userID):
+            return jsonify(Error = "User not found."), 404
+        else:
+            dao.delete(userID)
+            return jsonify(DeleteStatus = "OK"), 200
+
+    def updateUser(self, userID, form):
+        dao = UsersDAO()
+        if not dao.getUsersByID(userID):
+            return jsonify(Error="User not found."), 404
+        else:
+            if len(form) != 6:
+                return jsonify(Error="Malformed update request"), 400
+            else:
+                userTypeID = form['userTypeID']
+                user_first_name = form['user_first_name']
+                user_last_name = form['user_last_name']
+                user_email = form['user_email']
+                if userTypeID and user_first_name and user_last_name and user_email:
+                    dao.update(userID, userTypeID, user_first_name, user_last_name, user_email)
+                    result = self.build_users_attributes(userID, userTypeID, user_first_name, user_last_name, user_email)
+                    return jsonify(Center=result), 200
+                else:
+                    return jsonify(Error="Unexpected attributes in update request"), 400

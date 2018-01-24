@@ -16,6 +16,7 @@ class CollectionCenterHandler:
 
     def build_collectioncenter_attributes(self, ccid, ccname, street, town, state, country, zipcode):
         result = {}
+        result['ccid'] = ccid
         result['ccname'] = ccname
         result['street'] = street
         result['town'] = town

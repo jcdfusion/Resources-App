@@ -116,3 +116,25 @@ class UsersDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def insert(self, userID, userTypeID, user_first_name, user_last_name, user_email):
+        cursor = self.conn.cursor()
+        query = "insert into users(userID, userTypeID, user_first_name, user_last_name, user_email) values (%s, %s, %s, %s, %s) returning collectionCenterID;"
+        cursor.execute(query, (userID, userTypeID, user_first_name, user_last_name, user_email))
+        userID = cursor.fetchone()[0]
+        self.conn.commit()
+        return userID
+
+    def delete(self, userID):
+        cursor = self.conn.cursor()
+        query = "delete from users where userID = %s;"
+        cursor.execute(query, (userID,))
+        self.conn.commit()
+        return userID
+
+    def update(self, userID, userTypeID, user_first_name, user_last_name, user_email):
+        cursor = self.conn.cursor()
+        query = "update users set userTypeID = %s,user_first_name = %s, user_last_name = %s, user_email = %s where userID = %s;"
+        cursor.execute(query, (userTypeID, user_first_name, user_last_name, user_email, userID,))
+        self.conn.commit()
+        return userID
