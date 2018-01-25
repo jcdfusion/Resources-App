@@ -74,12 +74,15 @@ def getAllCollectionCenter():
 
 #======= User Routing ========#
 
-@app.route('/ResourceApp/users')
+@app.route('/ResourceApp/users', methods=['GET', 'POST'])
 def getUsers():
-    if not request.args:
-        return UsersHandler().getAllUsers()
+    if request.method == 'POST':
+        return UsersHandler().insertUser(request.form)
     else:
-        return UsersHandler().searchUsers(request.args)
+        if not request.args:
+            return UsersHandler().getAllUsers()
+        else:
+            return UsersHandler().searchUsers(request.args)
 
 @app.route('/ResourceApp/users/requests')
 def getUserRequest():

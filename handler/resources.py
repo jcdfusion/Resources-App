@@ -1,5 +1,6 @@
 from flask import jsonify
 from dao.resources import ResourcesDAO
+from dao.collectionCenter import CollectionCenterDAO
 
 
 class ResourceHandler:
@@ -92,3 +93,103 @@ class ResourceHandler:
             result = self.build_resources_dict(row)
             result_list.append(result)
         return jsonify(Resource=result_list)
+
+    def insertResource(self, form):
+        if len(form) < 5:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            collectionCenterID = form['collectionCenterID']
+            resourceType = form['resourceType']
+            buy_free = form['buy_free']
+            market_price = form['market_price']
+            resQty = form['qty']
+            dao = ResourcesDAO()
+            result = None
+            daoCenter = CollectionCenterDAO()
+            if not daoCenter.getCenterByID(collectionCenterID):
+                return jsonify(Error="Center not found."), 404
+            resID = dao.insertResource(collectionCenterID, resourceType, buy_free, market_price, resQty)
+            if resourceType == 'water':
+                waterType = form['waterType']
+                waterBrand = form['waterBrand']
+                qtyMeasure = form['qtyMeasure']
+                if waterType and waterBrand and qtyMeasure:
+                    rid = dao.insertWater(resID, waterType, resID, waterBrand, qtyMeasure)
+            elif resourceType == 'food':
+                foodTypeID = form['foodTypeID']
+                foodName = form['foodName']
+                qtyWeight = form['qtyWeight']
+                if foodTypeID and foodName and qtyWeight:
+                    rid = dao.insertFood(resID, foodTypeID, foodName, qtyWeight)
+            elif resourceType == 'ice':
+                iceBrand = form['iceBrand']
+                qtyWeight = form['qtyWeight']
+                if iceBrand and qtyWeight:
+                    rid = dao.insertIce(resID, iceBrand, qtyWeight)
+            elif resourceType == 'clothing':
+                clothingType = form['clothingType']
+                clothing_size = form['clothing_size']
+                if clothingType and clothing_size:
+                    rid = dao.insertClothing(resID, clothingType, clothing_size)
+            elif resourceType == 'gas':
+                gasTypeID = form['gasTypeID']
+                gasBrand = form['gasBrand']
+                gasOctanage = form['gasOctanage']
+                qty = form['qty']
+                if gasTypeID and gasBrand and gasOctanage and qty:
+                    rid = dao.insertGas(resID, gasTypeID, gasBrand, gasOctanage, qty)
+            elif resourceType == 'medicalDevices':
+                medicalDeviceType = form['medicalDeviceType']
+                medDevName = form['medDevName']
+                medDevManufacturer = form['medDevManufacturer']
+                toTreat = form['toTreat']
+                qty = form['qty']
+                if medicalDeviceType and medDevName and medDevManufacturer and toTreat and qty:
+                    rid = dao.insertMedical(resID, medicalDeviceType, medDevName, medDevManufacturer, toTreat, qty)
+            elif resourceType == 'heavyEquipment':
+                heavyEquipmentType = form['heavyEquipmentType']
+                heavyEquipmentBrand = form['heavyEquipmentBrand']
+                if heavyEquipmentType and heavyEquipmentBrand:
+                    rid = dao.insertHeavy(resID, heavyEquipmentType, heavyEquipmentBrand)
+            elif resourceType == 'tools':
+                toolType = form['toolType']
+                toolBrand = form['toolBrand']
+                qty = form['qty']
+                if toolType and toolBrand and qty:
+                    rid = dao.insertTools(resID, toolType, toolBrand, qty)
+            elif resourceType == 'powerGenerator':
+                powerGeneratorType = form['powerGeneratorType']
+                powerGeneratorBrand = form['powerGeneratorBrand']
+                watts = form['watts']
+                qty = form['qty']
+                if powerGeneratorType and powerGeneratorBrand and watts and qty:
+                    rid = dao.insertPower(resID, powerGeneratorType, powerGeneratorBrand, watts, qty)
+            elif resourceType == 'batteries':
+                batteryType = form['batteryType']
+                batteryBrand = form['batteryBrand']
+                batteryVoltage = form['batteryVoltage']
+                qty = form['qty']
+                if batteryType and batteryBrand and batteryVoltage and qty:
+                    rid = dao.insertBatteries(resID, batteryType, batteryBrand, batteryVoltage, qty)
+            elif resourceType == 'medicicne':
+                medicineType = form['medicineType']
+                medicine_form = form['medicine_form']
+                medicine_name = form['medicine_name']
+                medicine_exp_date = form['medicine_exp_date']
+                medicine_manufacturer = form['medicine_manufacturer']
+                v = form['v']
+                if medicineType and medicine_form and medicine_name and medicine_exp_date and medicine_manufacturer and v:
+                    rid = dao.insertMedicine(resID, medicineType, medicine_form, medicine_name, medicine_exp_date, medicine_manufacturer, v)
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400
+            result = self.build_resourcesInfo_dict(resID, collectionCenterID, resourceType, buy_free, market_price, resQty)
+            return jsonify(Resource=result), 201
+
+    def deleteResource(selfself, resID):
+        dao = ResourcesDAO()
+        type = dao.getResourceType(resID)
+        if not type:
+            return jsonify(Error = "Resource not found."), 404
+        else:
+            dao.delete(resID, type)
+            return jsonify(DeleteStatus = "OK"), 200
