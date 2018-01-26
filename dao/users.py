@@ -138,3 +138,30 @@ class UsersDAO:
         cursor.execute(query, (userTypeID, user_first_name, user_last_name, user_email, userID,))
         self.conn.commit()
         return userID
+
+    def insertPassword(self, userID, user_password):
+        cursor = self.conn.cursor()
+        query = "insert into userpassword(userID, user_value) values (%s, %s) returning userID;"
+        cursor.execute(query, (userID, user_password))
+        userID = cursor.fetchone()[0]
+        self.conn.commit()
+        return userID
+
+    def getUserByPassword(self, username, password):
+        cursor = self.conn.cursor()
+        query = "select user_value from userpassword where userid = %s and user_value = %s;"
+        cursor.execute(query, (username, password))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getInfoFromUser(self, username):
+        cursor = self.conn.cursor()
+        query = "select * from(select resourceid,userid from userrequest where userid=%s) as ur" \
+                " natural inner join collectioncenter as cc natural inner join resources as r"
+        cursor.execute(query, (username,))
+        result = []
+        for row in cursor:
+            result.append(row)
+            return result
