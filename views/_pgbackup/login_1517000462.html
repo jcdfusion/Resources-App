@@ -1,0 +1,74 @@
+<!DOCTYPE html> 
+<html lang="en" dir="ltr"> 
+    <head> 
+        <title>Basic 89</title>         
+        <meta charset="iso-8859-1"> 
+        <link rel="stylesheet" href="styles/layout.css" type="text/css"> 
+        <!--[if lt IE 9]><script src="scripts/html5shiv.js"></script><![endif]-->         
+    </head>     
+    <body> 
+        <div class="wrapper row1"> 
+            <header id="header" class="clear"> 
+                <div id="hgroup"> 
+                    <h1><a href="#">Disaster Resource App</a></h1> 
+                    <h2>Locating the resources you need!</h2> 
+                </div>                 
+                <nav> 
+                    <ul> 
+                        <li>
+                            <a href="/login.html">Login</a>
+                        </li>                         
+                        <li class="last">
+                            <a href="/resgister.html">Register</a>
+                        </li>                         
+                    </ul>                     
+                </nav>                 
+            </header>             
+        </div>         
+        <!-- content -->         
+        <div class="wrapper row2">
+            <div id="container" class="clear">
+                <!-- Slider -->                 
+                <section id="slider">
+                    <form action="http://localhost:5000/ResourcesApp/users" method="post">
+                        Username: 
+                        <input type="text" name="userID">
+                        <br>
+                        <br>
+                        First name: 
+                        <input type="text" name="user_first_name">
+                        <br>
+                        <br>
+                        Last name: 
+                        <input type="text" name="user_last_name">
+                        <br>
+                        <br>
+                        Email: 
+                        <input type="text" name="user_email">
+                        <br>
+                        <br>
+                        Password: 
+                        <input type="password" name="user_password">
+                        <br>
+                        <br>
+                        Account Type: 
+                        <input type="text" name="userTypeID">
+                        <br>
+                        <br>
+                        <input type="submit" value="Submit">
+                    </form>                     
+                </section>                 
+                <!-- / content body -->
+            </div>
+        </div>         
+        <!-- Footer -->         
+        <div class="wrapper row3"> 
+            <footer id="footer" class="clear"> 
+                <p class="fl_left">ICOM5016:&nbsp; Database&nbsp;</p> 
+                <p class="fl_right">Luis Pérez Pagán</p>
+                <p class="fl_right">Jaime A. Cortés |&nbsp;</p>
+                <p class="fl_right"></p> 
+            </footer>             
+        </div>         
+    </body>     
+</html>
