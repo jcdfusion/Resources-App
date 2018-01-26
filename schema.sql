@@ -34,7 +34,7 @@ create table clothing(clothingID serial primary key, resourceID integer referenc
 --
 --
 --Gas resource table
-create table gas(gasID serial primary key, resourceID integer references resources(resourceID), gasTypeID varchar(20), gasBrand varchar(20), gasOctanage real, qty real);
+create table fuel(gasID serial primary key, resourceID integer references resources(resourceID), gasTypeID varchar(20), gasBrand varchar(20), gasOctanage real, qty real);
 
 --
 --Medical devices table
