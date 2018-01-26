@@ -10,7 +10,7 @@ app = Flask(__name__)
 def greeting():
     return '<h1>Disaster Resources Site</h1>'
 
-@app.route('/ResourcesApp/resources',methods=['GET','POST'])
+@app.route('/ResourcesApp/resources/',methods=['GET','POST'])
 def getAllResources():
     if(request.method == 'POST'):
           return ResourceHandler.insertResource(request.form)
