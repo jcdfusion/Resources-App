@@ -26,6 +26,22 @@ class UsersHandler:
         result['user_last_name'] = user_last_name
         result['user_email'] = user_email
         return result
+    def build_userinfo_dict(self,row):
+        result={}
+        result['rid']=row[0]
+        result['ccid']=row[1]
+        result['uid']=row[2]
+        result['street'] = row[3]
+        result['town'] = row[4]
+        result['state'] = row[5]
+        result['country']=row[6]
+        result['ccnane'] = row[7]
+        result['zipcode']=row[8]
+        result['rname']=row[9]
+        result['buy_free']=row[10]
+        result['marketPrice']=row[11]
+        result['qtyfromsupplier']=row[12]
+        return result
 
     def build_userRequest_dict(self, row):
         result = {}
@@ -266,15 +282,17 @@ class UsersHandler:
             return jsonify(Error="Malformed search string."), 400
 
     def insertUser(self, form):
-        if form and len(form) == 5:
+        if form and len(form) == 6:
             userID = form['userID']
             userTypeID = form['userTypeID']
             user_first_name = form['user_first_name']
             user_last_name = form['user_last_name']
             user_email = form['user_email']
-            if userID and userTypeID and user_first_name and user_last_name and user_email:
+            user_password = form['user_password']
+            if userID and userTypeID and user_first_name and user_last_name and user_email and user_password:
                 dao = UsersDAO()
                 uid = dao.insert(userID, userTypeID, user_first_name, user_last_name, user_email)
+                upw = dao.insertPassword(userID, user_password)
                 result = {}
                 result['userID'] = uid
                 result['userTypeID'] = userTypeID
@@ -313,3 +331,17 @@ class UsersHandler:
                     return jsonify(Center=result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
+
+    def userLogin(self, args):
+        if (len(args)<2):
+            return jsonify(Error="Include both username and password"),400
+        else:
+            dao = UsersDAO()
+            username = args['username']
+            password = args['password']
+            user_list =[]
+            user_list = dao.getUserByPassword(username, password)
+            if not user_list:
+                return jsonify(Error="Username and password missmatch!")
+            else:
+                return self.getUserRequestsByUserID(username)
