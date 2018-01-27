@@ -1211,3 +1211,15 @@ class CollectionCenterDAO:
         cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
         self.conn.commit()
         return collectionCenterID
+    
+    def getAnnouncementResources(self):
+        cursor = self.conn.cursor()
+        query = "select resourcetype,qty,collection_center_name,town,state_region,country " \
+                "from resources as r natural inner join collectioncenter as cc " \
+                "where r.qty>0 " \
+                "order by resourcetype"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
