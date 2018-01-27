@@ -42,6 +42,16 @@ class ResourceHandler:
         result['buy_free']=row[7]
         return result
 
+        def build_resourcesInf_dict(self, row):
+        result = {}
+        result['rid'] = row[0]  # resource id
+        result['rname'] = row[1]  # resource id
+        result['ccid'] = row[2]  # resource name id
+        result['rtype'] = row[3]  # resource type
+        result['buy_free'] = row[4]  # resource brand
+        result['marketPrice'] = row[5]  # resource price
+        result['qty']=row[6]
+        return result
 
     def getAllResources(self):
         dao = ResourcesDAO()
