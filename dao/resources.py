@@ -8,7 +8,18 @@ class ResourcesDAO:
 
     def getAllResources(self):
         cursor = self.conn.cursor()
-        query = "select * from resources;"
+        query = "select * from (select gastypeid as name,resourceid from fuel " \
+                "UNION select foodtype as name,resourceid from food " \
+                "UNION select watertype as name,resourceid from water " \
+                "UNION select icebrand as name,resourceid from ice " \
+                "UNION select clothingtype as name,resourceid from clothing " \
+                "UNION select medicaldevicetype as name,resourceid from medicaldevices " \
+                "UNION select heavyequipmenttype as name,resourceid from heavyequipment " \
+                "UNION select tooltype as name,resourceid from tools " \
+                "UNION select powergeneratortype as name,resourceid from powergenerator " \
+                "UNION select batterytype as name,resourceid from batteries " \
+                "UNION select medicinetype as name,resourceid from medicine) as product " \
+                "natural inner join resources as r order by resourcetype"
         cursor.execute(query)
         result = []
         for row in cursor:
