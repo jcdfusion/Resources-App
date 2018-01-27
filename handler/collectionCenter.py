@@ -296,10 +296,20 @@ class CollectionCenterHandler:
         result['ccname'] = row[18]
         result['zipcode'] = row[19]
         return result
+    
+    def build_announcement_dict(self,row):
+        result={}
+        result['rtype'] = row[0]
+        result['qty']=row[1]
+        result['ccname']=row[2]
+        result['town']=row[3]
+        result['state']=row[4]
+        result['country']=row[5]
+        return result
 
 
 
-       def getAllCenters(self):
+    def getAllCenters(self):
         dao = CollectionCenterDAO()
         location_list = dao.getAllCenters()
         result_list = []
@@ -872,6 +882,14 @@ class CollectionCenterHandler:
                 result = self.build_ccByresourceType_dict(row)
                 result_list.append(result)
             return jsonify(CollectionCenter=result_list)
+        
+        elif(len(args)==1) and announcement:
+            collectioncenter_list = dao.getAnnouncementResources()
+            result_list=[]
+            for row in collectioncenter_list:
+                result = self.build_announcement_dict(row)
+                result_list.append(result)
+            return jsonify(Annoucemnet=result_list)
 
         else:
             return jsonify(Error="Malformed query string"), 400
