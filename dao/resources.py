@@ -8,6 +8,15 @@ class ResourcesDAO:
 
     def getAllResources(self):
         cursor = self.conn.cursor()
+        query = "select resourcetype from resources order by resourcetype"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getAllResourcesInfo(self):
+        cursor = self.conn.cursor()
         query = "select * from (select gastypeid as name,resourceid from fuel " \
                 "UNION select foodtype as name,resourceid from food " \
                 "UNION select watertype as name,resourceid from water " \
@@ -28,7 +37,7 @@ class ResourcesDAO:
 
     def getResourceById(self, rid):
         cursor = self.conn.cursor()
-        query = "select * from resources where resourceid = %s;"
+        query = "select resourcetype from resources where resourceid = %s;"
         cursor.execute(query, (rid,))
         result = []
         for row in cursor:
@@ -203,10 +212,10 @@ class ResourcesDAO:
         self.conn.commit()
         return iceID
 
-    def insertClothing(self, resID, clothingType, clothing_size):
+    def insertClothing(self, resID, clothingType, clothing_size, resQty):
         cursor = self.conn.cursor()
-        query = "insert into clothing(resID, clothingType, clothing_size) values (%s, %s, %s) returning clothingID;"
-        cursor.execute(query, (resID, clothingType, clothing_size))
+        query = "insert into clothing(resID, clothingType, clothing_size, qty) values (%s, %s, %s, %s) returning clothingID;"
+        cursor.execute(query, (resID, clothingType, clothing_size, resQty))
         clothingID = cursor.fetchone()[0]
         self.conn.commit()
         return clothingID
@@ -253,7 +262,7 @@ class ResourcesDAO:
 
     def insertBatteries(self, resID, batteryType, batteryBrand, batteryVoltage, qty):
         cursor = self.conn.cursor()
-        query = "insert into batteries(resID, batteryType, batteryBrand, batteryVoltage, qty) values (%s, %s, %s, %s, %s) returning batteriesID;"
+        query = "insert into batteries(resourceID, batteryType, batteryBrand, batteryVoltage, qty) values (%s, %s, %s, %s, %s) returning batteriesID;"
         cursor.execute(query, (resID, batteryType, batteryBrand, batteryVoltage, qty))
         batteriesID = cursor.fetchone()[0]
         self.conn.commit()
@@ -267,10 +276,10 @@ class ResourcesDAO:
         self.conn.commit()
         return medicineID
 
-    def insertResource(self, resID, collectionCenterID, resourceType, buy_free, market_price, qty):
+    def insertResource(self, collectionCenterID, resourceType, buy_free, market_price, qty):
         cursor = self.conn.cursor()
-        query = "insert into resources(resID, collectionCenterID, resourceType, buy_free, market_price, qty) values (%s, %s, %s, %s, %s, %s) return resourceID"
-        cursor.execute(query, (resID, collectionCenterID, resourceType, buy_free, market_price, qty))
+        query = "insert into resources(collectionCenterID, resourceType, buy_free, market_price, qty) values (%s, %s, %s, %s, %s) returning resourceID"
+        cursor.execute(query, (collectionCenterID, resourceType, buy_free, market_price, qty))
         resourceID = cursor.fetchone()[0]
         self.conn.commit()
         return resourceID

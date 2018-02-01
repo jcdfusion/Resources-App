@@ -5,29 +5,33 @@ from dao.collectionCenter import CollectionCenterDAO
 
 class ResourceHandler:
 
-    def build_resources_dict(self,row):
-        result={}
-        result['resourceid']=row[0] #resource id
-        result['ccid'] = row[1] #collection center id
-        result['rname'] = row[2] #resource name id
-        result['buy_free'] = row[3] #boolean whether the resource is free or not
-        result['rprice'] = row[4] #resource price
-        result['qty'] = row[5] #resource qty
+    def build_resources_dict(self, row):
+        result = {}
+        result['resourceid'] = row[0]  # resource id
+        result['ccid'] = row[1]  # collection center id
+        result['rname'] = row[2]  # resource name id
+        result['buy_free'] = row[3]  # boolean whether the resource is free or not
+        result['rprice'] = row[4]  # resource price
+        result['qty'] = row[5]  # resource qty
+        return result
+
+    def build_resource_dict(self, row):
+        result = {}
+        result['rname'] = row[0]  # resource type id
         return result
 
     def build_resourcetype_dict(self, row):
         result = {}
-        result['rtid'] = row[0] #resource type id
-        result['rname'] = row[1] #resource name
+        result['rtid'] = row[0]  # resource type id
+        result['rname'] = row[1]  # resource name
         return result
 
-
-    def build_collectionCenter_dict(self,row):
-        result={}
-        result['ccid']=row[0] #collection center id
-        result['zipCode']=row[1] #zipCode
-        result['street']=row[2] #street where collection center is located
-        result['ccname']=row[3] #collection center name
+    def build_collectionCenter_dict(self, row):
+        result = {}
+        result['ccid'] = row[0]  # collection center id
+        result['zipCode'] = row[1]  # zipCode
+        result['street'] = row[2]  # street where collection center is located
+        result['ccname'] = row[3]  # collection center name
         return result
 
     def build_resourcesInfo_dict(self, row):
@@ -39,10 +43,10 @@ class ResourceHandler:
         result['rbrand'] = row[4]  # resource brand
         result['rprice'] = row[5]  # resource price
         result['qty'] = row[6]
-        result['buy_free']=row[7]
+        result['buy_free'] = row[7]
         return result
 
-        def build_resourcesInf_dict(self, row):
+    def build_resourcesInf_dict(self, row):
         result = {}
         result['rid'] = row[0]  # resource id
         result['rname'] = row[1]  # resource id
@@ -50,7 +54,7 @@ class ResourceHandler:
         result['rtype'] = row[3]  # resource type
         result['buy_free'] = row[4]  # resource brand
         result['marketPrice'] = row[5]  # resource price
-        result['qty']=row[6]
+        result['qty'] = row[6]
         return result
 
     def getAllResources(self):
@@ -58,9 +62,27 @@ class ResourceHandler:
         resources_list = dao.getAllResources()
         result_list = []
         for row in resources_list:
-            result = self.build_resources_dict(row)
+            result = self.build_resource_dict(row)
             result_list.append(result)
         return jsonify(Resources=result_list)
+
+    def getAllResourcesInfo(self):
+        dao = ResourcesDAO()
+        resources_list = dao.getAllResourcesInfo()
+        result_list = []
+        for row in resources_list:
+            result = self.build_resourcesInf_dict(row)
+            result_list.append(result)
+        return jsonify(Resources=result_list)
+
+    def getResourceById(self, resourceID):
+        dao = ResourcesDAO()
+        resources_list = dao.getResourceById(resourceID)
+        result_list = []
+        for row in result_list:
+            result = self.build_resources_dict(row)
+            result_list.append(result)
+        return jsonify(Resource=result_list)
 
     def searchResources(self, args):
         rid = args.get('rid')
@@ -71,8 +93,14 @@ class ResourceHandler:
 
         if (len(args) == 1) and rid:
             resources_list = dao.getResourceById(rid)
+            result_list = []
+            for row in resources_list:
+                result = self.build_resources_dict(row)
+                result_list.append(result)
+            return jsonify(Resource=result_list)
 
-        elif(len(args)==1) and rname:
+
+        elif (len(args) == 1) and rname:
             resources_list = dao.getResourceInfoByName(rname)
             result_list = []
             for row in resources_list:
@@ -80,7 +108,7 @@ class ResourceHandler:
                 result_list.append(result)
             return jsonify(Resource=result_list)
 
-        elif(len(args)==1) and rtype:
+        elif (len(args) == 1) and rtype:
             resources_list = dao.getResourceInfoByType(rtype)
             result_list = []
             for row in resources_list:
@@ -88,7 +116,7 @@ class ResourceHandler:
                 result_list.append(result)
             return jsonify(Resource=result_list)
 
-        elif(len(args)==1) and buy_free:
+        elif (len(args) == 1) and buy_free:
             resources_list = dao.getResourceInfoByBF(buy_free)
             result_list = []
             for row in resources_list:
@@ -98,14 +126,16 @@ class ResourceHandler:
 
         else:
             return jsonify(Error="Malformed query string"), 400
-        result_list=[]
+        result_list = []
         for row in resources_list:
             result = self.build_resources_dict(row)
             result_list.append(result)
         return jsonify(Resource=result_list)
 
     def insertResource(self, form):
-        if len(form) < 5:
+        print("insertResource method")
+        print(form)
+        if form and len(form) < 5:
             return jsonify(Error="Malformed post request"), 400
         else:
             collectionCenterID = form['collectionCenterID']
@@ -123,39 +153,39 @@ class ResourceHandler:
                 waterType = form['waterType']
                 waterBrand = form['waterBrand']
                 qtyMeasure = form['qtyMeasure']
-                if waterType and waterBrand and qtyMeasure:
-                    rid = dao.insertWater(resID, waterType, resID, waterBrand, qtyMeasure)
+                if waterType and waterBrand and resQty:
+                    rid = dao.insertWater(resID, waterType, waterBrand, resQty)
             elif resourceType == 'food':
                 foodTypeID = form['foodTypeID']
                 foodName = form['foodName']
                 qtyWeight = form['qtyWeight']
-                if foodTypeID and foodName and qtyWeight:
-                    rid = dao.insertFood(resID, foodTypeID, foodName, qtyWeight)
+                if foodTypeID and foodName and resQty:
+                    rid = dao.insertFood(resID, foodTypeID, foodName, resQty)
             elif resourceType == 'ice':
                 iceBrand = form['iceBrand']
                 qtyWeight = form['qtyWeight']
                 if iceBrand and qtyWeight:
-                    rid = dao.insertIce(resID, iceBrand, qtyWeight)
+                    rid = dao.insertIce(resID, iceBrand, resQty)
             elif resourceType == 'clothing':
                 clothingType = form['clothingType']
                 clothing_size = form['clothing_size']
-                if clothingType and clothing_size:
-                    rid = dao.insertClothing(resID, clothingType, clothing_size)
+                if clothingType and clothing_size and resQty:
+                    rid = dao.insertClothing(resID, clothingType, clothing_size, resQty)
             elif resourceType == 'gas':
                 gasTypeID = form['gasTypeID']
                 gasBrand = form['gasBrand']
                 gasOctanage = form['gasOctanage']
                 qty = form['qty']
-                if gasTypeID and gasBrand and gasOctanage and qty:
-                    rid = dao.insertGas(resID, gasTypeID, gasBrand, gasOctanage, qty)
+                if gasTypeID and gasBrand and gasOctanage and resQty:
+                    rid = dao.insertGas(resID, gasTypeID, gasBrand, gasOctanage, resQty)
             elif resourceType == 'medicalDevices':
                 medicalDeviceType = form['medicalDeviceType']
                 medDevName = form['medDevName']
                 medDevManufacturer = form['medDevManufacturer']
                 toTreat = form['toTreat']
                 qty = form['qty']
-                if medicalDeviceType and medDevName and medDevManufacturer and toTreat and qty:
-                    rid = dao.insertMedical(resID, medicalDeviceType, medDevName, medDevManufacturer, toTreat, qty)
+                if medicalDeviceType and medDevName and medDevManufacturer and toTreat and resQty:
+                    rid = dao.insertMedical(resID, medicalDeviceType, medDevName, medDevManufacturer, toTreat, resQty)
             elif resourceType == 'heavyEquipment':
                 heavyEquipmentType = form['heavyEquipmentType']
                 heavyEquipmentBrand = form['heavyEquipmentBrand']
@@ -165,22 +195,22 @@ class ResourceHandler:
                 toolType = form['toolType']
                 toolBrand = form['toolBrand']
                 qty = form['qty']
-                if toolType and toolBrand and qty:
-                    rid = dao.insertTools(resID, toolType, toolBrand, qty)
+                if toolType and toolBrand and resQty:
+                    rid = dao.insertTools(resID, toolType, toolBrand, resQty)
             elif resourceType == 'powerGenerator':
                 powerGeneratorType = form['powerGeneratorType']
                 powerGeneratorBrand = form['powerGeneratorBrand']
                 watts = form['watts']
                 qty = form['qty']
-                if powerGeneratorType and powerGeneratorBrand and watts and qty:
-                    rid = dao.insertPower(resID, powerGeneratorType, powerGeneratorBrand, watts, qty)
+                if powerGeneratorType and powerGeneratorBrand and watts and resQty:
+                    rid = dao.insertPower(resID, powerGeneratorType, powerGeneratorBrand, watts, resQty)
             elif resourceType == 'batteries':
                 batteryType = form['batteryType']
                 batteryBrand = form['batteryBrand']
                 batteryVoltage = form['batteryVoltage']
                 qty = form['qty']
-                if batteryType and batteryBrand and batteryVoltage and qty:
-                    rid = dao.insertBatteries(resID, batteryType, batteryBrand, batteryVoltage, qty)
+                if batteryType and batteryBrand and batteryVoltage and resQty:
+                    rid = dao.insertBatteries(resID, batteryType, batteryBrand, batteryVoltage, resQty)
             elif resourceType == 'medicicne':
                 medicineType = form['medicineType']
                 medicine_form = form['medicine_form']
@@ -188,8 +218,8 @@ class ResourceHandler:
                 medicine_exp_date = form['medicine_exp_date']
                 medicine_manufacturer = form['medicine_manufacturer']
                 v = form['v']
-                if medicineType and medicine_form and medicine_name and medicine_exp_date and medicine_manufacturer and v:
-                    rid = dao.insertMedicine(resID, medicineType, medicine_form, medicine_name, medicine_exp_date, medicine_manufacturer, v)
+                if medicineType and medicine_form and medicine_name and medicine_exp_date and medicine_manufacturer and resQty:
+                    rid = dao.insertMedicine(resID, medicineType, medicine_form, medicine_name, medicine_exp_date, medicine_manufacturer, resQty)
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
             result = self.build_resourcesInfo_dict(resID, collectionCenterID, resourceType, buy_free, market_price, resQty)

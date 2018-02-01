@@ -70,25 +70,25 @@ class CollectionCenterDAO:
 
     def getCenterByID(self, ccid):
         cursor = self.conn.cursor()
-        query = "select * from collectionCenter where LOWER(collectionCenterID) = LOWER(%s);"
+        query = "select * from collectionCenter where collectionCenterID = %s;"
         cursor.execute(query, (ccid,))
         result = []
         for row in cursor:
             result.append(row)
         return result
 
-    def getCenterByResourceName(self,rname):
+    def getCenterByResourceName(self, rname):
         cursor = self.conn.cursor()
         query = "select * from collectionCenter as cc, " \
                 "resources as r where cc.collectioncenterid = r.collectioncenterid" \
                 " and LOWER(r.resourcetype) = LOWER(%s);"
-        cursor.execute(query,(rname,))
+        cursor.execute(query, (rname,))
         result = []
         for row in cursor:
             result.append(row)
         return result
 
-    def getCenterByResourceType(self,rtype):
+    def getCenterByResourceType(self, rtype):
         cursor = self.conn.cursor()
         query = "select * from(select gasid as id, " \
                 "resourceid, gastypeid as name, gasbrand as brand " \
@@ -115,7 +115,7 @@ class CollectionCenterDAO:
                 "from medicine) as products natural inner join resources as r natural inner join collectioncenter as cc " \
                 "where LOWER(name)=LOWER(%s);"
 
-        cursor.execute(query,(rtype,))
+        cursor.execute(query, (rtype,))
         result = []
         for row in cursor:
             result.append(row)
@@ -149,7 +149,7 @@ class CollectionCenterDAO:
                 "where LOWER(name)=LOWER(%s)" \
                 "and LOWER(cc.town)=LOWER(%s);"
 
-        cursor.execute(query, (rtype,town))
+        cursor.execute(query, (rtype, town))
         result = []
         for row in cursor:
             result.append(row)
@@ -183,7 +183,7 @@ class CollectionCenterDAO:
                 "where LOWER(name)=LOWER(%s)" \
                 "and LOWER(cc.state_region)=LOWER(%s);"
 
-        cursor.execute(query, (rtype,state))
+        cursor.execute(query, (rtype, state))
         result = []
         for row in cursor:
             result.append(row)
@@ -217,13 +217,13 @@ class CollectionCenterDAO:
                 "where LOWER(name)=LOWER(%s)" \
                 "and LOWER(cc.country)=LOWER(%s);"
 
-        cursor.execute(query, (rtype,country))
+        cursor.execute(query, (rtype, country))
         result = []
         for row in cursor:
             result.append(row)
         return result
 
-    def getCenterByResourceTypeAndCenterName(self,rtype,ccname):
+    def getCenterByResourceTypeAndCenterName(self, rtype, ccname):
         cursor = self.conn.cursor()
         query = "select * from(select gasid as id, " \
                 "resourceid, gastypeid as name, gasbrand as brand " \
@@ -288,7 +288,7 @@ class CollectionCenterDAO:
             result.append(row)
         return result
 
-    def getCenterByResourcesAvailableAndCenterName(self,ccname):
+    def getCenterByResourcesAvailableAndCenterName(self, ccname):
         cursor = self.conn.cursor()
         query = "select * from(select gasid as id, " \
                 "resourceid, gastypeid as name, gasbrand as brand " \
@@ -315,13 +315,13 @@ class CollectionCenterDAO:
                 "from medicine) as products natural inner join resources as r natural inner join collectioncenter as cc " \
                 "where r.qty>0 " \
                 "and LOWER(cc.ccname)=LOWER(%s)"
-        cursor.execute(query,(ccname,))
+        cursor.execute(query, (ccname,))
         result = []
         for row in cursor:
             result.append(row)
         return result
 
-    def getCenterByResourcesAvailableAndCountry(self,country):
+    def getCenterByResourcesAvailableAndCountry(self, country):
         cursor = self.conn.cursor()
         query = "select * from(select gasid as id, " \
                 "resourceid, gastypeid as name, gasbrand as brand " \
@@ -348,13 +348,13 @@ class CollectionCenterDAO:
                 "from medicine) as products natural inner join resources as r natural inner join collectioncenter as cc " \
                 "where r.qty>0 " \
                 "and LOWER(cc.country)=LOWER(%s)"
-        cursor.execute(query,(country,))
+        cursor.execute(query, (country,))
         result = []
         for row in cursor:
             result.append(row)
         return result
 
-    def getCenterByResourcesAvailableAndState(self,state):
+    def getCenterByResourcesAvailableAndState(self, state):
         cursor = self.conn.cursor()
         query = "select * from(select gasid as id, " \
                 "resourceid, gastypeid as name, gasbrand as brand " \
@@ -381,13 +381,13 @@ class CollectionCenterDAO:
                 "from medicine) as products natural inner join resources as r natural inner join collectioncenter as cc " \
                 "where r.qty>0 " \
                 "and LOWER(cc.state_region)=LOWER(%s)"
-        cursor.execute(query,(state,))
+        cursor.execute(query, (state,))
         result = []
         for row in cursor:
             result.append(row)
         return result
 
-    def getCenterByResourcesAvailableAndTown(self,town):
+    def getCenterByResourcesAvailableAndTown(self, town):
         cursor = self.conn.cursor()
         query = "select * from(select gasid as id, " \
                 "resourceid, gastypeid as name, gasbrand as brand " \
@@ -415,7 +415,7 @@ class CollectionCenterDAO:
                 "where r.qty>0 " \
                 "and LOWER(cc.town)=LOWER(%s)"
 
-        cursor.execute(query,(town,))
+        cursor.execute(query, (town,))
         result = []
         for row in cursor:
             result.append(row)
@@ -455,8 +455,7 @@ class CollectionCenterDAO:
         for row in cursor:
             result.append(row)
         return result
-    
-    
+
     ##=================================FUEL=========================================================================##
     def getCenterByFuelType(self, ftype):
         cursor = self.conn.cursor()
@@ -469,18 +468,18 @@ class CollectionCenterDAO:
             result.append(row)
         return result
 
-    def getCenterByFuelTypeAndTown(self,ftype,town):
+    def getCenterByFuelTypeAndTown(self, ftype, town):
         cursor = self.conn.cursor()
         query = "select * from (select gasid as id, resourceid, gastypeid as name, gasbrand as brand, gasoctanage from fuel)" \
                 " as f natural inner join resources as r natural inner join collectioncenter as cc " \
                 "where LOWER(f.name) = LOWER(%s) and LOWER(cc.town) = LOWER(%s)"
-        cursor.execute(query, (ftype,town))
+        cursor.execute(query, (ftype, town))
         result = []
         for row in cursor:
             result.append(row)
         return result
 
-    def getCenterByFuelTypeAndCountry(self,ftype,country):
+    def getCenterByFuelTypeAndCountry(self, ftype, country):
         cursor = self.conn.cursor()
         query = "select * from (select gasid as id, resourceid, gastypeid as name, gasbrand as brand, gasoctanage from fuel)" \
                 " as f natural inner join resources as r natural inner join collectioncenter as cc " \
@@ -490,7 +489,8 @@ class CollectionCenterDAO:
         for row in cursor:
             result.append(row)
         return result
-    def getCenterByFuelTypeAndState(self,ftype,state):
+
+    def getCenterByFuelTypeAndState(self, ftype, state):
         cursor = self.conn.cursor()
         query = "select * from (select gasid as id, resourceid, gastypeid as name, gasbrand as brand, gasoctanage from fuel)" \
                 " as f natural inner join resources as r natural inner join collectioncenter as cc " \
@@ -500,6 +500,7 @@ class CollectionCenterDAO:
         for row in cursor:
             result.append(row)
         return result
+
     ##===============================================================================================================##
 
     ##=================================WATER=========================================================================##
@@ -513,7 +514,7 @@ class CollectionCenterDAO:
             result.append(row)
         return result
 
-    def getCenterByWaterAndTown(self,town):
+    def getCenterByWaterAndTown(self, town):
         cursor = self.conn.cursor()
         query = "select * from(select waterid as id, resourceid, watertype as name, waterbrand as brand, qtymeasure from water) " \
                 "as w natural inner join resources as r natural inner join collectioncenter as cc " \
@@ -524,7 +525,7 @@ class CollectionCenterDAO:
             result.append(row)
         return result
 
-    def getCenterByWaterAndCountry(self,country):
+    def getCenterByWaterAndCountry(self, country):
         cursor = self.conn.cursor()
         query = "select * from(select waterid as id, resourceid, watertype as name, waterbrand as brand, qtymeasure from water) " \
                 "as w natural inner join resources as r natural inner join collectioncenter as cc " \
@@ -535,7 +536,7 @@ class CollectionCenterDAO:
             result.append(row)
         return result
 
-    def getCenterByWaterAndState(self,state):
+    def getCenterByWaterAndState(self, state):
         cursor = self.conn.cursor()
         query = "select * from(select waterid as id, resourceid, watertype as name, waterbrand as brand, qtymeasure from water) " \
                 "as w natural inner join resources as r natural inner join collectioncenter as cc " \
@@ -546,30 +547,29 @@ class CollectionCenterDAO:
             result.append(row)
         return result
 
-
     def getCenterByWaterType(self, wtype):
         cursor = self.conn.cursor()
         query = "select * from(select waterid as id, resourceid, watertype as name, waterbrand as brand, qtymeasure from water) " \
                 "as w natural inner join resources as r natural inner join collectioncenter as cc " \
                 "where LOWER(w.name)=LOWER(%s)"
-        cursor.execute(query,(wtype,))
+        cursor.execute(query, (wtype,))
         result = []
         for row in cursor:
             result.append(row)
         return result
 
-    def getCenterByWaterTypeAndTown(self,wtype,town):
+    def getCenterByWaterTypeAndTown(self, wtype, town):
         cursor = self.conn.cursor()
         query = "select * from(select waterid as id, resourceid, watertype as name, waterbrand as brand, qtymeasure from water) " \
                 "as w natural inner join resources as r natural inner join collectioncenter as cc " \
                 "where LOWER(w.name) = LOWER(%s) and LOWER(cc.town) = LOWER(%s)"
-        cursor.execute(query, (wtype,town))
+        cursor.execute(query, (wtype, town))
         result = []
         for row in cursor:
             result.append(row)
         return result
 
-    def getCenterByWaterTypeAndCountry(self,wtype,country):
+    def getCenterByWaterTypeAndCountry(self, wtype, country):
         cursor = self.conn.cursor()
         query = "select * from(select waterid as id, resourceid, watertype as name, waterbrand as brand, qtymeasure from water) " \
                 "as w natural inner join resources as r natural inner join collectioncenter as cc " \
@@ -580,7 +580,7 @@ class CollectionCenterDAO:
             result.append(row)
         return result
 
-    def getCenterByWaterTypeAndState(self,wtype,state):
+    def getCenterByWaterTypeAndState(self, wtype, state):
         cursor = self.conn.cursor()
         query = "select * from(select waterid as id, resourceid, watertype as name, waterbrand as brand, qtymeasure from water) " \
                 "as w natural inner join resources as r natural inner join collectioncenter as cc " \
@@ -590,9 +590,10 @@ class CollectionCenterDAO:
         for row in cursor:
             result.append(row)
         return result
+
     ##===============================================================================================================##
 
-    #FOOD
+    # FOOD
 
     def getCenterByFood(self):
         cursor = self.conn.cursor()
@@ -609,7 +610,7 @@ class CollectionCenterDAO:
         query = "select * from (select foodid as id, resourceid, foodtype as name, foodName as brand, qtyweight  " \
                 "from food ) as f natural inner join resources as r natural inner join collectioncenter as cc " \
                 "where LOWER(cc.state_region) = LOWER(%s) "
-        cursor.execute(query,(state,))
+        cursor.execute(query, (state,))
         result = []
         for row in cursor:
             result.append(row)
@@ -653,7 +654,7 @@ class CollectionCenterDAO:
         query = "select * from (select foodid as id, resourceid, foodtype as name, foodName as brand, qtyweight  " \
                 "from food ) as f natural inner join resources as r natural inner join collectioncenter as cc " \
                 "where LOWER(f.name) = LOWER(%s) and LOWER(cc.country)=LOWER(%s)"
-        cursor.execute(query, (rtype,country))
+        cursor.execute(query, (rtype, country))
         result = []
         for row in cursor:
             result.append(row)
@@ -682,7 +683,7 @@ class CollectionCenterDAO:
         return result
 
     ##==============================================================================================================##
-    #MEDICAL DEVICES
+    # MEDICAL DEVICES
     def getCenterByMedicalDevices(self):
         cursor = self.conn.cursor()
         query = "select * from(select medicaldevicesid as id, resourceid, medicaldevicetype as name, " \
@@ -700,7 +701,7 @@ class CollectionCenterDAO:
                 "meddevname as brand, meddevmanufacturer, totreat from medicaldevices ) as m " \
                 "natural inner join resources as r natural inner join collectioncenter as cc " \
                 "where LOWER(cc.town)=LOWER(%s) "
-        cursor.execute(query,(town,))
+        cursor.execute(query, (town,))
         result = []
         for row in cursor:
             result.append(row)
@@ -729,13 +730,14 @@ class CollectionCenterDAO:
         for row in cursor:
             result.append(row)
         return result
+
     ##================================================================================================================##
 
     def getCenterByMedicine(self):
         cursor = self.conn.cursor()
-        query ="select * from (select medicineid as id, resourceid, medicinetype as name, medicine_name as brand," \
-               " medicine_form, medicine_manufacturer from medicine) as m " \
-               "natural inner join resources as r natural inner join collectioncenter as cc "
+        query = "select * from (select medicineid as id, resourceid, medicinetype as name, medicine_name as brand," \
+                " medicine_form, medicine_manufacturer from medicine) as m " \
+                "natural inner join resources as r natural inner join collectioncenter as cc "
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -748,11 +750,12 @@ class CollectionCenterDAO:
                 " medicine_form, medicine_manufacturer from medicine) as m " \
                 "natural inner join resources as r natural inner join collectioncenter as cc " \
                 "where LOWER(cc.country)=LOWER(%s)"
-        cursor.execute(query,(country,))
+        cursor.execute(query, (country,))
         result = []
         for row in cursor:
             result.append(row)
         return result
+
     def getCenterByMedicineAndState(self, state):
         cursor = self.conn.cursor()
         query = "select * from (select medicineid as id, resourceid, medicinetype as name, medicine_name as brand," \
@@ -776,6 +779,7 @@ class CollectionCenterDAO:
         for row in cursor:
             result.append(row)
         return result
+
     ##===============================================================================================================##
 
     ##HEAVY EQUIPMENT
@@ -798,7 +802,7 @@ class CollectionCenterDAO:
                 "natural inner join resources as r natural inner join collectioncenter as cc " \
                 "where LOWER(cc.town)= LOWER(%s)"
 
-        cursor.execute(query,(town,))
+        cursor.execute(query, (town,))
         result = []
         for row in cursor:
             result.append(row)
@@ -829,6 +833,7 @@ class CollectionCenterDAO:
         for row in cursor:
             result.append(row)
         return result
+
     ##================================================================================================================##
 
     def getCenterByPowerGenerator(self):
@@ -849,7 +854,7 @@ class CollectionCenterDAO:
                 "powergeneratorbrand as brand, watts from powergenerator) as p  " \
                 "natural inner join resources as r natural inner join collectioncenter as cc " \
                 "where LOWER(cc.town) = LOWER(%s)"
-        cursor.execute(query,(town,))
+        cursor.execute(query, (town,))
         result = []
         for row in cursor:
             result.append(row)
@@ -897,7 +902,7 @@ class CollectionCenterDAO:
                 "powergeneratorbrand as brand, watts from powergenerator) as p  " \
                 "natural inner join resources as r natural inner join collectioncenter as cc " \
                 "where p.watts = %s and LOWER(cc.town)= LOWER(%s)"
-        cursor.execute(query, (watts,town))
+        cursor.execute(query, (watts, town))
         result = []
         for row in cursor:
             result.append(row)
@@ -926,6 +931,7 @@ class CollectionCenterDAO:
         for row in cursor:
             result.append(row)
         return result
+
     ##================================================================================================================##
 
     ##CLOTHING
@@ -946,7 +952,7 @@ class CollectionCenterDAO:
                 "clothingbrand as brand, clothingcolor,clothing_size  from clothing) as c " \
                 "natural inner join resources as r natural inner join collectioncenter as cc " \
                 "where LOWER(cc.town)=LOWER(%s)"
-        cursor.execute(query,(town,))
+        cursor.execute(query, (town,))
         result = []
         for row in cursor:
             result.append(row)
@@ -993,7 +999,7 @@ class CollectionCenterDAO:
                 "batterybrand as brand, batteryvoltage from batteries) as b " \
                 "natural inner join resources as r natural inner join  collectioncenter as cc " \
                 "where LOWER(cc.town)=LOWER(%s)"
-        cursor.execute(query,(town,))
+        cursor.execute(query, (town,))
         result = []
         for row in cursor:
             result.append(row)
@@ -1041,7 +1047,7 @@ class CollectionCenterDAO:
                 "batterybrand as brand, batteryvoltage from batteries) as b " \
                 "natural inner join resources as r natural inner join  collectioncenter as cc " \
                 "where b.batteryvoltage = %s and LOWER(cc.town)=LOWER(%s)"
-        cursor.execute(query, (bvoltage,town))
+        cursor.execute(query, (bvoltage, town))
         result = []
         for row in cursor:
             result.append(row)
@@ -1086,7 +1092,7 @@ class CollectionCenterDAO:
         query = "select * from (select toolsid as id, resourceid, tooltype as name, toolbrand as brand from tools) as t" \
                 " natural inner join resources as r natural inner join  collectioncenter as cc " \
                 "where LOWER(cc.town)=LOWER(%s)"
-        cursor.execute(query,(town,))
+        cursor.execute(query, (town,))
         result = []
         for row in cursor:
             result.append(row)
@@ -1129,7 +1135,7 @@ class CollectionCenterDAO:
         query = "select * from (select iceid as id, resourceid, icebrand as name from ice) as i " \
                 "natural inner join resources as r natural inner join  collectioncenter as cc " \
                 "where LOWER(cc.town) = LOWER(%s) "
-        cursor.execute(query,(town,))
+        cursor.execute(query, (town,))
         result = []
         for row in cursor:
             result.append(row)
@@ -1157,7 +1163,7 @@ class CollectionCenterDAO:
             result.append(row)
         return result
 
-    def getResourcesAvailable(self, ccname):
+    def getResourcesAvailablebyCenter(self, ccname):
         cursor = self.conn.cursor()
         query = "select * from(select gasid as id, " \
                 "resourceid, gastypeid as name, gasbrand as brand " \
@@ -1183,7 +1189,19 @@ class CollectionCenterDAO:
                 "UNION select medicineid as id, resourceid, medicinetype as name, medicine_name as brand " \
                 "from medicine) as products natural inner join resources as r natural inner join collectioncenter as cc " \
                 "where r.qty>0 and LOWER(cc.collection_center_name) = LOWER(%s)"
-        cursor.execute(query,(ccname,))
+        cursor.execute(query, (ccname,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getAnnouncementResources(self):
+        cursor = self.conn.cursor()
+        query = "select resourcetype,qty,collection_center_name,town,state_region,country " \
+                "from resources as r natural inner join collectioncenter as cc " \
+                "where r.qty>0 " \
+                "order by resourcetype"
+        cursor.execute(query)
         result = []
         for row in cursor:
             result.append(row)
@@ -1212,14 +1230,3 @@ class CollectionCenterDAO:
         self.conn.commit()
         return collectionCenterID
     
-    def getAnnouncementResources(self):
-        cursor = self.conn.cursor()
-        query = "select resourcetype,qty,collection_center_name,town,state_region,country " \
-                "from resources as r natural inner join collectioncenter as cc " \
-                "where r.qty>0 " \
-                "order by resourcetype"
-        cursor.execute(query)
-        result = []
-        for row in cursor:
-            result.append(row)
-        return result
