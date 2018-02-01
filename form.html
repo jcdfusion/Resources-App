@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h3>Insert User</h3>
+
+</form>
+
+<form action="http://localhost:5000/ResourceApp/users" method="POST">
+
+    Username: <input type="text" name="userID">
+    <br>
+    First name: <input type="text" name="user_first_name">
+    <br>
+    Last name: <input type="text" name="user_last_name">
+    <br>
+    Email: <input type="text" name="user_email">
+    <br>
+    Password: <input type="password" name="user_password">
+    <br>
+    Account Type: <input type="text" name="userTypeID">
+    <br>
+    <br>
+    <input type="submit" value="Submit">
+</form>
+
+<br><br>
+<hr>
+<h3>Login</h3>
+<form action="http://localhost:5000/ResourceApp/login" method="get">
+    Username:
+    <input type="text" name="username">
+    <br>
+    <br>
+    Password:
+    <input type="password" name="password">
+    <br>
+    <br>
+    <input type="submit" value="Log In">
+</form>
+<br><br>
+
+<hr>
+<h3>Update User</h3><br>
+
+<form action="http://localhost:5000/ResourceApp/users" method="PUT">
+    Username: <input type="text" name="userID">
+    <br>
+    First name: <input type="text" name="user_first_name">
+    <br>
+    Last name: <input type="text" name="user_last_name">
+    <br>
+    Email: <input type="text" name="user_email">
+    <br>
+    Password: <input type="password" name="user_password">
+    <br>
+    Account Type: <input type="text" name="userTypeID">
+    <br>
+    <br>
+    <input type="submit" value="Submit">
+</form>
+
+<br><br>
+
+<hr>
+<h3>Insert Collection Center</h3><br>
+
+<form action="http://localhost:5000/ResourceApp/center" method="POST">
+    Center Name: <input type="text" name="ccname">
+    <br>
+    Street <input type="text" name="street">
+    <br>
+    Town: <input type="text" name="town">
+    <br>
+    State: <input type="text" name="state">
+    <br>
+    Country: <input type="text" name="country">
+    <br>
+    Zipcode: <input type="text" name="zipcode">
+    <br>
+    <br>
+    <input type="submit" value="Submit">
+</form>
+<br><br>
+
+<hr>
+<h3>Update Collection Center</h3><br>
+
+<form action="http://localhost:5000/ResourceApp/center/" method="PUT">
+    Center Name: <input type="text" name="ccname">
+    <br>
+    Street <input type="text" name="street">
+    <br>
+    Town: <input type="text" name="town">
+    <br>
+    State: <input type="text" name="state">
+    <br>
+    Country: <input type="text" name="country">
+    <br>
+    Zipcode: <input type="text" name="zipcode">
+    <br>
+    <br>
+    <input type="submit" value="Submit">
+</form>
+<br><br>
+
+<hr>
+<h3>Insert Resource:</h3><br>
+
+<form action="http://localhost:5000/ResourceApp/resources" method="POST">
+    Collection Center ID: <input type="text" name="collectionCenterID">
+    <br>
+    Resource Type:
+    <select name="resourceType">
+        <option value="water">Water</option>
+        <option value="food">Food</option>
+        <option value="ice">Ice</option>
+        <option value="clothing">Clothing</option>
+        <option value="gas">Fuel</option>
+        <option value="medicalDevices">Medical Devices</option>
+        <option value="heavyEquipment">Heavy Equipment</option>
+        <option value="tools">Tools</option>
+        <option value="powerGenerator">Power Generator</option>
+        <option value="batteries">Batteries</option>
+        <option value="medicine">Medicine</option>
+    </select>
+    <br>
+    Is Free:
+    <select name="buy_free">
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+    </select>
+    <br>
+    Market Price: <input type="text" name="market_price">
+    <br>
+    Quantity: <input type="text" name="qty">
+    <br>
+    <br>
+
+    <p><b>Water:</b>
+    <p>
+        Water Type: <input type="text" name="waterType">
+        Brand: <input type="text" name="waterBrand">
+        <br>
+    <p><b>Food</b>
+    <p>
+        Food Type: <input type="text" name="foodTypeID">
+        Food Name: <input type="text" name="foodName">
+        <br>
+    <p><b>Ice</b>
+    <p>
+        Ice Brand: <input type="text" name="iceBrand">
+        <br>
+    <p><b>Clothing</b>
+    <p>
+        Clothing Type: <input type="text" name="clothingType">
+        Size: <input type="text" name="clothing_size">
+        <br>
+    <p><b>Fuel</b>
+    <p>
+        Fuel Type:
+        <select name="gasTypeID">
+            <option>Select an option</option>
+            <option value="Diesel">Diesel</option>
+            <option value="Gasoline">Gasoline</option>
+            <option value="Propane">Propane</option>
+        </select>
+        Brand: <input type="text" name="gasBrand">
+        Octanage: <input type="text" name="gasOctanage">
+        <br>
+    <p><b>Medical Device</b>
+    <p>
+        Device Type: <input type="text" name="medicalDeviceType">
+        Name: <input type="text" name="medDevName">
+        Manufacturer: <input type="text" name="medDevManufacturer">
+        To treat what condition?: <input type="text" name="toTreat">
+        <br>
+    <p><b>Heavy Equipment</b>
+    <p>
+        Type of Equipment: <input type="text" name="heavyEquipmentType">
+        Brand: <input type="text" name="heavyEquipmentBrand">
+        <br>
+    <p><b>Tools</b>
+    <p>
+        Type of Tool: <input type="text" name="toolType">
+        Brand: <input type="text" name="toolBrand">
+        <br>
+    <p><b>Generaor</b>
+    <p>
+        Generator Type: <input type="text" name="powerGeneratorType">
+        Brand: <input type="text" name="powerGeneratorBrand">
+        Watts: <input type="text" name="watts">
+        <br>
+    <p><b>Batteries</b></p>
+    Type: <input type="text" name="batteryType">
+    Brand: <input type="text" name="batteryBrand">
+    Voltage: <input type="text" name="batteryVoltage">
+    <br>
+    <p><b>Medicine</b>
+    <p>
+        Type: <input type="text" name="medicineType">
+        Medicine Form:
+        <select name="medicine_form">
+            <option>Select an option</option>
+            <option value="Pills">Pills</option>
+            <option value="Oral">Liquid/Oral</option>
+            <option value="IV">Liquid/IV</option>
+        </select>
+        Name: <input type="text" name="medicine_name">
+        Expires: <input type="text" name="medicine_exp_date">
+        Manufacturer: <input type="text" name="medicine_manufacturer">
+        <br>
+        <br>
+
+        <input type="submit" value="Submit">
+</form>
+
+<hr>
+<h3>Delete Resource</h3><br>
+
+<form action="http://localhost:5000/ResourceApp/users" method="DELETE">
+    Resource ID <input type="text" name="resourceID">
+    <br>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>
