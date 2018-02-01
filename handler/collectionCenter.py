@@ -14,16 +14,229 @@ class CollectionCenterHandler:
         result['zipcode'] = row[6]  # collection center name
         return result # return result
 
-    def build_collectioncenter_attributes(self, ccid, ccname, street, town, state, country, zipcode):
-        result = {}
-        result['ccid'] = ccid
-        result['ccname'] = ccname
-        result['street'] = street
-        result['town'] = town
-        result['state'] = state
-        result['country'] = country
-        result['zipcode'] = zipcode
+    def build_fuel_dict(self,row):
+        result={}
+        result['ccid'] = row[0]
+        result['rid']=row[1]
+        result['fid']=row[2]
+        result['fname']=row[3]
+        result['brand']=row[4]
+        result['octanage']=row[5]
+        result['rtype']=row[6]
+        result['buy_free']=row[7]
+        result['market_price']=row[8]
+        result['qty']=row[9]
+        result['street']=row[10]
+        result['town']=row[11]
+        result['state_region']=row[12]
+        result['coutry']=row[13]
+        result['cname']=row[14]
+        result['zipcode']=row[15]
         return result
+
+    def build_water_dict(self,row):
+        result={}
+        result['ccid'] = row[0]
+        result['rid']=row[1]
+        result['fid']=row[2]
+        result['wname']=row[3]
+        result['brand']=row[4]
+        result['qtyMeasure']=row[5]
+        result['rtype']=row[6]
+        result['buy_free']=row[7]
+        result['market_price']=row[8]
+        result['qty']=row[9]
+        result['street']=row[10]
+        result['town']=row[11]
+        result['state_region']=row[12]
+        result['coutry']=row[13]
+        result['cname']=row[14]
+        result['zipcode']=row[15]
+        return result
+
+    def build_food_dict(self,row):
+        result={}
+        result['ccid'] = row[0]
+        result['rid'] = row[1]
+        result['fid'] = row[2]
+        result['fname'] = row[3]
+        result['brand'] = row[4]
+        result['qtyweight'] = row[5]
+        result['rtype'] = row[6]
+        result['buy_free'] = row[7]
+        result['market_price'] = row[8]
+        result['qty'] = row[9]
+        result['street'] = row[10]
+        result['town'] = row[11]
+        result['state_region'] = row[12]
+        result['coutry'] = row[13]
+        result['cname'] = row[14]
+        result['zipcode'] = row[15]
+        return result
+
+    def build_medicalDevice_dict(self,row):
+        result = {}
+        result['ccid'] = row[0]
+        result['rid'] = row[1]
+        result['mdid'] = row[2]
+        result['mdname'] = row[3]
+        result['brand'] = row[4]
+        result['manufacturer'] = row[5]
+        result['treat']=row[6]
+        result['rtype'] = row[7]
+        result['buy_free'] = row[8]
+        result['market_price'] = row[9]
+        result['qty'] = row[10]
+        result['street'] = row[11]
+        result['town'] = row[12]
+        result['state_region'] = row[13]
+        result['coutry'] = row[14]
+        result['cname'] = row[15]
+        result['zipcode'] = row[16]
+        return result
+
+    def build_medicine_dict(self,row):
+        result = {}
+        result['ccid'] = row[0]
+        result['rid'] = row[1]
+        result['mid'] = row[2]
+        result['mname'] = row[3]
+        result['brand'] = row[4]
+        result['mform'] = row[6]
+        result['mmanufacturer'] = row[7]
+        result['qtyweight'] = row[8]
+        result['rtype'] = row[9]
+        result['buy_free'] = row[10]
+        result['market_price'] = row[11]
+        result['qty'] = row[12]
+        result['street'] = row[13]
+        result['town'] = row[14]
+        result['state_region'] = row[15]
+        result['coutry'] = row[16]
+        result['cname'] = row[17]
+        result['zipcode'] = row[18]
+        return result
+
+    def build_heavyequipment_dict(self,row):
+        result = {}
+        result['ccid'] = row[0]
+        result['rid'] = row[1]
+        result['id'] = row[2]
+        result['hetype'] = row[3]
+        result['hebrand'] = row[4]
+        result['rname'] = row[5]
+        result['buy_free'] = row[6]
+        result['market_price'] = row[7]
+        result['qty'] = row[8]
+        result['street'] = row[9]
+        result['town'] = row[10]
+        result['state_region'] = row[11]
+        result['country'] = row[12]
+        result['ccname'] = row[13]
+        result['zipcode'] = row[14]
+        return result
+
+    def build_powergenerator_dict(self,row):
+        result = {}
+        result['ccid'] = row[0]
+        result['rid'] = row[1]
+        result['id'] = row[2]
+        result['ptype'] = row[3]
+        result['pbrand'] = row[4]
+        result['pwatts']=row[5]
+        result['rname'] = row[6]
+        result['buy_free'] = row[7]
+        result['market_price'] = row[8]
+        result['qty'] = row[9]
+        result['street'] = row[10]
+        result['town'] = row[11]
+        result['state_region'] = row[12]
+        result['country'] = row[13]
+        result['ccname'] = row[14]
+        result['zipcode'] = row[15]
+        return result
+
+    def build_clothing_dict(self,row):
+        result = {}
+        result['ccid'] = row[0]
+        result['rid'] = row[1]
+        result['id'] = row[2]
+        result['ctype'] = row[3]
+        result['cbrand'] = row[4]
+        result['ccolor'] = row[5]
+        result['csize']=row[6]
+        result['rname'] = row[7]
+        result['buy_free'] = row[8]
+        result['market_price'] = row[9]
+        result['qty'] = row[10]
+        result['street'] = row[11]
+        result['town'] = row[12]
+        result['state_region'] = row[13]
+        result['country'] = row[14]
+        result['ccname'] = row[15]
+        result['zipcode'] = row[16]
+        return result
+
+    def build_battery_dict(self,row):
+        result = {}
+        result['ccid'] = row[0]
+        result['rid'] = row[1]
+        result['id'] = row[2]
+        result['btype'] = row[3]
+        result['bbrand'] = row[4]
+        result['bvoltage'] = row[5]
+        result['rname'] = row[6]
+        result['buy_free'] = row[7]
+        result['market_price'] = row[8]
+        result['qty'] = row[9]
+        result['street'] = row[10]
+        result['town'] = row[11]
+        result['state_region'] = row[12]
+        result['country'] = row[13]
+        result['ccname'] = row[14]
+        result['zipcode'] = row[15]
+        return result
+
+    def build_tools_dict(self,row):
+        result={}
+        result['ccid']=row[0]
+        result['rid']=row[1]
+        result['id']=row[2]
+        result['ttype']=row[3]
+        result['tbrand']=row[4]
+        result['rname']=row[5]
+        result['buy_free']=row[6]
+        result['market_price']=row[7]
+        result['qty']=row[8]
+        result['street']=row[9]
+        result['town']=row[10]
+        result['state_region']=row[11]
+        result['country']=row[12]
+        result['ccname']=row[13]
+        result['zipcode']=row[14]
+        return result
+
+    def build_ice_dict(self,row):
+        result={}
+        result['ccid']=row[0]
+        result['rid']=row[1]
+        result['id']=row[2]
+        result['ibrand']=row[3]
+        result['rname']=row[4]
+        result['buy_free']=row[5]
+        result['market_price']=row[6]
+        result['qty']=row[7]
+        result['street']=row[8]
+        result['town']=row[9]
+        result['state_region']=row[10]
+        result['country']=row[11]
+        result['ccname']=row[12]
+        result['zipcode']=row[13]
+        return result
+
+
+
+
 
     def build_resources_dict(self, row):
         result = {}
@@ -83,6 +296,16 @@ class CollectionCenterHandler:
         result['ccname'] = row[18]
         result['zipcode'] = row[19]
         return result
+    
+    def build_announcement_dict(self,row):
+        result={}
+        result['rtype'] = row[0]
+        result['qty']=row[1]
+        result['ccname']=row[2]
+        result['town']=row[3]
+        result['state']=row[4]
+        result['country']=row[5]
+        return result
 
 
 
@@ -107,10 +330,18 @@ class CollectionCenterHandler:
         rname = args.get('rname')
         ravailable= args.get('ravailable')
         ccorders = args.get('ccorders')
+        watts = args.get('watts')
+        bvoltage =args.get('bvoltage')
+
 
         dao = CollectionCenterDAO()
         if (len(args) == 1) and ccname:
-            collectioncenter_list = dao.getCenterByName(ccname)
+            collectioncenter_list = dao.getResourcesAvailable(ccname)
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_ccByresourceType_dict(row)
+                result_list.append(result)
+            return jsonify(Resources=result_list)
 
         elif (len(args) == 1) and street:
             collectioncenter_list = dao.getCenterByStreet(street)
@@ -132,8 +363,444 @@ class CollectionCenterHandler:
                 result_list.append(result)
             return jsonify(OrdersByCollectionCenter=result_list)
 
-        elif (len(args) == 1) and rname : #resource name
-            collectioncenter_list = dao.getCenterByResourceName(rname)
+        #FUEL
+        elif (len(args) == 1) and (rtype=='diesel' or rtype=='propane' or rtype=='gasoline') : #fueltype
+            if(rtype=='diesel'):
+                collectioncenter_list = dao.getCenterByFuelType(rtype)
+            elif(rtype=='propane'):
+                collectioncenter_list = dao.getCenterByFuelType(rtype)
+            elif(rtype=='gasoline'):
+                collectioncenter_list = dao.getCenterByFuelType(rtype)
+
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_fuel_dict(row)
+                result_list.append(result)
+            return jsonify(Fuel=result_list)
+
+        elif (len(args) == 2) and (rtype=='diesel' or rtype=='propane' or rtype=='gasoline') and (country or state or town):
+            if (rtype=='diesel' and country):
+                collectioncenter_list = dao.getCenterByFuelTypeAndCountry(rtype,country)
+            elif (rtype=='diesel' and state):
+                collectioncenter_list = dao.getCenterByFuelTypeAndState(rtype, state)
+            elif(rtype=='diesel' and town):
+                collectioncenter_list = dao.getCenterByFuelTypeAndTown(rtype, town)
+
+            elif (rtype=='propane' and state):
+                collectioncenter_list = dao.getCenterByFuelTypeAndState(rtype, state)
+            elif (rtype=='propane'and town):
+                collectioncenter_list = dao.getCenterByFuelTypeAndTown(rtype, town)
+            elif (rtype=='propane' and country):
+                collectioncenter_list = dao.getCenterByFuelTypeAndCountry(rtype,country)
+
+            elif (rtype=='gasoline' and state):
+                collectioncenter_list = dao.getCenterByFuelTypeAndState(rtype, state)
+            elif (rtype=='gasoline' and town):
+                collectioncenter_list = dao.getCenterByFuelTypeAndTown(rtype, town)
+            elif (rtype=='gasoline' and country):
+                collectioncenter_list = dao.getCenterByFuelTypeAndCountry(rtype, country)
+
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_fuel_dict(row)
+                result_list.append(result)
+            return jsonify(Fuel=result_list)
+        ##=======================================================================================================##
+
+            # Water
+        elif (len(args) ==1) and rname=='water':
+            collectioncenter_list = dao.getCenterByWater()
+
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_water_dict(row)
+                result_list.append(result)
+            return jsonify(Water=result_list)
+
+        elif(len(args)==2) and rname=='water' and (state or country or town):
+            if(state):
+                collectioncenter_list = dao.getCenterByWaterAndState(state)
+            elif(country):
+                collectioncenter_list = dao.getCenterByWaterAndCountry(country)
+            elif(town):
+                collectioncenter_list = dao.getCenterByWaterAndTown(town)
+
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_water_dict(row)
+                result_list.append(result)
+            return jsonify(Water=result_list)
+
+        elif (len(args) == 1) and (rtype=='bottle' or rtype=='gallons'):  # watertype
+            if (rtype=='bottle'):
+                collectioncenter_list = dao.getCenterByWaterType(rtype)
+            elif (rtype=='gallons'):
+                collectioncenter_list = dao.getCenterByWaterType(rtype)
+
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_water_dict(row)
+                result_list.append(result)
+            return jsonify(Water=result_list)
+
+        elif (len(args) == 2) and (rtype=='bottle' or rtype=='gallons') and (country or state or town):
+            if (rtype=='bottle'and country):
+                collectioncenter_list = dao.getCenterByWaterTypeAndCountry(rtype, country)
+            elif (rtype=='bottle' and state):
+                collectioncenter_list = dao.getCenterByWaterTypeAndState(rtype, state)
+            elif (rtype=='bottle'and town):
+                collectioncenter_list = dao.getCenterByWaterTypeAndTown(rtype, town)
+
+            elif (rtype=='gallons' and state):
+                collectioncenter_list = dao.getCenterByWaterTypeAndState(rtype, state)
+            elif (rtype=='gallons' and town):
+                collectioncenter_list = dao.getCenterByWaterTypeAndTown(rtype, town)
+            elif (rtype=='gallons' and country):
+                collectioncenter_list = dao.getCenterByWaterTypeAndCountry(rtype, country)
+
+
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_water_dict(row)
+                result_list.append(result)
+            return jsonify(Water=result_list)
+    ##===============================================================================================================##
+
+
+    ##FOOD
+
+        elif (len(args) == 1) and rname == 'food':
+            collectioncenter_list = dao.getCenterByFood()
+
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_food_dict(row)
+                result_list.append(result)
+            return jsonify(FOOD=result_list)
+
+        elif (len(args) == 2) and rname == 'food' and (state or country or town):
+            if (state):
+                collectioncenter_list = dao.getCenterByFoodAndState(state)
+            elif (country):
+                collectioncenter_list = dao.getCenterByFoodAndCountry(country)
+            elif (town):
+                collectioncenter_list = dao.getCenterByFoodAndTown(town)
+
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_food_dict(row)
+                result_list.append(result)
+            return jsonify(Food=result_list)
+
+        elif (len(args) == 1) and (rtype == 'canned' or rtype == 'babyfood' or rtype=='dry' or rtype=='fresh'):  # watertype
+            if (rtype == 'canned'):
+                collectioncenter_list = dao.getCenterByFoodType(rtype)
+            elif (rtype == 'babyfood'):
+                collectioncenter_list = dao.getCenterByFoodType(rtype)
+            elif (rtype == 'dry'):
+                collectioncenter_list = dao.getCenterByFoodType(rtype)
+            elif (rtype == 'fresh'):
+                collectioncenter_list = dao.getCenterByFoodType(rtype)
+
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_food_dict(row)
+                result_list.append(result)
+            return jsonify(FOOD=result_list)
+
+        elif (len(args) == 2) and (rtype == 'canned' or rtype == 'babyfood' or rtype=='dry' or rtype=='fresh') and (country or state or town):
+            if (rtype == 'canned' and country):
+                collectioncenter_list = dao.getCenterByFoodTypeAndCountry(rtype, country)
+            elif (rtype == 'canned' and state):
+                collectioncenter_list = dao.getCenterByFoodTypeAndState(rtype, state)
+            elif (rtype == 'canned' and town):
+                collectioncenter_list = dao.getCenterByFoodTypeAndTown(rtype, town)
+
+            elif (rtype == 'babyfood' and state):
+                collectioncenter_list = dao.getCenterByFoodTypeAndState(rtype, state)
+            elif (rtype == 'babyfood' and town):
+                collectioncenter_list = dao.getCenterByFoodTypeAndTown(rtype, town)
+            elif (rtype == 'babyfood' and country):
+                collectioncenter_list = dao.getCenterByFoodTypeAndCountry(rtype, country)
+
+            elif (rtype == 'dry' and state):
+                collectioncenter_list = dao.getCenterByFoodTypeAndState(rtype, state)
+            elif (rtype == 'dry' and town):
+                collectioncenter_list = dao.getCenterByFoodTypeAndTown(rtype, town)
+            elif (rtype == 'dry' and country):
+                collectioncenter_list = dao.getCenterByFoodTypeAndCountry(rtype, country)
+
+            elif (rtype == 'fresh' and state):
+                collectioncenter_list = dao.getCenterByFoodTypeAndState(rtype, state)
+            elif (rtype == 'fresh' and town):
+                collectioncenter_list = dao.getCenterByFoodTypeAndTown(rtype, town)
+            elif (rtype == 'fresh' and country):
+                collectioncenter_list = dao.getCenterByFoodTypeAndCountry(rtype, country)
+
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_food_dict(row)
+                result_list.append(result)
+            return jsonify(FOOD=result_list)
+    ##================================================================================================================##
+
+    ##MEDICINE
+        elif(len(args)==1) and rname =='medicine':
+            collectioncenter_list= dao.getCenterByMedicine()
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_medicine_dict(row)
+                result_list.append(result)
+            return jsonify(Medicine=result_list)
+
+        elif (len(args) == 2) and (rname == 'medicine') and (country or state or town):
+            if (town):
+                collectioncenter_list = dao.getCenterByMedicineAndTown(town)
+            elif (state):
+                collectioncenter_list = dao.getCenterByMedicineAndState(state)
+            elif (country):
+                collectioncenter_list = dao.getCenterByMedicineAndCountry(country)
+
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_medicine_dict(row)
+                result_list.append(result)
+            return jsonify(Medicine=result_list)
+    ##================================================================================================================##
+
+    ##HEAVY EQUIPMENT
+
+        elif (len(args) == 1) and rname == 'heavyequipment':
+            collectioncenter_list = dao.getCenterByHeavyEquipment()
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_heavyequipment_dict(row)
+                result_list.append(result)
+            return jsonify(HeavyEquipment=result_list)
+
+        elif (len(args) == 2) and (rname == 'heavyequipment') and (country or state or town):
+            if (town):
+                collectioncenter_list = dao.getCenterByHeavyEquipmentAndTown(town)
+            elif (state):
+                collectioncenter_list = dao.getCenterByHeavyEquipmentAndState(state)
+            elif (country):
+                collectioncenter_list = dao.getCenterByHeavyEquipmentAndCountry(country)
+
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_heavyequipment_dict(row)
+                result_list.append(result)
+            return jsonify(HeavyEquipment=result_list)
+
+
+
+    ##================================================================================================================##
+
+            ##POWER GENERATORS
+
+        elif (len(args) == 1) and rname == 'powergenerator':
+            collectioncenter_list = dao.getCenterByPowerGenerator()
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_powergenerator_dict(row)
+                result_list.append(result)
+            return jsonify(POWERGENERATOR=result_list)
+
+        elif (len(args) == 2) and (rname == 'powergenerator') and (country or state or town):
+            if (town):
+                collectioncenter_list = dao.getCenterByPowerGeneratorAndTown(town)
+            elif (state):
+                collectioncenter_list = dao.getCenterByPowerGeneratorAndState(state)
+            elif (country):
+                collectioncenter_list = dao.getCenterByPowerGeneratorAndCountry(country)
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_powergenerator_dict(row)
+                result_list.append(result)
+            return jsonify(POWERGENERATOR=result_list)
+
+        elif (len(args)==2) and (rname == 'powergenerator') and watts:
+
+            collectioncenter_list = dao.getCenterByPowerGeneratorAndWatts(watts)
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_powergenerator_dict(row)
+                result_list.append(result)
+            return jsonify(POWERGENERATOR=result_list)
+
+        elif (len(args) == 3) and (rname == 'powergenerator') and watts and (country or state or town):
+            if (town):
+                collectioncenter_list = dao.getCenterByPowerGeneratorAndWattsAndTown(watts,town)
+            elif (state):
+                collectioncenter_list = dao.getCenterByPowerGeneratorAndWattsAndState(watts,state)
+            elif (country):
+                collectioncenter_list = dao.getCenterByPowerGeneratorAndWattsAndCountry(watts,country)
+
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_powergenerator_dict(row)
+                result_list.append(result)
+            return jsonify(POWERGENERATOR=result_list)
+
+
+
+            ##================================================================================================================##
+            ##================================================================================================================##
+
+            ##CLOTHING
+
+        elif (len(args) == 1) and rname == 'clothing':
+            collectioncenter_list = dao.getCenterByClothing()
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_clothing_dict(row)
+                result_list.append(result)
+            return jsonify(CLOTHING=result_list)
+
+        elif (len(args) == 2) and (rname == 'clothing') and (country or state or town):
+            if (town):
+                collectioncenter_list = dao.getCenterByClothingAndTown(town)
+            elif (state):
+                collectioncenter_list = dao.getCenterByClothingAndState(state)
+            elif (country):
+                collectioncenter_list = dao.getCenterByClothingAndCountry(country)
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_clothing_dict(row)
+                result_list.append(result)
+            return jsonify(CLOTHING=result_list)
+
+
+
+
+    ##================================================================================================================##
+
+            ##BATTERY
+
+        elif (len(args) == 1) and rname == 'battery':
+            collectioncenter_list = dao.getCenterByBattery()
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_battery_dict(row)
+                result_list.append(result)
+            return jsonify(BATTERY=result_list)
+
+        elif (len(args) == 2) and (rname == 'battery') and (country or state or town):
+            if (town):
+                collectioncenter_list = dao.getCenterByBatteryAndTown(town)
+            elif (state):
+                collectioncenter_list = dao.getCenterByBatteryAndState(state)
+            elif (country):
+                collectioncenter_list = dao.getCenterByBatteryAndCountry(country)
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_battery_dict(row)
+                result_list.append(result)
+            return jsonify(BATERRY=result_list)
+
+        elif (len(args)==2) and (rname=='battery') and bvoltage:
+            collectioncenter_list = dao.getCenterByBatteryAndBVoltage(bvoltage)
+
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_battery_dict(row)
+                result_list.append(result)
+            return jsonify(BATERRY=result_list)
+
+        elif (len(args)==3) and (rname=='battery') and bvoltage and (country or state or town):
+
+            if (town):
+                collectioncenter_list = dao.getCenterByBatteryAndBVoltageAndTown(bvoltage,town)
+            elif (state):
+                collectioncenter_list = dao.getCenterByBatteryAndBVoltageAndState(bvoltage,state)
+            elif (country):
+                collectioncenter_list = dao.getCenterByBatteryAndBVoltageAndCountry(bvoltage,country)
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_battery_dict(row)
+                result_list.append(result)
+            return jsonify(BATERRY=result_list)
+
+
+
+
+        ##============================================================================================================##
+
+        ##TOOLS
+        elif (len(args) == 1) and rname == 'tools':
+            collectioncenter_list = dao.getCenterByTools()
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_tools_dict(row)
+                result_list.append(result)
+            return jsonify(TOOLS=result_list)
+
+        elif (len(args) == 2) and (rname == 'tools') and (country or state or town):
+            if (town):
+                collectioncenter_list = dao.getCenterByToolsAndTown(town)
+            elif (state):
+                collectioncenter_list = dao.getCenterByToolsAndState(state)
+            elif (country):
+                collectioncenter_list = dao.getCenterByToolsAndCountry(country)
+
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_tools_dict(row)
+                result_list.append(result)
+            return jsonify(TOOLS=result_list)
+        ##============================================================================================================##
+
+        #ICE
+
+        elif (len(args) == 1) and rname == 'ice':
+            collectioncenter_list = dao.getCenterByIce()
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_ice_dict(row)
+                result_list.append(result)
+            return jsonify(ICE=result_list)
+
+        elif (len(args) == 2) and (rname == 'ice') and (country or state or town):
+            if (town):
+                collectioncenter_list = dao.getCenterByIceAndTown(town)
+            elif (state):
+                collectioncenter_list = dao.getCenterByIceAndState(state)
+            elif (country):
+                collectioncenter_list = dao.getCenterByIceAndCountry(country)
+
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_ice_dict(row)
+                result_list.append(result)
+            return jsonify(ICE=result_list)
+
+        ##============================================================================================================##
+
+
+
+    ##MEDICAL DEVICES
+        elif(len(args)==1) and rname=='md':
+            collectioncenter_list = dao.getCenterByMedicalDevices()
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_medicalDevice_dict(row)
+                result_list.append(result)
+            return jsonify(MedicalDevices=result_list)
+
+        elif (len(args) == 2) and (rname=='md') and (country or state or town):
+            if (town):
+                collectioncenter_list = dao.getCenterByMedicalDeviceAndTown(town)
+            elif (state):
+                collectioncenter_list = dao.getCenterByMedicalDeviceAndState(state)
+            elif (country):
+                collectioncenter_list = dao.getCenterByMedicalDeviceAndCountry(country)
+
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_medicalDevice_dict(row)
+                result_list.append(result)
+            return jsonify(MedicalDevices=result_list)
+    ##================================================================================================================##
 
         elif (len(args)==1) and ravailable:
             collectioncenter_list= dao.getCenterByResourcesAvailable()
@@ -215,6 +882,14 @@ class CollectionCenterHandler:
                 result = self.build_ccByresourceType_dict(row)
                 result_list.append(result)
             return jsonify(CollectionCenter=result_list)
+        
+        elif(len(args)==1) and announcement:
+            collectioncenter_list = dao.getAnnouncementResources()
+            result_list=[]
+            for row in collectioncenter_list:
+                result = self.build_announcement_dict(row)
+                result_list.append(result)
+            return jsonify(Annoucemnet=result_list)
 
         else:
             return jsonify(Error="Malformed query string"), 400
