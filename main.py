@@ -54,7 +54,7 @@ def getResourceByName(rtype):
 def getResourceByCenter(rcenter):
 
         if request.method == 'GET':
-            return ResourceHandler.getResourceByCenter(rcenter)
+            return ResourceHandler().getResourceByCenter(rcenter)
         elif request.method == 'PUT':
             return ResourceHandler().updateResourceCenter(rcenter, request.form)
         elif request.method == 'DELETE':
