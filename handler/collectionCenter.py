@@ -1033,3 +1033,5 @@ class CollectionCenterHandler:
                     return jsonify(Center=result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
+
+

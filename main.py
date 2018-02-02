@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from handler.resources import ResourceHandler
 from handler.users import UsersHandler
 from handler.collectionCenter import CollectionCenterHandler
+from handler.transaction import TransactionHandler
 import psycopg2
 
 app = Flask(__name__)
@@ -117,12 +118,12 @@ def getUserRequest():
         return UsersHandler().getAllRequests()
     return UsersHandler().searchUsersRequests(request.args)
 
-# @app.route('/ResourceApp/transactions',methods=['GET'])
-# def getTransactions():
-#     if not request.args:
-#         return TransactionHandler().getAllTransactions()
-#     else:
-#         return TransactionHandler().searchTransaction(request.args)
+@app.route('/ResourceApp/transactions')
+def getTransactions():
+     if not request.args:
+        return TransactionHandler().getAllTransactions()
+     else:
+        return TransactionHandler().searchTransaction(request.args)
 
 @app.route('/ResourceApp/buy', methods=['POST'])
 def transaction():
