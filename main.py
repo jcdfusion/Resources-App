@@ -10,21 +10,23 @@ app = Flask(__name__)
 def greeting():
     return '<h1>Disaster Resources Site</h1>'
 
-@app.route('/ResourceApp/resources', methods=['GET','POST','DELETE'])
+@app.route('/ResourceApp/resources', methods=['GET','POST','PUT'])
 def getResources():
     formData = request.form
-    print(formData)
     if request.method == 'POST':
-        print(formData)
-        print(len(formData))
         return ResourceHandler().insertResource(formData)
-    elif request.method == 'DELETE':
-        return ResourceHandler().deleteResource(formData)
+    elif request.method == 'PUT':
+        return ResourceHandler().updateResourcePrice(formData)
     else:
         if not request.args:
             return ResourceHandler().getAllResources()
         else:
             return ResourceHandler().searchResources(request.args)
+
+@app.route('/ResourceApp/resources/update/price', methods=['POST'])
+def updateResource():
+    formData = request.form
+    return ResourceHandler().updateResourcePrice(formData)
 
 @app.route('/ResourceApp/resources/<int:resourceID>', methods=['GET', 'PUT', 'DELETE'])
 def getResourceById(resourceID):
@@ -37,6 +39,10 @@ def getResourceById(resourceID):
     else:
         return jsonify(Error="Method not allowed."), 405
 
+@app.route('/ResourceApp/resources/center', methods=['POST'])
+def getResourceByCollectionCenter():
+    formData = request.form
+    return ResourceHandler.getResourceBySupplier(formData)
 
 @app.route('/ResourceApp/resources/<string:rtype>',methods=['GET', 'PUT', 'DELETE'])
 def getResourceByName(rtype):
@@ -62,7 +68,7 @@ def getResourceByCenter(rcenter):
         else:
             return jsonify(Error="Method not allowed."), 405
 
-@app.route('/ResourceApp/resources/<int:rid>/center')
+@app.route('/ResourceApp/resources<int:rid>/center')
 def getCenterbyResourceID(rid):
     return ResourceHandler.getCenterByResourceID(rid)
 

@@ -190,7 +190,7 @@ class ResourcesDAO:
 
     def insertWater(self, resID, waterType, waterBrand, qtyMeasure):
         cursor = self.conn.cursor()
-        query = "insert into water(resID, waterType, waterBrand, qtyMeasure) values (%s, %s, %s, %s) returning waterID;"
+        query = "insert into water(resourceID, waterType, waterBrand, qtyMeasure) values (%s, %s, %s, %s) returning waterID;"
         cursor.execute(query, (resID, waterType, waterBrand, qtyMeasure))
         waterID = cursor.fetchone()[0]
         self.conn.commit()
@@ -198,7 +198,7 @@ class ResourcesDAO:
 
     def insertFood(self, resID, foodTypeID, foodName, qtyWeight):
         cursor = self.conn.cursor()
-        query = "insert into food(resID, foodTypeID, foodName, qtyWeight) values (%s, %s, %s, %s) returning foodID;"
+        query = "insert into food(resourceID, foodTypeID, foodName, qtyWeight) values (%s, %s, %s, %s) returning foodID;"
         cursor.execute(query, (resID, foodTypeID, foodName, qtyWeight))
         foodID = cursor.fetchone()[0]
         self.conn.commit()
@@ -206,15 +206,15 @@ class ResourcesDAO:
 
     def insertIce(self, resID, iceBrand, qtyWeight):
         cursor = self.conn.cursor()
-        query = "insert into ice(resID, iceBrand, qtyWeight) values (%s, %s, %s) returning iceID;"
-        cursor.execute(query, (iceBrand, qtyWeight))
+        query = "insert into ice(resourceID, iceBrand, qtyWeight) values (%s, %s, %s) returning iceID;"
+        cursor.execute(query, (resID, iceBrand, qtyWeight))
         iceID = cursor.fetchone()[0]
         self.conn.commit()
         return iceID
 
     def insertClothing(self, resID, clothingType, clothing_size, resQty):
         cursor = self.conn.cursor()
-        query = "insert into clothing(resID, clothingType, clothing_size, qty) values (%s, %s, %s, %s) returning clothingID;"
+        query = "insert into clothing(resourceID, clothingType, clothing_size, qty) values (%s, %s, %s, %s) returning clothingID;"
         cursor.execute(query, (resID, clothingType, clothing_size, resQty))
         clothingID = cursor.fetchone()[0]
         self.conn.commit()
@@ -222,7 +222,7 @@ class ResourcesDAO:
 
     def insertGas(self, resID, gasTypeID, gasBrand, gasOctanage, qty):
         cursor = self.conn.cursor()
-        query = "insert into gas(resID, gasTypeID, gasBrand, gasOctanage, qty) values (%s, %s, %s, %s, %s) returning gasID;"
+        query = "insert into gas(resourceID, gasTypeID, gasBrand, gasOctanage, qty) values (%s, %s, %s, %s, %s) returning gasID;"
         cursor.execute(query, (resID, gasTypeID, gasBrand, gasOctanage, qty))
         gasID = cursor.fetchone()[0]
         self.conn.commit()
@@ -230,7 +230,7 @@ class ResourcesDAO:
 
     def insertMedical(self, resID, medicalDeviceType, medDevName, medDevManufacturer, toTreat, qty):
         cursor = self.conn.cursor()
-        query = "insert into medicalDevices(resID, medicalDeviceType, medDevName, medDevManufacturer, toTreat, qty) values (%s, %s, %s, %s, %s, %s) returning medicalDevicesID;"
+        query = "insert into medicalDevices(resourceID, medicalDeviceType, medDevName, medDevManufacturer, toTreat, qty) values (%s, %s, %s, %s, %s, %s) returning medicalDevicesID;"
         cursor.execute(query, (resID, medicalDeviceType, medDevName, medDevManufacturer, toTreat, qty))
         medicalDevicesID = cursor.fetchone()[0]
         self.conn.commit()
@@ -238,7 +238,7 @@ class ResourcesDAO:
 
     def insertHeavy(self, resID, heavyEquipmentType, heavyEquipmentBrand):
         cursor = self.conn.cursor()
-        query = "insert into heavyEquipment(resID, heavyEquipmentType, heavyEquipmentBrand) values (%s, %s, %s) returning heavyEquipmentID;"
+        query = "insert into heavyEquipment(resourceID, heavyEquipmentType, heavyEquipmentBrand) values (%s, %s, %s) returning heavyEquipmentID;"
         cursor.execute(query, (resID, heavyEquipmentType, heavyEquipmentBrand))
         heavyEquipmentID = cursor.fetchone()[0]
         self.conn.commit()
@@ -246,7 +246,7 @@ class ResourcesDAO:
 
     def insertTools(self, resID, toolType, toolBrand, qty):
         cursor = self.conn.cursor()
-        query = "insert into tools(resID, toolType, toolBrand, qty) values (%s, %s, %s, %s) returning toolsID;"
+        query = "insert into tools(resourceID, toolType, toolBrand, qty) values (%s, %s, %s, %s) returning toolsID;"
         cursor.execute(query, (resID, toolType, toolBrand, qty))
         toolsID = cursor.fetchone()[0]
         self.conn.commit()
@@ -254,7 +254,7 @@ class ResourcesDAO:
 
     def insertPower(self, resID, powerGeneratorType, powerGeneratorBrand, watts, qty):
         cursor = self.conn.cursor()
-        query = "insert into powerGenerator(resID, powerGeneratorType, powerGeneratorBrand, watts, qty) values (%s, %s, %s, %s, %s) returning powerGeneratorID;"
+        query = "insert into powerGenerator(resourceID, powerGeneratorType, powerGeneratorBrand, watts, qty) values (%s, %s, %s, %s, %s) returning powerGeneratorID;"
         cursor.execute(query, (resID, powerGeneratorType, powerGeneratorBrand, watts, qty))
         powerGeneratorID = cursor.fetchone()[0]
         self.conn.commit()
@@ -270,7 +270,7 @@ class ResourcesDAO:
 
     def insertMedicine(self, resID, medicineType, medicine_form, medicine_name, medicine_exp_date, medicine_manufacturer, v):
         cursor = self.conn.cursor()
-        query = "insert into medicine(resID, medicineType, medicine_form, medicine_name, medicine_exp_date, medicine_manufacturer, v) values (%s, %s, %s, %s, %s, %s, %s) returning medicineID;"
+        query = "insert into medicine(resourceID, medicineType, medicine_form, medicine_name, medicine_exp_date, medicine_manufacturer, v) values (%s, %s, %s, %s, %s, %s, %s) returning medicineID;"
         cursor.execute(query, (resID, medicineType, medicine_form, medicine_name, medicine_exp_date, medicine_manufacturer, v))
         medicineID = cursor.fetchone()[0]
         self.conn.commit()
@@ -394,85 +394,96 @@ class ResourcesDAO:
             removed = self.deleteMedicine(resourceID)
         return resourceID
 
+
+    ################   Update Resource Price   ##################
+
+    def updateResourcePrice(self, resourceid, market_price):
+        cursor = self.conn.cursor()
+        query = "update resources set market_price = %s where resourceid = %s;"
+        cursor.execute(query, (market_price, resourceid,))
+        self.conn.commit()
+        return resourceid
+
     ############################################################
     ####            Update individual Resources             ####
     ############################################################
 
     #TODO: FIGURE OUT THE UPDATES OF THESE RESOURCES
 
-    def updateWater(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
-        cursor = self.conn.cursor()
-        query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
-        cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
-        self.conn.commit()
-        return collectionCenterID
+    # def updateWater(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
+    #     cursor = self.conn.cursor()
+    #     query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
+    #     cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
+    #     self.conn.commit()
+    #     return collectionCenterID
+    #
+    # def updateFood(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
+    #     cursor = self.conn.cursor()
+    #     query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
+    #     cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
+    #     self.conn.commit()
+    #     return collectionCenterID
+    #
+    # def updateIce(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
+    #     cursor = self.conn.cursor()
+    #     query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
+    #     cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
+    #     self.conn.commit()
+    #     return collectionCenterID
+    #
+    # def updateClothing(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
+    #     cursor = self.conn.cursor()
+    #     query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
+    #     cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
+    #     self.conn.commit()
+    #     return collectionCenterID
+    #
+    # def updateGas(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
+    #     cursor = self.conn.cursor()
+    #     query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
+    #     cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
+    #     self.conn.commit()
+    #     return collectionCenterID
+    #
+    # def updateMedical(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
+    #     cursor = self.conn.cursor()
+    #     query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
+    #     cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
+    #     self.conn.commit()
+    #     return collectionCenterID
+    #
+    # def updateHeavy(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
+    #     cursor = self.conn.cursor()
+    #     query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
+    #     cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
+    #     self.conn.commit()
+    #     return collectionCenterID
+    #
+    # def updateTools(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
+    #     cursor = self.conn.cursor()
+    #     query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
+    #     cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
+    #     self.conn.commit()
+    #     return collectionCenterID
+    #
+    # def updatePower(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
+    #     cursor = self.conn.cursor()
+    #     query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
+    #     cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
+    #     self.conn.commit()
+    #     return collectionCenterID
+    #
+    # def updateBatteries(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
+    #     cursor = self.conn.cursor()
+    #     query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
+    #     cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
+    #     self.conn.commit()
+    #     return collectionCenterID
+    #
+    # def updateMedicine(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
+    #     cursor = self.conn.cursor()
+    #     query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
+    #     cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
+    #     self.conn.commit()
+    #     return collectionCenterID
 
-    def updateFood(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
-        cursor = self.conn.cursor()
-        query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
-        cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
-        self.conn.commit()
-        return collectionCenterID
-
-    def updateIce(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
-        cursor = self.conn.cursor()
-        query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
-        cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
-        self.conn.commit()
-        return collectionCenterID
-
-    def updateClothing(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
-        cursor = self.conn.cursor()
-        query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
-        cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
-        self.conn.commit()
-        return collectionCenterID
-
-    def updateGas(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
-        cursor = self.conn.cursor()
-        query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
-        cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
-        self.conn.commit()
-        return collectionCenterID
-
-    def updateMedical(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
-        cursor = self.conn.cursor()
-        query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
-        cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
-        self.conn.commit()
-        return collectionCenterID
-
-    def updateHeavy(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
-        cursor = self.conn.cursor()
-        query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
-        cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
-        self.conn.commit()
-        return collectionCenterID
-
-    def updateTools(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
-        cursor = self.conn.cursor()
-        query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
-        cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
-        self.conn.commit()
-        return collectionCenterID
-
-    def updatePower(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
-        cursor = self.conn.cursor()
-        query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
-        cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
-        self.conn.commit()
-        return collectionCenterID
-
-    def updateBatteries(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
-        cursor = self.conn.cursor()
-        query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
-        cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
-        self.conn.commit()
-        return collectionCenterID
-
-    def updateMedicine(self, collectionCenterID, collection_center_name, street, town, state_region, country, zipCode):
-        cursor = self.conn.cursor()
-        query = "update collectionCenter set collection = %s,_center_name = %s, street = %s, town = %s, state_region = %s, country = %s, zipCode = %s where collectionCenterID = %s;"
-        cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
-        self.conn.commit()
-        return collectionCenterID

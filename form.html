@@ -20,7 +20,7 @@
     Account Type: <input type="text" name="userTypeID">
     <br>
     <br>
-    <input type="submit" value="Submit">
+    <input type="submit" value="Sign In">
 </form>
 
 <br><br>
@@ -39,27 +39,27 @@
 </form>
 <br><br>
 
-<hr>
-<h3>Update User</h3><br>
+<!--<hr>-->
+<!--<h3>Update User</h3><br>-->
 
-<form action="http://localhost:5000/ResourceApp/users" method="PUT">
-    Username: <input type="text" name="userID">
-    <br>
-    First name: <input type="text" name="user_first_name">
-    <br>
-    Last name: <input type="text" name="user_last_name">
-    <br>
-    Email: <input type="text" name="user_email">
-    <br>
-    Password: <input type="password" name="user_password">
-    <br>
-    Account Type: <input type="text" name="userTypeID">
-    <br>
-    <br>
-    <input type="submit" value="Submit">
-</form>
+<!--<form action="http://localhost:5000/ResourceApp/users" method="PUT">-->
+    <!--Username: <input type="text" name="userID">-->
+    <!--<br>-->
+    <!--First name: <input type="text" name="user_first_name">-->
+    <!--<br>-->
+    <!--Last name: <input type="text" name="user_last_name">-->
+    <!--<br>-->
+    <!--Email: <input type="text" name="user_email">-->
+    <!--<br>-->
+    <!--Password: <input type="password" name="user_password">-->
+    <!--<br>-->
+    <!--Account Type: <input type="text" name="userTypeID">-->
+    <!--<br>-->
+    <!--<br>-->
+    <!--<input type="submit" value="Submit">-->
+<!--</form>-->
 
-<br><br>
+<!--<br><br>-->
 
 <hr>
 <h3>Insert Collection Center</h3><br>
@@ -78,30 +78,30 @@
     Zipcode: <input type="text" name="zipcode">
     <br>
     <br>
-    <input type="submit" value="Submit">
+    <input type="submit" value="Add Center">
 </form>
 <br><br>
 
-<hr>
-<h3>Update Collection Center</h3><br>
+<!--<hr>-->
+<!--<h3>Update Collection Center</h3><br>-->
 
-<form action="http://localhost:5000/ResourceApp/center/" method="PUT">
-    Center Name: <input type="text" name="ccname">
-    <br>
-    Street <input type="text" name="street">
-    <br>
-    Town: <input type="text" name="town">
-    <br>
-    State: <input type="text" name="state">
-    <br>
-    Country: <input type="text" name="country">
-    <br>
-    Zipcode: <input type="text" name="zipcode">
-    <br>
-    <br>
-    <input type="submit" value="Submit">
-</form>
-<br><br>
+<!--<form action="http://localhost:5000/ResourceApp/center/" method="PUT">-->
+    <!--Center Name: <input type="text" name="ccname">-->
+    <!--<br>-->
+    <!--Street <input type="text" name="street">-->
+    <!--<br>-->
+    <!--Town: <input type="text" name="town">-->
+    <!--<br>-->
+    <!--State: <input type="text" name="state">-->
+    <!--<br>-->
+    <!--Country: <input type="text" name="country">-->
+    <!--<br>-->
+    <!--Zipcode: <input type="text" name="zipcode">-->
+    <!--<br>-->
+    <!--<br>-->
+    <!--<input type="submit" value="Submit">-->
+<!--</form>-->
+<!--<br><br>-->
 
 <hr>
 <h3>Insert Resource:</h3><br>
@@ -211,16 +211,26 @@
         <br>
         <br>
 
-        <input type="submit" value="Submit">
+        <input type="submit" value="Add Resource">
 </form>
 
 <hr>
-<h3>Delete Resource</h3><br>
+<h3>Update the price of a Resource:</h3><br>
 
-<form action="http://localhost:5000/ResourceApp/users" method="DELETE">
-    Resource ID <input type="text" name="resourceID">
-    <br>
-    <input type="submit" value="Submit">
+<form action="http://localhost:5000/ResourceApp/resources/update/price" method="POST">
+    Resource ID: <input type="text" name="resourceID">
+    New Price: <input type="text" name="market_price">
+    <br><br>
+    <input type="submit" value="Change Price">
+</form>
+<br><br>
+<hr>
+<h3>See Resources from a Supplier:</h3><br>
+
+<form action="http://localhost:5000/ResourceApp/resources" method="GET">
+    Supplier ID: <input type="text" name="rid">
+    <br><br>
+    <input type="submit" value="Find">
 </form>
 </body>
 </html>
