@@ -66,3 +66,5 @@ create table creditcards(ccNumb integer primary key, userID varchar references u
 --Purchases table
 create table purchases(purchaseID serial primary key, userID varchar references users(userID), resourcesID integer references resources(resourceID), requestID integer references userRequest(requestID), ccNumb integer references creditcards(ccNumb), resourceQty integer);
 -- 
+--Transactions Table
+create table transaction(transactionid serial primary key, userid varchar references users(userID), resourceid integer references resources(resourceID), ccnumb integer references creditcards(ccNumb));

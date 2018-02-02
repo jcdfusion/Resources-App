@@ -1,6 +1,7 @@
 from flask import jsonify
 from dao.users import UsersDAO
 
+
 class UsersHandler:
 
     def build_user_dict(self, row):
@@ -26,21 +27,63 @@ class UsersHandler:
         result['user_last_name'] = user_last_name
         result['user_email'] = user_email
         return result
-    def build_userinfo_dict(self,row):
-        result={}
-        result['rid']=row[0]
-        result['ccid']=row[1]
-        result['uid']=row[2]
+
+    #def build_transaction_dict(self, resourceid, userid, ccnumb, transactionid, ccfirst, cclast, expdate, cvc, ctype, usertypeid, user_first_name, user_last_name, user_email, collectioncenterid, resourcetype, buy_free, market_price, qty):
+    def build_transaction_dict(self, row):
+        print(row[0])
+        print(row[1])
+        print(row[2])
+        print(row[3])
+        print(row[4])
+        print(row[5])
+        print(row[6])
+        print(row[7])
+        print(row[8])
+        print(row[9])
+        print(row[10])
+        print(row[11])
+        print(row[12])
+        print(row[13])
+        print(row[14])
+        print(row[15])
+        print(row[16])
+        print(row[17])
+        result = {}
+        result['resourceid'] = row[0]
+        result['userid'] = row[1]
+        result['ccnumb'] = row[2]
+        result['transactionid'] = row[3]
+        result['ccfirst'] = row[4]
+        result['cclast'] = row[5]
+        result['expdate'] = row[6]
+        result['cvc'] = row[7]
+        result['ctype'] = row[8]
+        result['usertypeid'] = row[9]
+        result['user_first_name'] = row[10]
+        result['user_last_name'] = row[11]
+        result['user_email'] = row[12]
+        result['collectioncenterid'] = row[13]
+        result['resourcetype'] = row[14]
+        result['buy_free'] = row[15]
+        result['market_price'] = row[16]
+        result['qty'] = row[17]
+        return result
+
+    def build_userinfo_dict(self, row):
+        result = {}
+        result['rid'] = row[0]
+        result['ccid'] = row[1]
+        result['uid'] = row[2]
         result['street'] = row[3]
         result['town'] = row[4]
         result['state'] = row[5]
-        result['country']=row[6]
+        result['country'] = row[6]
         result['ccnane'] = row[7]
-        result['zipcode']=row[8]
-        result['rname']=row[9]
-        result['buy_free']=row[10]
-        result['marketPrice']=row[11]
-        result['qtyfromsupplier']=row[12]
+        result['zipcode'] = row[8]
+        result['rname'] = row[9]
+        result['buy_free'] = row[10]
+        result['marketPrice'] = row[11]
+        result['qtyfromsupplier'] = row[12]
         return result
 
     def build_userRequest_dict(self, row):
@@ -50,12 +93,12 @@ class UsersHandler:
         result['resourceid'] = row[2]  # resource id
         result['rfname'] = row[3]  # requester first name
         result['rlname'] = row[4]  # requester last name
-        result['remail'] = row[5]   # requester email
+        result['remail'] = row[5]  # requester email
         result['rphone'] = row[6]  # requester phone
         result['rstreet'] = row[7]  # requester street
         result['rtown'] = row[8]  # requester town
         result['rstate'] = row[9]  # requester state
-        result['rcountry'] = row[10] # requester country
+        result['rcountry'] = row[10]  # requester country
         result['rzip'] = row[11]  # requester zipcode
         result['ccid'] = row[12]  # collection center id
         return result
@@ -94,7 +137,7 @@ class UsersHandler:
             return jsonify(Error="User Not Found"), 404
         else:
             user = self.build_user_dict(row)
-            return user #jsonify(User=user)
+            return user  # jsonify(User=user)
 
     def getUsersByTypeID(self, tid):
         dao = UsersDAO()
@@ -185,6 +228,15 @@ class UsersHandler:
             result_list.append(result)
         return jsonify(Requests=result_list)
 
+    def getTransactions(self, userid):
+        dao = UsersDAO()
+        row = dao.getTransaction(userid)
+        if not row:
+            return jsonify(Error="Transaction Not Found"), 404
+        else:
+            location = self.build_transaction_dict(row)
+            return jsonify(Location=location)
+
     def searchUsers(self, args):
         if len(args) > 1:
             return jsonify(Error="Malformed search string."), 400
@@ -248,7 +300,7 @@ class UsersHandler:
             requestid = args.get("requestid")
             resourceid = args.get("requestid")
         if username and resourceid:
-            #self.getUserRequestsByUserIDandResourceID(username, resourceid)
+            # self.getUserRequestsByUserIDandResourceID(username, resourceid)
             dao = UsersDAO()
             if not dao.getUsersByID(username):
                 return jsonify(Error="User Not Found"), 404
@@ -259,7 +311,7 @@ class UsersHandler:
                 result_list.append(result)
             return jsonify(Requests=result_list)
         elif username:
-            #self.getUserRequestsByRequestID(username)
+            # self.getUserRequestsByRequestID(username)
             dao = UsersDAO()
             if not dao.getUsersByID(username):
                 return jsonify(Error="User Not Found"), 404
@@ -270,7 +322,7 @@ class UsersHandler:
                 result_list.append(result)
             return jsonify(Requests=result_list)
         elif requestid:
-            #self.getUserRequestsByUserID(requestid)
+            # self.getUserRequestsByUserID(requestid)
             dao = UsersDAO()
             row = dao.getUserRequestsByRequestID(requestid)
             if not row:
@@ -308,10 +360,10 @@ class UsersHandler:
     def deleteUser(selfself, userID):
         dao = UsersDAO()
         if not dao.getUsersByID(userID):
-            return jsonify(Error = "User not found."), 404
+            return jsonify(Error="User not found."), 404
         else:
             dao.delete(userID)
-            return jsonify(DeleteStatus = "OK"), 200
+            return jsonify(DeleteStatus="OK"), 200
 
     def updateUser(self, userID, form):
         dao = UsersDAO()
@@ -327,21 +379,44 @@ class UsersHandler:
                 user_email = form['user_email']
                 if userTypeID and user_first_name and user_last_name and user_email:
                     dao.update(userID, userTypeID, user_first_name, user_last_name, user_email)
-                    result = self.build_users_attributes(userID, userTypeID, user_first_name, user_last_name, user_email)
+                    result = self.build_users_attributes(userID, userTypeID, user_first_name, user_last_name,
+                                                         user_email)
                     return jsonify(Center=result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
 
     def userLogin(self, args):
-        if (len(args)<2):
-            return jsonify(Error="Include both username and password"),400
+        if (len(args) < 2):
+            return jsonify(Error="Include both username and password"), 400
         else:
             dao = UsersDAO()
             username = args['username']
             password = args['password']
-            user_list =[]
+            user_list = []
             user_list = dao.getUserByPassword(username, password)
             if not user_list:
                 return jsonify(Error="Username and password missmatch!")
             else:
                 return self.getUserRequestsByUserID(username)
+
+    def userPurchase(self, form):
+        dao = UsersDAO()
+        if len(form) < 9:
+            return jsonify(Error="User Not Found"), 400
+        userid = form['userid']
+        password = form['password']
+        ccnumb = form['ccnumb']
+        ccfirst = form['ccfirst']
+        cclast = form['cclast']
+        expdate = form['expdate']
+        cvc = form['cvc']
+        ctype = form['ctype']
+        resourceid = form['resourceid']
+        if not dao.getUsersByID(userid):
+            return jsonify(Error="User not found."), 404
+        else:
+            dao.insertCard(ccnumb, userid, ccfirst, cclast, expdate, cvc, ctype)
+            dao.insertTransaction(userid, resourceid, ccnumb)
+            return self.getTransactions(userid)
+
+

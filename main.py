@@ -110,6 +110,11 @@ def getUserRequest():
         return UsersHandler().getAllRequests()
     return UsersHandler().searchUsersRequests(request.args)
 
+@app.route('/ResourceApp/buy', methods=['POST'])
+def transaction():
+    print (request.form)
+    return UsersHandler().userPurchase(request.form)
+    #return '<h3>Transaction Complete</h3>'
 
 if __name__ == '__main__':
     app.run()

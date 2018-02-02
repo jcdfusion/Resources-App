@@ -233,4 +233,53 @@
     <input type="submit" value="Find">
 </form>
 </body>
+
+<hr>
+<h3>Buy:</h3>
+<form action="http://localhost:5000/ResourceApp/buy" method="POST">
+    Username:
+    <input type="text" name="userid">
+    <br><br>
+    Password:
+    <input type="password" name="password">
+    <br><br>
+    Credit Card:
+    <input type="text" name="ccnumb">
+    <br><br>
+    First Name:
+    <input type="text" name="ccfirst">
+    <br><br>
+    Last Name:
+    <input type="text" name="cclast">
+    <br><br>
+    Expiration Date:
+    <input type="text" name="expdate">
+    <br><br>
+    CVC:
+    <input type="text" name="cvc" maxlength="3">
+    <br><br>
+    Card Type:
+    <select name="ctype">
+            <option>Select an option</option>
+            <option value="AMEX">AMEX</option>
+            <option value="Discover">Discover</option>
+            <option value="MasterCard">MasterCard</option>
+            <option value="Visa">Visa</option>
+        </select>
+    <br><br>
+    Resource ID to Buy:
+    <input type="text" name="resourceid">
+    <br><br>
+    <input type="submit" value="Buy">
+</form>
+<br><br>
+<hr>
+<h3>See Resources from a Supplier:</h3><br>
+
+<form action="http://localhost:5000/ResourceApp/resources" method="GET">
+    Supplier ID: <input type="text" name="rid">
+    <br><br>
+    <input type="submit" value="Find">
+</form>
+
 </html>

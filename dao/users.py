@@ -165,3 +165,28 @@ class UsersDAO:
         for row in cursor:
             result.append(row)
             return result
+
+    def insertCard(self, ccnumb, userid, ccfirst, cclast, expdate, cvc, ctype):
+        cursor = self.conn.cursor()
+        query = "insert into creditcards(ccnumb, userid, ccfirst, cclast, expdate, cvc, ctype) values (%s, %s, %s, %s, %s, %s, %s) returning ccnumb;"
+        cursor.execute(query, (ccnumb, userid, ccfirst, cclast, expdate, cvc, ctype))
+        ccnumb = cursor.fetchone()[0]
+        self.conn.commit()
+        return ccnumb
+
+    def insertTransaction(self, userid, resourceid, ccnumb):
+        cursor = self.conn.cursor()
+        query = "insert into transaction(userid, resourceid, ccnumb) values (%s, %s, %s) returning transactionid;"
+        cursor.execute(query, (userid, resourceid, ccnumb))
+        transactionid = cursor.fetchone()[0]
+        self.conn.commit()
+        return transactionid
+
+    def getTransaction(self, userid):
+        cursor = self.conn.cursor()
+        query = "select * from transaction natural inner join creditcards natural inner join users natural inner join resources where userid = 'duco'"
+        cursor.execute(query, (userid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
