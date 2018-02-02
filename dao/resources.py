@@ -35,9 +35,17 @@ class ResourcesDAO:
             result.append(row)
         return result
 
+    # result['resourceID'] = row[0]  # resource id
+    # result['ResourceName'] = row[1]  # resource id
+    # result['CollectionCenterID'] = row[2]  # resource name id
+    # result['ResourceType'] = row[3]  # resource type
+    # result['Buy_Free'] = row[4]  # resource brand
+    # result['Market_Price'] = row[5]  # resource price
+    # result['Qty'] = row[6]
+
     def getResourceById(self, rid):
         cursor = self.conn.cursor()
-        query = "select resourcetype from resources where resourceid = %s;"
+        query = "select * from (select gastypeid as name, resourceid from fuel UNION select foodname as name, resourceid from food UNION select watertype as name, resourceid from water UNION select icebrand as name, resourceid from ice UNION select clothingtype as name, resourceid from clothing UNION select medicaldevicetype as name, resourceid from medicaldevices UNION select heavyequipmenttype as name, resourceid from heavyequipment UNION select tooltype as name, resourceid from tools UNION select powergeneratortype as name, resourceid from powergenerator UNION select batterytype as name, resourceid from batteries UNION select medicinetype as name, resourceid from medicine) as product natural inner join resources as r where r.resourceid = %s"
         cursor.execute(query, (rid,))
         result = []
         for row in cursor:
