@@ -653,7 +653,7 @@ class CollectionCenterDAO:
         cursor = self.conn.cursor()
         query = "select * from (select foodid as id, resourceid, foodtype as name, foodName as brand, qtyweight  " \
                 "from food ) as f natural inner join resources as r natural inner join collectioncenter as cc " \
-                "where LOWER(f.name) = LOWER(%s) "
+                "where LOWER(f.brand) = LOWER(%s) "
         cursor.execute(query, (rtype,))
         result = []
         for row in cursor:
