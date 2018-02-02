@@ -45,6 +45,16 @@ class ResourceHandler:
         result['qty'] = row[6]
         result['buy_free'] = row[7]
         return result
+    def build_resourceInfoByID_dict(self, row):
+        result = []
+        result['resourceID'] = row[0]  # resource id
+        result['ResourceName'] = row[1]  # resource id
+        result['CollectionCenterID'] = row[2]  # resource name id
+        result['ResourceType'] = row[3]  # resource type
+        result['Buy_Free'] = row[4]  # resource brand
+        result['Market_Price'] = row[5]  # resource price
+        result['Qty'] = row[6]
+        return result
 
     def build_resourcesInf_dict(self, row):
         result = {}
@@ -100,7 +110,7 @@ class ResourceHandler:
         resources_list = dao.getResourceById(resourceID)
         result_list = []
         for row in resources_list:
-            result = self.build_resources_dict(row)
+            result = self.build_resourceInfoByID_dict(row)
             result_list.append(result)
         return jsonify(Resource=result_list)
 

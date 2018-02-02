@@ -85,7 +85,7 @@ def getAllCollectionCenter():
             return CollectionCenterHandler().getAllCenters()
         else:
             return CollectionCenterHandler().searchCenter(request.args)
-        
+
 @app.route('/ResourceApp/center/resources',methods=['GET'])
 def getAllResourcesFromCenter():
     if not request.args:
@@ -118,11 +118,11 @@ def getUserRequest():
         return UsersHandler().getAllRequests()
     return UsersHandler().searchUsersRequests(request.args)
 
-@app.route('/ResourceApp/transactions')
+@app.route('/ResourceApp/transactions',methods=['GET'])
 def getTransactions():
-     if not request.args:
+    if not request.args:
         return TransactionHandler().getAllTransactions()
-     else:
+    else:
         return TransactionHandler().searchTransaction(request.args)
 
 @app.route('/ResourceApp/buy', methods=['POST'])
