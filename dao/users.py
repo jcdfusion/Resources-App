@@ -184,7 +184,7 @@ class UsersDAO:
 
     def getTransaction(self, userid):
         cursor = self.conn.cursor()
-        query = "select * from transaction natural inner join creditcards natural inner join users natural inner join resources where userid = 'duco'"
+        query = "select * from transaction natural inner join creditcards natural inner join users natural inner join resources where userid = %s"
         cursor.execute(query, (userid,))
         result = []
         for row in cursor:
