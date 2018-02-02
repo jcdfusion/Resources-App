@@ -7,7 +7,7 @@ class CollectionCenterDAO:
         connection_url = "host=%s dbname=%s user=%s password=%s port=%s" % (pg_config['host'], pg_config['dbname'], pg_config['user'], pg_config['passwd'], pg_config['port'])
         self.conn = psycopg2._connect(connection_url)
 
-        def getAllCenters(self):
+    def getAllCenters(self):
         cursor = self.conn.cursor()
         query = "select * from collectionCenter;"
         cursor.execute(query)

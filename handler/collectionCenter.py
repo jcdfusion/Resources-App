@@ -3,7 +3,7 @@ from dao.collectionCenter import CollectionCenterDAO
 
 class CollectionCenterHandler:
 
-       def build_collectioncenter_dict(self, row):
+    def build_collectioncenter_dict(self, row):
         result = {}
         result['ccid'] = row[0]  # collection center id
         result['street'] = row[1]  # zipCode

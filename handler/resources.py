@@ -5,118 +5,6 @@ from dao.collectionCenter import CollectionCenterDAO
 
 class ResourceHandler:
 
-   resource id
-        result['rname'] = row[2]  # resource name id
-        result['rtype'] = row[3]  # resource type
-        result['buy_free'] = row[4]  # resource brand
-        result['marketPrice'] = row[5]  # resource price
-        result['qty'] = row[6]
-        return result
-
-    def build_resourcesInfoInsert_dict(self, row):
-        result = {}
-        result['resourceID'] = row[0]  # resource id
-        result['collectionCenterID'] = row[1]  # resource id
-        result['resourceType'] = row[2]  # resource name id
-        result['buy_free'] = row[3]  # resource type
-        result['market_price'] = row[4]  # resource brand
-        result['qty'] = row[5]  # resource price
-        return result
-
-    def build_resourcesBySupplier_dict(self, row):
-        result = {}
-        result['resourceID'] = row[0]  # resource id
-        result['collectionCenterID'] = row[1]  # resource id
-        result['resourceType'] = row[2]  # resource name id
-        result['buy_free'] = row[3]  # resource type
-        result['market_price'] = row[4]  # resource brand
-        result['qty'] = row[5]  # resource price
-        return result
-
-
-    def getAllResources(self):
-        dao = ResourcesDAO()
-        resources_list = dao.getAllResources()
-        result_list = []
-        for row in resources_list:
-            result = self.build_resource_dict(row)
-            result_list.append(result)
-        return jsonify(Resources=result_list)
-
-    def getAllResourcesInfo(self):
-        dao = ResourcesDAO()
-        resources_list = dao.getAllResourcesInfo()
-        result_list = []
-        for row in resources_list:
-            result = self.build_resourcesInf_dict(row)
-            result_list.append(result)
-        return jsonify(Resources=result_list)
-
-    def getResourceById(self, resourceID):
-        dao = ResourcesDAO()
-        resources_list = dao.getResourceById(resourceID)
-        result_list = []
-        for row in resources_list:
-            result = self.build_resources_dict(row)
-            result_list.append(result)
-        return jsonify(Resource=result_list)
-
-    def getResourceBySupplier(self, collectionCenterID):
-        dao = ResourcesDAO()
-        resources_list = dao.getResourceByCollectionCenterID(collectionCenterID)
-        result_list = []
-        for row in resources_list:
-            result = self.build_resourcesBySupplier_dict(row)
-            result_list.append(result)
-        return jsonify(Resource=result_list)
-
-    def searchResources(self, args):
-        rid = args.get('rid')
-        rname = args.get('rname')
-        rtype = args.get('rtype')
-        buy_free = args.get('buy_free')
-        dao = ResourcesDAO()
-
-        if (len(args) == 1) and rid:
-            resources_list = dao.getResourceById(rid)
-            result_list = []
-            for row in resources_list:
-                result = self.build_resources_dict(row)
-                result_list.append(result)
-            return jsonify(Resource=result_list)
-
-
-        elif (len(args) == 1) and rname:
-            resources_list = dao.getResourceInfoByName(rname)
-            result_list = []
-            for row in resources_list:
-                result = self.build_resourcesInfo_dict(row)
-                result_list.append(result)
-            return jsonify(Resource=result_list)
-
-        elif (len(args) == 1) and rtype:
-            resources_list = dao.getResourceInfoByType(rtype)
-            result_list = []
-            for row in resources_list:
-                result = self.build_resourcesInfo_dict(row)
-                result_list.append(result)
-            return jsonify(Resource=result_list)
-
-        elif (len(args) == 1) and buy_free:
-            resources_list = dao.getResourceInfoByBF(buy_free)
-            result_list = []
-            for row in resources_list:
-                result = self.build_resourcesInfo_dict(row)
-                result_list.append(result)
-            return jsonify(Resource=result_list)
-
-        else:
-            return jsonify(Error="Malformed query string"), 400
-        result_list = []
-        for row in resources_list:
-            result = self.build_resources_dict(row)
-            result_list.append(result)
-        return jsonify(Resource=result_list)
     def build_resources_dict(self, row):
         result = {}
         result['resourceid'] = row[0]  # resource id
@@ -188,7 +76,6 @@ class ResourceHandler:
         result['market_price'] = row[4]  # resource brand
         result['qty'] = row[5]  # resource price
         return result
-
 
     def getAllResources(self):
         dao = ResourcesDAO()
@@ -270,7 +157,7 @@ class ResourceHandler:
                 result_list.append(result)
             return jsonify(Resource=result_list)
 
-        elif (len(args)==1) and ccid:
+        elif (len(args) == 1) and ccid:
             resources_list = dao.getResourceByCollectionCenterID(ccid)
             result_list = []
             for row in resources_list:
@@ -278,7 +165,7 @@ class ResourceHandler:
                 result_list.append(result)
             return jsonify(Resource=result_list)
 
-        elif (len(args)==1) and marketprice:
+        elif (len(args) == 1) and marketprice:
             resources_list = dao.getResourceByMarketPrice(marketprice)
             result_list = []
             for row in resources_list:
@@ -286,7 +173,7 @@ class ResourceHandler:
                 result_list.append(result)
             return jsonify(Resource=result_list)
 
-        elif (len(args)==1) and qty:
+        elif (len(args) == 1) and qty:
             resources_list = dao.getResourceByQty(qty)
             result_list = []
             for row in resources_list:
@@ -302,6 +189,7 @@ class ResourceHandler:
             result = self.build_resources_dict(row)
             result_list.append(result)
         return jsonify(Resource=result_list)
+
     def insertResource(self, form):
         if form and len(form) < 5:
             return jsonify(Error="Malformed post request"), 400
