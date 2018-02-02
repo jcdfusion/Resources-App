@@ -381,41 +381,21 @@ class CollectionCenterHandler:
                 result_list.append(result)
             return jsonify(Fuel=result_list)
 
-        elif (len(args) == 1) and (rtype=='diesel' or rtype=='propane' or rtype=='gasoline') : #fueltype
-            if(rtype=='diesel'):
-                collectioncenter_list = dao.getCenterByFuelType(rtype)
-            elif(rtype=='propane'):
-                collectioncenter_list = dao.getCenterByFuelType(rtype)
-            elif(rtype=='gasoline'):
-                collectioncenter_list = dao.getCenterByFuelType(rtype)
-
+        elif (len(args) == 2) and rname=='fuel' and (rtype) : #fueltype
+            collectioncenter_list = dao.getCenterByFuelType(rtype)
             result_list = []
             for row in collectioncenter_list:
                 result = self.build_fuel_dict(row)
                 result_list.append(result)
             return jsonify(Fuel=result_list)
 
-        elif (len(args) == 2) and (rtype=='diesel' or rtype=='propane' or rtype=='gasoline') and (country or state or town):
-            if (rtype=='diesel' and country):
+        elif (len(args) == 3) and rname=='fuel' and (rtype) and (country or state or town):
+            if (country):
                 collectioncenter_list = dao.getCenterByFuelTypeAndCountry(rtype,country)
-            elif (rtype=='diesel' and state):
+            elif (state):
                 collectioncenter_list = dao.getCenterByFuelTypeAndState(rtype, state)
-            elif(rtype=='diesel' and town):
+            elif(town):
                 collectioncenter_list = dao.getCenterByFuelTypeAndTown(rtype, town)
-
-            elif (rtype=='propane' and state):
-                collectioncenter_list = dao.getCenterByFuelTypeAndState(rtype, state)
-            elif (rtype=='propane'and town):
-                collectioncenter_list = dao.getCenterByFuelTypeAndTown(rtype, town)
-            elif (rtype=='propane' and country):
-                collectioncenter_list = dao.getCenterByFuelTypeAndCountry(rtype,country)
-
-            elif (rtype=='gasoline' and state):
-                collectioncenter_list = dao.getCenterByFuelTypeAndState(rtype, state)
-            elif (rtype=='gasoline' and town):
-                collectioncenter_list = dao.getCenterByFuelTypeAndTown(rtype, town)
-            elif (rtype=='gasoline' and country):
-                collectioncenter_list = dao.getCenterByFuelTypeAndCountry(rtype, country)
 
             result_list = []
             for row in collectioncenter_list:
@@ -448,34 +428,21 @@ class CollectionCenterHandler:
                 result_list.append(result)
             return jsonify(Water=result_list)
 
-        elif (len(args) == 1) and (rtype=='bottle' or rtype=='gallons'):  # watertype
-            if (rtype=='bottle'):
-                collectioncenter_list = dao.getCenterByWaterType(rtype)
-            elif (rtype=='gallons'):
-                collectioncenter_list = dao.getCenterByWaterType(rtype)
-
+        elif (len(args) == 2) and rname == 'water' and rtype:  # watertype
+            collectioncenter_list = dao.getCenterByWaterType(rtype)
             result_list = []
             for row in collectioncenter_list:
                 result = self.build_water_dict(row)
                 result_list.append(result)
             return jsonify(Water=result_list)
 
-        elif (len(args) == 2) and (rtype=='bottle' or rtype=='gallons') and (country or state or town):
-            if (rtype=='bottle'and country):
+        elif (len(args) == 3) and rname=='water' and (rtype) and (country or state or town):
+            if (country):
                 collectioncenter_list = dao.getCenterByWaterTypeAndCountry(rtype, country)
-            elif (rtype=='bottle' and state):
+            elif (state):
                 collectioncenter_list = dao.getCenterByWaterTypeAndState(rtype, state)
-            elif (rtype=='bottle'and town):
+            elif (town):
                 collectioncenter_list = dao.getCenterByWaterTypeAndTown(rtype, town)
-
-            elif (rtype=='gallons' and state):
-                collectioncenter_list = dao.getCenterByWaterTypeAndState(rtype, state)
-            elif (rtype=='gallons' and town):
-                collectioncenter_list = dao.getCenterByWaterTypeAndTown(rtype, town)
-            elif (rtype=='gallons' and country):
-                collectioncenter_list = dao.getCenterByWaterTypeAndCountry(rtype, country)
-
-
             result_list = []
             for row in collectioncenter_list:
                 result = self.build_water_dict(row)
@@ -509,51 +476,38 @@ class CollectionCenterHandler:
                 result_list.append(result)
             return jsonify(Food=result_list)
 
-        elif (len(args) == 1) and (rtype == 'canned' or rtype == 'babyfood' or rtype=='dry' or rtype=='fresh'):  # watertype
-            if (rtype == 'canned'):
-                collectioncenter_list = dao.getCenterByFoodType(rtype)
-            elif (rtype == 'babyfood'):
-                collectioncenter_list = dao.getCenterByFoodType(rtype)
-            elif (rtype == 'dry'):
-                collectioncenter_list = dao.getCenterByFoodType(rtype)
-            elif (rtype == 'fresh'):
-                collectioncenter_list = dao.getCenterByFoodType(rtype)
 
+        elif (len(args) == 2) and rname=='food' and rtype:
+            collectioncenter_list = dao.getCenterByFoodType(rtype)
             result_list = []
             for row in collectioncenter_list:
                 result = self.build_food_dict(row)
                 result_list.append(result)
             return jsonify(FOOD=result_list)
 
-        elif (len(args) == 2) and (rtype == 'canned' or rtype == 'babyfood' or rtype=='dry' or rtype=='fresh') and (country or state or town):
-            if (rtype == 'canned' and country):
-                collectioncenter_list = dao.getCenterByFoodTypeAndCountry(rtype, country)
-            elif (rtype == 'canned' and state):
-                collectioncenter_list = dao.getCenterByFoodTypeAndState(rtype, state)
-            elif (rtype == 'canned' and town):
-                collectioncenter_list = dao.getCenterByFoodTypeAndTown(rtype, town)
 
-            elif (rtype == 'babyfood' and state):
-                collectioncenter_list = dao.getCenterByFoodTypeAndState(rtype, state)
-            elif (rtype == 'babyfood' and town):
-                collectioncenter_list = dao.getCenterByFoodTypeAndTown(rtype, town)
-            elif (rtype == 'babyfood' and country):
-                collectioncenter_list = dao.getCenterByFoodTypeAndCountry(rtype, country)
+        elif (len(args) == 3) and rname == 'food' and rtype and (state or country or town):
+            if (state):
+                collectioncenter_list = dao.getCenterByFoodTypeAndState(rtype,state)
+            elif (country):
+                collectioncenter_list = dao.getCenterByFoodTypeAndCountry(rtype,country)
+            elif (town):
+                collectioncenter_list = dao.getCenterByFoodTypeAndTown(rtype,town)
 
-            elif (rtype == 'dry' and state):
-                collectioncenter_list = dao.getCenterByFoodTypeAndState(rtype, state)
-            elif (rtype == 'dry' and town):
-                collectioncenter_list = dao.getCenterByFoodTypeAndTown(rtype, town)
-            elif (rtype == 'dry' and country):
-                collectioncenter_list = dao.getCenterByFoodTypeAndCountry(rtype, country)
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_food_dict(row)
+                result_list.append(result)
+            return jsonify(Food=result_list)
+#####################################################################################
 
-            elif (rtype == 'fresh' and state):
-                collectioncenter_list = dao.getCenterByFoodTypeAndState(rtype, state)
-            elif (rtype == 'fresh' and town):
-                collectioncenter_list = dao.getCenterByFoodTypeAndTown(rtype, town)
-            elif (rtype == 'fresh' and country):
+        elif (len(args) == 3) and rname=='food'and rtype and (country or state or town):
+            if (country):
                 collectioncenter_list = dao.getCenterByFoodTypeAndCountry(rtype, country)
-
+            elif (state):
+                collectioncenter_list = dao.getCenterByFoodTypeAndState(rtype, state)
+            elif (town):
+                collectioncenter_list = dao.getCenterByFoodTypeAndTown(rtype, town)
             result_list = []
             for row in collectioncenter_list:
                 result = self.build_food_dict(row)
