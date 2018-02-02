@@ -91,7 +91,7 @@ def getAllResourcesFromCenter():
     if not request.args:
         return CollectionCenterHandler().getAllResources()
     else:
-        pass                                              
+        return CollectionCenterHandler().searchResorcebyCenterID(request.args)
 
 #======= User Routing ========#
 

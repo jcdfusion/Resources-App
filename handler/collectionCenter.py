@@ -342,7 +342,7 @@ class CollectionCenterHandler:
             for row in collectioncenter_list:
                 result = self.build_collectioncenter_dict(row)
                 result_list.append(result)
-            return jsonify(Resources=result_list)
+            return jsonify(Center=result_list)
 
         if (len(args) == 1) and ccname:
             collectioncenter_list = dao.getResourcesAvailable(ccname)
@@ -987,5 +987,19 @@ class CollectionCenterHandler:
                     return jsonify(Center=result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
+
+    def searchResorcebyCenterID(self, args):
+        ccid = args.get('ccid')
+
+        if len(ccid) <1:
+            return jsonify(Error="NO ARGUMENTS ENTER BY CENTER ID")
+        elif ccid:
+            dao = CollectionCenterDAO()
+            collectioncenter_list = dao.getResourcesByCenterID(ccid)
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_ccByresourceType_dict(row)
+                result_list.append(result)
+            return jsonify(Resources=result_list)
 
 
