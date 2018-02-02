@@ -7,7 +7,7 @@ class CollectionCenterDAO:
         connection_url = "host=%s dbname=%s user=%s password=%s port=%s" % (pg_config['host'], pg_config['dbname'], pg_config['user'], pg_config['passwd'], pg_config['port'])
         self.conn = psycopg2._connect(connection_url)
 
-    def getAllCenters(self):
+        def getAllCenters(self):
         cursor = self.conn.cursor()
         query = "select * from collectionCenter;"
         cursor.execute(query)
@@ -457,6 +457,17 @@ class CollectionCenterDAO:
         return result
 
     ##=================================FUEL=========================================================================##
+    def getCenterByFuel(self, rname):
+        cursor = self.conn.cursor()
+        query = "select * from (select gasid as id, resourceid, gastypeid as name, gasbrand as brand, gasoctanage from fuel)" \
+                " as f natural inner join resources as r natural inner join collectioncenter as cc "
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+
     def getCenterByFuelType(self, ftype):
         cursor = self.conn.cursor()
         query = "select * from (select gasid as id, resourceid, gastypeid as name, gasbrand as brand, gasoctanage from fuel)" \
