@@ -198,7 +198,7 @@ class ResourcesDAO:
 
     def insertFood(self, resID, foodTypeID, foodName, qtyWeight):
         cursor = self.conn.cursor()
-        query = "insert into food(resourceID, foodTypeID, foodName, qtyWeight) values (%s, %s, %s, %s) returning foodID;"
+        query = "insert into food(resourceID, foodType, foodName, qtyWeight) values (%s, %s, %s, %s) returning foodID;"
         cursor.execute(query, (resID, foodTypeID, foodName, qtyWeight))
         foodID = cursor.fetchone()[0]
         self.conn.commit()
@@ -222,7 +222,7 @@ class ResourcesDAO:
 
     def insertGas(self, resID, gasTypeID, gasBrand, gasOctanage, qty):
         cursor = self.conn.cursor()
-        query = "insert into gas(resourceID, gasTypeID, gasBrand, gasOctanage, qty) values (%s, %s, %s, %s, %s) returning gasID;"
+        query = "insert into fuel(resourceID, gasTypeID, gasBrand, gasOctanage, qty) values (%s, %s, %s, %s, %s) returning gasID;"
         cursor.execute(query, (resID, gasTypeID, gasBrand, gasOctanage, qty))
         gasID = cursor.fetchone()[0]
         self.conn.commit()

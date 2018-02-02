@@ -30,24 +30,6 @@ class UsersHandler:
 
     #def build_transaction_dict(self, resourceid, userid, ccnumb, transactionid, ccfirst, cclast, expdate, cvc, ctype, usertypeid, user_first_name, user_last_name, user_email, collectioncenterid, resourcetype, buy_free, market_price, qty):
     def build_transaction_dict(self, row):
-        print(row[0])
-        print(row[1])
-        print(row[2])
-        print(row[3])
-        print(row[4])
-        print(row[5])
-        print(row[6])
-        print(row[7])
-        print(row[8])
-        print(row[9])
-        print(row[10])
-        print(row[11])
-        print(row[12])
-        print(row[13])
-        print(row[14])
-        print(row[15])
-        print(row[16])
-        print(row[17])
         result = {}
         result['resourceid'] = row[0]
         result['userid'] = row[1]
@@ -230,12 +212,15 @@ class UsersHandler:
 
     def getTransactions(self, userid):
         dao = UsersDAO()
-        row = dao.getTransaction(userid)
-        if not row:
+        transactionList = dao.getTransaction(userid)
+        if not transactionList:
             return jsonify(Error="Transaction Not Found"), 404
         else:
-            location = self.build_transaction_dict(row)
-            return jsonify(Location=location)
+            result_list =[]
+            for row in transactionList:
+                result = self.build_transaction_dict(row)
+                result_list.append(result)
+            return jsonify(Transactions=result_list)
 
     def searchUsers(self, args):
         if len(args) > 1:
@@ -409,13 +394,13 @@ class UsersHandler:
         ccfirst = form['ccfirst']
         cclast = form['cclast']
         expdate = form['expdate']
-        cvc = form['cvc']
+        ccv = form['ccv']
         ctype = form['ctype']
         resourceid = form['resourceid']
         if not dao.getUsersByID(userid):
             return jsonify(Error="User not found."), 404
         else:
-            dao.insertCard(ccnumb, userid, ccfirst, cclast, expdate, cvc, ctype)
+            dao.insertCard(ccnumb, userid, ccfirst, cclast, expdate, ccv, ctype)
             dao.insertTransaction(userid, resourceid, ccnumb)
             return self.getTransactions(userid)
 
