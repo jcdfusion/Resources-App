@@ -85,8 +85,7 @@ def getAllCollectionCenter():
             return CollectionCenterHandler().getAllCenters()
         else:
             return CollectionCenterHandler().searchCenter(request.args)
-        #change
-        
+
 @app.route('/ResourceApp/center/resources',methods=['GET'])
 def getAllResourcesFromCenter():
     if not request.args:
