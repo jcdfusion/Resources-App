@@ -3,7 +3,7 @@ from dao.collectionCenter import CollectionCenterDAO
 
 class CollectionCenterHandler:
 
-    def build_collectioncenter_dict(self, row):
+       def build_collectioncenter_dict(self, row):
         result = {}
         result['ccid'] = row[0]  # collection center id
         result['street'] = row[1]  # zipCode
@@ -29,7 +29,7 @@ class CollectionCenterHandler:
         result['street']=row[10]
         result['town']=row[11]
         result['state_region']=row[12]
-        result['coutry']=row[13]
+        result['country']=row[13]
         result['cname']=row[14]
         result['zipcode']=row[15]
         return result
@@ -319,6 +319,7 @@ class CollectionCenterHandler:
         return jsonify(CollectionCenter=result_list)
 
     def searchCenter(self,args):
+        ccid = args.get('ccid')
         ccname = args.get('ccname')
         street = args.get('street')
         town = args.get('town')
@@ -335,6 +336,14 @@ class CollectionCenterHandler:
 
 
         dao = CollectionCenterDAO()
+        if(len(args)==1) and ccid:
+            collectioncenter_list = dao.getCenterByID(ccid)
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_collectioncenter_dict(row)
+                result_list.append(result)
+            return jsonify(Resources=result_list)
+
         if (len(args) == 1) and ccname:
             collectioncenter_list = dao.getResourcesAvailable(ccname)
             result_list = []
@@ -364,6 +373,14 @@ class CollectionCenterHandler:
             return jsonify(OrdersByCollectionCenter=result_list)
 
         #FUEL
+        elif(len(args)==1) and rname=='fuel':
+            collectioncenter_list = dao.getCenterByFuel(rname)
+            result_list = []
+            for row in collectioncenter_list:
+                result = self.build_fuel_dict(row)
+                result_list.append(result)
+            return jsonify(Fuel=result_list)
+
         elif (len(args) == 1) and (rtype=='diesel' or rtype=='propane' or rtype=='gasoline') : #fueltype
             if(rtype=='diesel'):
                 collectioncenter_list = dao.getCenterByFuelType(rtype)
@@ -883,19 +900,28 @@ class CollectionCenterHandler:
                 result_list.append(result)
             return jsonify(CollectionCenter=result_list)
         
-        elif(len(args)==1) and announcement:
-            collectioncenter_list = dao.getAnnouncementResources()
-            result_list=[]
-            for row in collectioncenter_list:
-                result = self.build_announcement_dict(row)
-                result_list.append(result)
-            return jsonify(Annoucemnet=result_list)
+       # elif(len(args)==1) and announcement:
+        #    collectioncenter_list = dao.getAnnouncementResources()
+         #   result_list=[]
+          #  for row in collectioncenter_list:
+           #     result = self.build_announcement_dict(row)
+            #    result_list.append(result)
+            #return jsonify(Annoucemnet=result_list)
 
         else:
             return jsonify(Error="Malformed query string"), 400
         result_list = []
         for row in collectioncenter_list:
             result = self.build_collectioncenter_dict(row)
+            result_list.append(result)
+        return jsonify(CollectionCenter=result_list)
+
+    def getAllResources(self):
+        dao = CollectionCenterDAO()
+        collectioncenter_list = dao.getCenterByResourcesAvailable()
+        result_list = []
+        for row in collectioncenter_list:
+            result = self.build_ccByresourceType_dict(row)
             result_list.append(result)
         return jsonify(CollectionCenter=result_list)
 
