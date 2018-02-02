@@ -18,34 +18,32 @@ class TransactionHandler():
 
     def build_transactioninfo_dict(self, row):
         result = {}
-        result['resourceid'] = row[0]
-        result['userid'] = row[1]
-        result['ccnumb'] = row[2]
-        result['transactionid'] = row[3]
-        result['ccfirst'] = row[4]
-        result['cclast'] = row[5]
-        result['expdate'] = row[6]
-        result['ccv'] = row[7]
-        result['cctype'] = row[8]
-        result['usertypeid'] = row[9]
-        result['user_first_name'] = row[10]
-        result['user_last_name'] = row[11]
-        result['user_email'] = row[12]
-        result['collectioncenterid'] = row[13]
-        result['resourcetype'] = row[14]
-        result['buy_free'] = row[15]
-        result['market_price'] = row[16]
-        result['qty'] = row[17]
+        result['userid'] = row[0]
+        result['ccnumb'] = row[1]
+        result['resourceid'] = row[2]
+        result['resourcename'] = row[3]
+        result['collectioncenterid'] = row[4]
+        result['resourcetype'] = row[5]
+        result['buy_free'] = row[6]
+        result['market_price'] = row[7]
+        result['qty'] = row[8]
+        result['transactionid'] = row[9]
+        result['ccfirst'] = row[10]
+        result['cclast'] = row[11]
+        result['expdate'] = row[12]
+        result['ccv'] = row[13]
+        result['ctype'] = row[14]
         return result
 
     def getAllTransactions(self):
         dao = TransactionDAO()
         transaction_list = dao.getAllTransaction()
         result_list = []
+        print(transaction_list)
         for row in transaction_list:
             result = self.build_transactioninfo_dict(row)
             result_list.append(result)
-            return jsonify(Transactions=result_list)
+        return jsonify(Transactions=result_list)
 
     def searchTransaction(self, args):
         resourceid = args.get('resourceid')

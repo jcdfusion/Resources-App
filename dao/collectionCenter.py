@@ -1240,4 +1240,5 @@ class CollectionCenterDAO:
         cursor.execute(query, (collection_center_name, street, town, state_region, country, zipCode, collectionCenterID,))
         self.conn.commit()
         return collectionCenterID
-    
+
+
