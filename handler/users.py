@@ -4,19 +4,21 @@ from dao.users import UsersDAO
 
 class UsersHandler:
 
-    def build_user_dict(self, row):
+        def build_user_dict(self, row):
         result = {}
-        result['uid'] = row[0]  # user id
-        result['type'] = row[1]  # user type
-        result['fname'] = row[2]  # user first name
-        result['lname'] = row[3]  # user last name
+        result['username'] = row[0]  # user id
+        result['usertype'] = row[1]  # user type
+        result['firstname'] = row[2]  # user first name
+        result['lastname'] = row[3]  # user last name
         result['email'] = row[4]  # user email
         return result  # return result
 
+
+
+
     def build_userType_dict(self, row):
         result = {}
-        result['utid'] = row[0]  # user type id
-        result['utype'] = row[1]  # user type
+        result['utype'] = row[0]  # user type
         return result  # return result
 
     def build_user_attributes(self, userID, userTypeID, user_first_name, user_last_name, user_email):
@@ -27,60 +29,36 @@ class UsersHandler:
         result['user_last_name'] = user_last_name
         result['user_email'] = user_email
         return result
-
-    #def build_transaction_dict(self, resourceid, userid, ccnumb, transactionid, ccfirst, cclast, expdate, cvc, ctype, usertypeid, user_first_name, user_last_name, user_email, collectioncenterid, resourcetype, buy_free, market_price, qty):
-    def build_transaction_dict(self, row):
-        result = {}
-        result['resourceid'] = row[0]
-        result['userid'] = row[1]
-        result['ccnumb'] = row[2]
-        result['transactionid'] = row[3]
-        result['ccfirst'] = row[4]
-        result['cclast'] = row[5]
-        result['expdate'] = row[6]
-        result['cvc'] = row[7]
-        result['ctype'] = row[8]
-        result['usertypeid'] = row[9]
-        result['user_first_name'] = row[10]
-        result['user_last_name'] = row[11]
-        result['user_email'] = row[12]
-        result['collectioncenterid'] = row[13]
-        result['resourcetype'] = row[14]
-        result['buy_free'] = row[15]
-        result['market_price'] = row[16]
-        result['qty'] = row[17]
-        return result
-
-    def build_userinfo_dict(self, row):
-        result = {}
-        result['rid'] = row[0]
-        result['ccid'] = row[1]
-        result['uid'] = row[2]
+    def build_userinfo_dict(self,row):
+        result={}
+        result['rid']=row[0]
+        result['ccid']=row[1]
+        result['uid']=row[2]
         result['street'] = row[3]
         result['town'] = row[4]
         result['state'] = row[5]
-        result['country'] = row[6]
+        result['country']=row[6]
         result['ccnane'] = row[7]
-        result['zipcode'] = row[8]
-        result['rname'] = row[9]
-        result['buy_free'] = row[10]
-        result['marketPrice'] = row[11]
-        result['qtyfromsupplier'] = row[12]
+        result['zipcode']=row[8]
+        result['rname']=row[9]
+        result['buy_free']=row[10]
+        result['marketPrice']=row[11]
+        result['qtyfromsupplier']=row[12]
         return result
 
     def build_userRequest_dict(self, row):
         result = {}
         result['rid'] = row[0]  # request id
-        result['uid'] = row[1]  # requesting user id
+        result['userid'] = row[1]  # requesting user id
         result['resourceid'] = row[2]  # resource id
         result['rfname'] = row[3]  # requester first name
         result['rlname'] = row[4]  # requester last name
-        result['remail'] = row[5]  # requester email
+        result['remail'] = row[5]   # requester email
         result['rphone'] = row[6]  # requester phone
         result['rstreet'] = row[7]  # requester street
         result['rtown'] = row[8]  # requester town
         result['rstate'] = row[9]  # requester state
-        result['rcountry'] = row[10]  # requester country
+        result['rcountry'] = row[10] # requester country
         result['rzip'] = row[11]  # requester zipcode
         result['ccid'] = row[12]  # collection center id
         return result
@@ -99,9 +77,9 @@ class UsersHandler:
         location_list = dao.getAllUsers()
         result_list = []
         for row in location_list:
-            result = self.build_userType_dict(row)
+            result = self.build_user_dict(row)
             result_list.append(result)
-        return jsonify(UserType=result_list)
+        return jsonify(UserInfo=result_list)
 
     def getUserTypeByID(self, utid):
         dao = UsersDAO()
@@ -119,7 +97,7 @@ class UsersHandler:
             return jsonify(Error="User Not Found"), 404
         else:
             user = self.build_user_dict(row)
-            return user  # jsonify(User=user)
+            return user #jsonify(User=user)
 
     def getUsersByTypeID(self, tid):
         dao = UsersDAO()
@@ -177,7 +155,7 @@ class UsersHandler:
         for row in location_list:
             result = self.build_userRequest_dict(row)
             result_list.append(result)
-        return jsonify(UserType=result_list)
+        return jsonify(UserRequest=result_list)
 
     def getUserRequestsByUserID(self, uid):
         dao = UsersDAO()
@@ -210,18 +188,6 @@ class UsersHandler:
             result_list.append(result)
         return jsonify(Requests=result_list)
 
-    def getTransactions(self, userid):
-        dao = UsersDAO()
-        transactionList = dao.getTransaction(userid)
-        if not transactionList:
-            return jsonify(Error="Transaction Not Found"), 404
-        else:
-            result_list =[]
-            for row in transactionList:
-                result = self.build_transaction_dict(row)
-                result_list.append(result)
-            return jsonify(Transactions=result_list)
-
     def searchUsers(self, args):
         if len(args) > 1:
             return jsonify(Error="Malformed search string."), 400
@@ -231,15 +197,19 @@ class UsersHandler:
             firstname = args.get("firstname")
             lastname = args.get("lastname")
             email = args.get("email")
+            getusertype = args.get("getusertype")
 
             if username:
                 dao = UsersDAO()
-                row = dao.getUsersByID(username)
-                if not row:
+                request_list = dao.getUsersByID(username)
+                if not request_list:
                     return jsonify(Error="User Not Found"), 404
                 else:
-                    user = self.build_user_dict(row)
-                    return jsonify(User=user)
+                    result_list = []
+                    for row in request_list:
+                        user = self.build_user_dict(row)
+                        result_list.append(user)
+                    return jsonify(User=result_list)
             elif usertype:
                 dao = UsersDAO()
                 if not dao.getUserTypeByID(usertype):
@@ -247,33 +217,57 @@ class UsersHandler:
                 request_list = dao.getUsersByTypeID(usertype)
                 result_list = []
                 for row in request_list:
-                    user = self.build_userRequest_dict(row)
+                    user = self.build_user_dict(row)
                     result_list.append(user)
                 return jsonify(User=result_list)
+
+            elif getusertype:
+                dao = UsersDAO()
+                dao.getUserTypeByID(usertype)
+                request_list = dao.getUserTypeByID(getusertype)
+                result_list = []
+                for row in request_list:
+                    user = self.build_userType_dict(row)
+                    result_list.append(user)
+                return jsonify(UserType=result_list)
+
+
             elif firstname:
                 dao = UsersDAO()
-                row = dao.getUserByFirstName(firstname)
-                if not row:
+                request_list = dao.getUserByFirstName(firstname)
+                if not request_list:
                     return jsonify(Error="User Not Found"), 404
                 else:
-                    user = self.build_user_dict(row)
-                    return jsonify(User=user)
+                    result_list = []
+                    for row in request_list:
+                        user = self.build_user_dict(row)
+                        result_list.append(user)
+                    return jsonify(User=result_list)
+
             elif lastname:
                 dao = UsersDAO()
-                row = dao.getUserByLastName(lastname)
-                if not row:
+                request_list = dao.getUserByLastName(lastname)
+                if not request_list:
                     return jsonify(Error="User Not Found"), 404
                 else:
-                    user = self.build_user_dict(row)
-                    return jsonify(User=user)
+                    result_list = []
+                    for row in request_list:
+                        user = self.build_user_dict(row)
+                        result_list.append(user)
+                    return jsonify(User=result_list)
+
+
             elif email:
                 dao = UsersDAO()
-                row = dao.getUserByEmail(email)
-                if not row:
+                request_list = dao.getUserByEmail(email)
+                if not request_list:
                     return jsonify(Error="User Not Found"), 404
                 else:
-                    user = self.build_user_dict(row)
-                    return jsonify(User=user)
+                    result_list = []
+                    for row in request_list:
+                        user = self.build_user_dict(row)
+                        result_list.append(user)
+                    return jsonify(User=result_list)
             else:
                 return jsonify(Error="Malformed search string."), 400
 
@@ -281,43 +275,142 @@ class UsersHandler:
         if len(args) > 2:
             return jsonify(Error="Malformed search string."), 400
         else:
-            username = args.get("username")
-            requestid = args.get("requestid")
-            resourceid = args.get("requestid")
-        if username and resourceid:
-            # self.getUserRequestsByUserIDandResourceID(username, resourceid)
-            dao = UsersDAO()
-            if not dao.getUsersByID(username):
-                return jsonify(Error="User Not Found"), 404
-            request_list = dao.getUserRequestsByUserIDandResourceID(username, resourceid)
-            result_list = []
-            for row in request_list:
-                result = self.build_userRequest_dict(row)
-                result_list.append(result)
-            return jsonify(Requests=result_list)
-        elif username:
-            # self.getUserRequestsByRequestID(username)
-            dao = UsersDAO()
-            if not dao.getUsersByID(username):
-                return jsonify(Error="User Not Found"), 404
-            request_list = dao.getUserRequestsByUserID(username)
-            result_list = []
-            for row in request_list:
-                result = self.build_userRequest_dict(row)
-                result_list.append(result)
-            return jsonify(Requests=result_list)
-        elif requestid:
-            # self.getUserRequestsByUserID(requestid)
-            dao = UsersDAO()
-            row = dao.getUserRequestsByRequestID(requestid)
-            if not row:
-                return jsonify(Error="Request Not Found"), 404
-            else:
-                user = self.build_userRequest_dict(row)
-                return jsonify(User=user)
-        else:
-            return jsonify(Error="Malformed search string."), 400
+            ccid = args.get("ccid")
+            rcountry = args.get("rcountry")
+            remail = args.get("remail")
+            resourceid = args.get("resourceid")
+            rfname = args.get("rfname")
+            rid = args.get("rid")
+            rlname = args.get("rlname")
+            rphone = args.get("rphone")
+            rstate = args.get("rstate")
+            rstreet = args.get("rstreet")
+            rtown = args.get("rtown")
+            rzip = args.get("rzip")
+            userid =args.get("userid")
 
+        dao = UsersDAO()
+        if ccid:
+            if not dao.getUserRequestsByCollectionCenter(ccid):
+                return jsonify(Error="User Not Found"), 404
+            request_list = dao.getUserRequestsByCollectionCenter(ccid)
+            result_list=[]
+            for row in request_list:
+                result = self.build_userRequest_dict(row)
+                result_list.append(result)
+            return jsonify(Requests=result_list)
+
+        elif rcountry:
+            if not dao.getUserRequestByCountry(rcountry):
+                return jsonify(Error="User Not Found"), 404
+            request_list = dao.getUserRequestByCountry(rcountry)
+            result_list=[]
+            for row in request_list:
+                result = self.build_userRequest_dict(row)
+                result_list.append(result)
+            return jsonify(Requests=result_list)
+
+        elif remail:
+            if not dao.getUserRequestByEmail(remail):
+                return jsonify(Error="User Not Found"), 404
+            request_list = dao.getUserRequestByEmail(remail)
+            result_list=[]
+            for row in request_list:
+                result = self.build_userRequest_dict(row)
+                result_list.append(result)
+            return jsonify(Requests=result_list)
+
+        elif resourceid:
+            if not dao.getUserRequestByResourceID(resourceid):
+                return jsonify(Error="User Not Found"), 404
+            request_list = dao.getUserRequestByResourceID(resourceid)
+            result_list=[]
+            for row in request_list:
+                result = self.build_userRequest_dict(row)
+                result_list.append(result)
+            return jsonify(Requests=result_list)
+
+        elif rfname:
+            if not dao.getUserRequestByFirstName(rfname):
+                return jsonify(Error="User Not Found"), 404
+            request_list = dao.getUserRequestByFirstName(rfname)
+            result_list=[]
+            for row in request_list:
+                result = self.build_userRequest_dict(row)
+                result_list.append(result)
+            return jsonify(Requests=result_list)
+
+        elif rlname:
+            if not dao.getUserRequestByLastName(rlname):
+                return jsonify(Error="User Not Found"), 404
+            request_list = dao.getUserRequestByLastName(rlname)
+            result_list=[]
+            for row in request_list:
+                result = self.build_userRequest_dict(row)
+                result_list.append(result)
+            return jsonify(Requests=result_list)
+
+        elif rphone:
+            if not dao.getUserRequestByPhone(rphone):
+                return jsonify(Error="User Not Found"), 404
+            request_list = dao.getUserRequestByPhone(rphone)
+            result_list=[]
+            for row in request_list:
+                result = self.build_userRequest_dict(row)
+                result_list.append(result)
+            return jsonify(Requests=result_list)
+
+        elif rstate:
+            if not dao.getUserRequestByState(rstate):
+                return jsonify(Error="User Not Found"), 404
+            request_list = dao.getUserRequestByState(rstate)
+            result_list=[]
+            for row in request_list:
+                result = self.build_userRequest_dict(row)
+                result_list.append(result)
+            return jsonify(Requests=result_list)
+
+        elif rtown:
+            if not dao.getUserRequestByTown(rtown):
+                return jsonify(Error="User Not Found"), 404
+            request_list = dao.getUserRequestByTown(rtown)
+            result_list=[]
+            for row in request_list:
+                result = self.build_userRequest_dict(row)
+                result_list.append(result)
+            return jsonify(Requests=result_list)
+
+        elif rzip:
+            if not dao.getUserRequestByZipcode(rzip):
+                return jsonify(Error="User Not Found"), 404
+            request_list = dao.getUserRequestByZipcode(rzip)
+            result_list=[]
+            for row in request_list:
+                result = self.build_userRequest_dict(row)
+                result_list.append(result)
+            return jsonify(Requests=result_list)
+
+        elif userid:
+            if not dao.getUserRequestsByUserID(userid):
+                return jsonify(Error="User Not Found"), 404
+            request_list = dao.getUserRequestsByUserID(userid)
+            result_list=[]
+            for row in request_list:
+                result = self.build_userRequest_dict(row)
+                result_list.append(result)
+            return jsonify(Requests=result_list)
+
+        elif rid:
+            if not dao.getUserRequestsByRequestID(rid):
+                return jsonify(Error="User Not Found"), 404
+            request_list = dao.getUserRequestsByRequestID(rid)
+            result_list=[]
+            for row in request_list:
+                result = self.build_userRequest_dict(row)
+                result_list.append(result)
+            return jsonify(Requests=result_list)
+        
+        
     def insertUser(self, form):
         if form and len(form) == 6:
             userID = form['userID']
